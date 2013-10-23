@@ -6,6 +6,7 @@
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
+use IEEE.NUMERIC_STD.all;
 use work.IntContPackage.all;
 use work.vme.all;
 use work.message_package.all;
@@ -40,16 +41,13 @@ package AuxDef is
   constant BTRAINMODE   : std_logic_vector(2 downto 0) := "011";
   constant P2SERIALMODE : std_logic_vector(2 downto 0) := "111";
 
-  constant MEM_ADDRESS_LENGTH : integer                                           := 17;  -- Internal Ram address used (number of bits).
---constant RAM_BUF_ONE : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0) := (0=> '1', others => '0');
-  constant EXTRAM_BUF_ONE     : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0) := (0      => '1', others => '0');
---constant RAMFULL : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0) := (others => '1');
---constant MEMEMPTY : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0) := (2=>'1',1=>'1',0=>'1', others => '0'); -- memory begin at 7
-  constant MEMEMPTY           : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0) := (3      => '1', others => '0');  -- memory begin at 8
-  constant EXTRAMFULL         : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0) := (others => '1');
-  constant COMENTSOFF         : boolean                                           := false;                           -- It adds simulations comments
-  constant QUARTZFREQ         : integer                                           := 40;  -- Define here the FREQUENCE of your clock in MHz
-  constant NUMBER_OF_CHANNEL  : integer                                           := 32;  -- must always be even
+  constant MEM_ADDRESS_LENGTH : integer                                   := 17;  -- Internal Ram address used (number of bits).
+  constant EXTRAM_BUF_ONE     : unsigned(MEM_ADDRESS_LENGTH - 1 downto 0) := (0      => '1', others => '0');
+  constant MEMEMPTY           : unsigned(MEM_ADDRESS_LENGTH - 1 downto 0) := (3      => '1', others => '0');  -- memory begin at 8
+  constant EXTRAMFULL         : unsigned(MEM_ADDRESS_LENGTH - 1 downto 0) := (others => '1');
+  constant COMENTSOFF         : boolean                                   := false;                           -- It adds simulations comments
+  constant QUARTZFREQ         : integer                                   := 40;  -- Define here the FREQUENCE of your clock in MHz
+  constant NUMBER_OF_CHANNEL  : integer                                   := 32;  -- must always be even
 
   type    array8by8 is array(0 to 7) of std_logic_vector(7 downto 0);
   type    array16by8 is array(0 to 15) of std_logic_vector(7 downto 0);

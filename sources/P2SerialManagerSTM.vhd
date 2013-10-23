@@ -22,8 +22,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
-use IEEE.STD_LOGIC_ARITH.all;
-use IEEE.STD_LOGIC_UNSIGNED.all;
+use IEEE.NUMERIC_STD.all;
 use work.auxdef.all;
 use work.IntContPackage.all;
 
@@ -60,7 +59,7 @@ architecture Behavioral of P2SerialManagerSTM is
   signal P2DataReady       : P2DataReadyArray;
   signal CurrentChannel    : integer range 1 to NUMBER_OF_CHANNEL - 1          := 1;
   signal NextChannel       : integer range 2 to NUMBER_OF_CHANNEL              := 2;
-  signal iWriteAdd         : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0) := MEMEMPTY;
+  signal iWriteAdd         : unsigned(MEM_ADDRESS_LENGTH - 1 downto 0) := MEMEMPTY;
   signal DataBuffer        : P2Array;
 
 
@@ -263,7 +262,7 @@ begin
     end if;
   end process;
 
-  WriteAdd <= iWriteAdd;
+  WriteAdd <= std_logic_vector(iWriteAdd);
 
 
 end Behavioral;
