@@ -160,7 +160,7 @@ NET "RamOEN"  LOC = "D15" | IOSTANDARD = LVCMOS33 ;
 NET "RamWRN"  LOC = "A16" | IOSTANDARD = LVCMOS33 ;
 NET "rs232_rx_i"  LOC = "E17" | IOSTANDARD = LVCMOS33 ;
 NET "rs232_tx_o"  LOC = "E18" | IOSTANDARD = LVCMOS33 ;
-NET "sys_rst_i"  LOC = "F17" | IOSTANDARD = LVCMOS33 ;
+NET "sys_rst_n_a_i"  LOC = "F17" | IOSTANDARD = LVCMOS33 ;
 NET "data_cu1_fp_i"  LOC = "D13" | IOSTANDARD = LVCMOS33 ;
 NET "data_cu2_fp_i"  LOC = "E14" | IOSTANDARD = LVCMOS33 ;
 NET "data_optic1_fp_i"  LOC = "E13" | IOSTANDARD = LVCMOS33 ;

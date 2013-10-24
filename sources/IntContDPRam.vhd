@@ -132,12 +132,12 @@ constant MEMOFFSET : RamAType := 16#00008#; --long word offset
 --into the Array of Data Accesed Lines and the Table of Read Registers.
 --********************************************
 --********************************************
-constant SOURCEREGP : RegPType := 0;
-constant READADDREGP : RegPType := 1;
-constant MODEREGP : RegPType := 2;
-constant CHANNELREGP : RegPType := 3;
-constant FREQREGP : RegPType := 4;
-constant DACREGP: RegPType := 5;
+constant CSR_REG_P : RegPType := 0;
+constant MEM_PTR_REG_P : RegPType := 1;
+constant MODE_REG_P : RegPType := 2;
+constant CHANNEL_EN_REG_P : RegPType := 3;
+constant CLK_FREQ_REG_P : RegPType := 4;
+constant DAC_SEL_REG_P: RegPType := 5;
  
 --constant SPAREREGP : RegPType := 6;
 
