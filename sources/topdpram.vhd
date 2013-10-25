@@ -102,37 +102,35 @@ use UNISIM.VComponents.all;
 entity topdpram is
   generic(
     HARDVERSION           : std_logic_vector(15 downto 0) := X"0154";
-    MONOSTABLE_DURATION   : natural                       := 8000000;     -- multiply by clk period - only for leds
-    DEFAULT_PULSEPOLARITY : std_logic                     := '0';         -- 0 = negative logic, 1 = positive logic
-    COUNTER_WIDTH         : integer                       := 32;
-    DEFAULT_IRQVECTOR     : std_logic_vector(7 downto 0)  := x"86";       -- 134 decimal
-    MASKCHANNEL           : std_logic_vector(31 downto 0) := x"ffffffff"  -- enables all 32 inputs on rear panel
+    LED_MONOSTABLE_WIDTH  : natural                       := 8000000;  -- in sys_clk cycles
+    DEFAULT_PULSEPOLARITY : std_logic                     := '0';      -- 0 = negative logic, 1 = positive logic
+    DEFAULT_IRQVECTOR     : std_logic_vector(7 downto 0)  := x"86"     -- 134 decimal
     );
 
   port (
     sys_rst_n_a_i    : in  std_logic;                       -- Active low asynchronous power-on reset (from TLC7733)
     sys_clk_i        : in  std_logic;                       -- 40MHz system clock
-    bup_fp_i         : in  std_logic;                       -- "BUP" front panel input (pulled-up)
-    bdown_fp_i       : in  std_logic;                       -- "BDOWN" front panel input (pulled-up)
-    clock_fp_i       : in  std_logic;                       -- "CLOCK" front panel input (pulled-up)
-    reset_fp_i       : in  std_logic;                       -- "RESET" front panel input (pulled-up)
-    strobe_fp_i      : in  std_logic;                       -- "STROBE" front panel input (pulled-up)
-    start_fp_i       : in  std_logic;                       -- "START" front panel input (pulled-up)
-    stop_fp_i        : in  std_logic;                       -- "STOP" front panel input (pulled-up)
-    data_rtm_i       : in  std_logic_vector (31 downto 0);  -- Data inputs from VME P2 connector
+    fp_bup_i         : in  std_logic;                       -- "BUP" front panel input (pulled-up)
+    fp_bdown_i       : in  std_logic;                       -- "BDOWN" front panel input (pulled-up)
+    fp_clock_i       : in  std_logic;                       -- "CLOCK" front panel input (pulled-up)
+    fp_reset_i       : in  std_logic;                       -- "RESET" front panel input (pulled-up)
+    fp_strobe_i      : in  std_logic;                       -- "STROBE" front panel input (pulled-up)
+    fp_start_i       : in  std_logic;                       -- "START" front panel input (pulled-up)
+    fp_stop_i        : in  std_logic;                       -- "STOP" front panel input (pulled-up)
+    rtm_data_i       : in  std_logic_vector (31 downto 0);  -- Data inputs from VME P2 connector
     mode_select_sw_i : in  std_logic_vector(2 downto 0);    -- Jumper for mode selection
     rs232_rx_i       : in  std_logic;                       -- RS232 Rx interface for LCD ascii display
     rs232_tx_o       : out std_logic;                       -- RS232 Tx interface for LCD ascii display
     test_o           : out std_logic_vector (3 downto 0);   -- Test points
-    led_fp_o         : out std_logic_vector (7 downto 0);   -- Front panel LEDs
+    fp_led_o         : out std_logic_vector (7 downto 0);   -- Front panel LEDs
     dac1_data_o      : out std_logic_vector (15 downto 0);  -- Data to DAC, analog output 1 (AD669)
     dac2_data_o      : out std_logic_vector (15 downto 0);  -- Data to DAC, analog output 2 (AD669)
     dac1_load_o      : out std_logic;                       -- Load data to DAC, analog output 1 (AD669)
     dac2_load_o      : out std_logic;                       -- Load data to DAC, analog output 1 (AD669)
-    data_optic1_fp_i : in  std_logic;                       -- Front panel optical input 1
-    data_optic2_fp_i : in  std_logic;                       -- Front panel optical input 2
-    data_cu1_fp_i    : in  std_logic;                       -- Front panel copper input 1
-    data_cu2_fp_i    : in  std_logic;                       -- Front panel optical input 2
+    fp_data_optic1_i : in  std_logic;                       -- Front panel optical input 1
+    fp_data_optic2_i : in  std_logic;                       -- Front panel optical input 2
+    fp_data_cu1_i    : in  std_logic;                       -- Front panel copper input 1
+    fp_data_cu2_i    : in  std_logic;                       -- Front panel optical input 2
 --    StrobeOut        : out std_logic;                       -- Not connected on PCB!
 --    SData1Led        : out std_logic;                       -- Not connected on PCB!
 --    SData2Led        : out std_logic;                       -- Not connected on PCB!
@@ -183,68 +181,81 @@ architecture Behavioral of topdpram is
 
   ------------------------------------------------------------------------------
   -- Clock and reset
-  signal sys_clk : std_logic;
-  signal sys_rst : std_logic;
+  signal sys_clk   : std_logic;
+  signal sys_rst_n : std_logic;
+
   ------------------------------------------------------------------------------
   -- VME
   signal VmeDataUnAlign            : std_logic_vector(7 downto 0);
   signal moduleAM                  : std_logic_vector(4 downto 0);
   signal iModuleAddr               : std_logic_vector(4 downto 0);
   signal IRQStatusIDReg            : std_logic_vector(31 downto 0);
-  signal IrqVector                 : std_logic_vector(7 downto 0) := DEFAULT_IRQVECTOR;
+  signal irq_vector                : std_logic_vector(7 downto 0) := DEFAULT_IRQVECTOR;
   signal IntProcessed, UserIntReqN : std_logic;
   signal VmeIntReqN                : std_logic_vector (7 downto 1);
-  signal EnableInt                 : std_logic                    := '0';
+  signal irq_en                    : std_logic                    := '0';
   signal OpFinishedOut             : std_logic;
+
   ------------------------------------------------------------------------------
   -- Bus Interface Signals
-  signal intRead          : std_logic;       -- Interface Read Signal
-  signal intWrite         : std_logic;       -- Interface Write Signal
-  signal dataFromInt      : IntDataType;     -- Data From interface
-  signal intAdd           : IntAddrOutType;  -- Address From interface
-  signal opDone           : std_logic;       -- Operation Done, Read or Write Finished
-  signal dataToInt        : IntDataType;     -- Data going from Control to the Interface
+  signal intRead     : std_logic;       -- Interface Read Signal
+  signal intWrite    : std_logic;       -- Interface Write Signal
+  signal dataFromInt : IntDataType;     -- Data From interface
+  signal intAdd      : IntAddrOutType;  -- Address From interface
+  signal opDone      : std_logic;       -- Operation Done, Read or Write Finished
+  signal dataToInt   : IntDataType;     -- Data going from Control to the Interface
   -- Registers  Signals
-  signal contToRegs       : contToRegsType;  -- Data going from Control to the Registers
-                                             -- This consists of Data + Write Enable Siganal
-  signal regsToCont       : RegsToContType;  -- Data Array From the Registers to the Control
+  signal contToRegs  : contToRegsType;  -- Data going from Control to the Registers
+                                        -- This consists of Data + Write Enable Siganal
+  signal regsToCont  : RegsToContType;  -- Data Array From the Registers to the Control
   -- Memory Signals
-  signal contToMem        : ContToMemType;   -- Data going from Control to the Registers
-                                             -- This consists of Data + Enable + Read + Write
-  signal memToCont        : MemToContType;   -- Data Array  From the Registers to the Control
-                                             -- Data + Done
+  signal contToMem   : ContToMemType;   -- Data going from Control to the Registers
+                                        -- This consists of Data + Enable + Read + Write
+  signal memToCont   : MemToContType;   -- Data Array  From the Registers to the Control
+                                        -- Data + Done
+
   ------------------------------------------------------------------------------
   -- Registers
-  signal csr_reg_wren : std_logic;
-  signal mode_reg_wren : std_logic;
+  signal csr_reg_wren        : std_logic;
+  signal mode_reg_wren       : std_logic;
   signal channel_en_reg_wren : std_logic;
-  signal clk_freq_reg_wren : std_logic;
-  signal dac_sel_reg_wren : std_logic;
-  signal csr_reg : std_logic_vector(31 downto 0);
-  signal mode_reg : std_logic_vector(3 downto 0);
-  signal channel_en_reg : std_logic_vector(31 downto 0);
-  signal clk_freq_reg : std_logic_vector();
-  signal dac_sel_reg : std_logic_vector();
+  signal clk_freq_reg_wren   : std_logic;
+  signal dac_sel_reg_wren    : std_logic;
+  signal csr_reg             : std_logic_vector(31 downto 0);
+  signal mode_reg            : std_logic_vector(3 downto 0);
+  signal channel_en_reg      : std_logic_vector(31 downto 0);
+  signal clk_freq_reg        : std_logic_vector();
+  signal dac_sel_reg         : std_logic_vector();
+
   ------------------------------------------------------------------------------
-  -- Btrain Up/Down counter Signals
-  signal iUDEnable        : std_logic;
-  signal LoadValue        : std_logic_vector(COUNTER_WIDTH - 1 downto 0);
-  signal UDInstantValue   : std_logic_vector(COUNTER_WIDTH - 1 downto 0);
-  signal UDTerminalCount  : std_logic;
-  signal UDTerminalCountB : std_logic := '0';
-  signal rstA, rstRE      : std_logic := '0';
-  signal CounterOverflow  : std_logic;
+  -- 32-bit up/down counter (b-train)
+  signal ud_cnt_value    : std_logic_vector(31 downto 0);
+  signal ud_cnt_en       : std_logic;
+  signal ud_cnt_overflow : std_logic;
+  signal ud_cnt_to_dac   : std_logic;
+
   ------------------------------------------------------------------------------
-  -- Signal for the display part
-  signal message_to_send    : message_array;
-  signal localPPS           : std_logic;
-  signal igap_counter_value : unsigned(31 downto 0);
-  signal en1M               : std_logic;
-  signal iledout            : std_logic_vector(7 downto 0);
-  signal AcqCounter         : unsigned(15 downto 0)         := (others => '0');
-  signal AcquisitionTime    : std_logic_vector(15 downto 0) := (others => '0');
-  signal BCD_acq_vec        : BCD_vector_TYPE (4 downto 0);
-  signal StartSBAcq         : std_logic;
+  -- 16-bit up counters
+  signal up_cnt_en        : std_logic;
+  signal up_cnt1_value    : std_logic_vector(31 downto 0);
+  signal up_cnt1_overflow : std_logic;
+  signal up_cnt1_to_dac   : std_logic;
+  signal up_cnt2_value    : std_logic_vector(31 downto 0);
+  signal up_cnt2_overflow : std_logic;
+  signal up_cnt2_to_dac   : std_logic;
+
+  ------------------------------------------------------------------------------
+  -- RS232 LCD display
+  signal pps_cnt         : unsigned(26 downto 0);
+  signal pps_p           : std_logic;
+  signal message_to_send : message_array;
+
+  ------------------------------------------------------------------------------
+  -- 
+  signal fp_led                  : std_logic_vector(7 downto 0);
+  signal AcqCounter              : unsigned(15 downto 0)                             := (others => '0');
+  signal AcquisitionTime         : std_logic_vector(15 downto 0)                     := (others => '0');
+  signal BCD_acq_vec             : BCD_vector_TYPE (4 downto 0);
   ------------------------------------------------------------------------------
   -- Signal for the External Ram
   signal ExtWriteAdd             : unsigned(MEM_ADDRESS_LENGTH - 1 downto 0)         := MEMEMPTY;
@@ -267,26 +278,30 @@ architecture Behavioral of topdpram is
 
 
   -- Front panel input sync and edge detect
-  signal clock_fp    : std_logic;
-  signal start_fp    : std_logic;
-  signal stop_fp     : std_logic;
-  signal bup_fp      : std_logic;
-  signal bdown_fp    : std_logic;
-  signal strobe_fp   : std_logic;
-  signal reset_fp    : std_logic;
-  signal clock_fp_p  : std_logic;
-  signal start_fp_p  : std_logic;
-  signal stop_fp_p   : std_logic;
-  signal bup_fp_p    : std_logic;
-  signal bdown_fp_p  : std_logic;
-  signal strobe_fp_p : std_logic;
-  signal reset_fp_p  : std_logic;
+  signal fp_clock    : std_logic;
+  signal fp_start    : std_logic;
+  signal fp_stop     : std_logic;
+  signal fp_bup      : std_logic;
+  signal fp_bdown    : std_logic;
+  signal fp_strobe   : std_logic;
+  signal fp_reset    : std_logic;
+  signal fp_clock_p  : std_logic;
+  signal fp_start_p  : std_logic;
+  signal fp_stop_p   : std_logic;
+  signal fp_bup_p    : std_logic;
+  signal fp_bdown_p  : std_logic;
+  signal fp_strobe_p : std_logic;
+  signal fp_reset_p  : std_logic;
+  signal start_p     : std_logic;
+  signal stop_p      : std_logic;
+  signal reset_p     : std_logic;
+  signal start_p_d   : std_logic_vector(3 downto 0);
   ------------------------------------------------------------------------------
   -- DAC
-  signal dac1_load : std_logic;
-  signal dac2_load : std_logic;
-  signal dac1_data : std_logic_vector(15 downto 0) := (others => '0');
-  signal dac2_data : std_logic_vector(15 downto 0) := (others => '0');
+  signal dac1_load   : std_logic;
+  signal dac2_load   : std_logic;
+  signal dac1_data   : std_logic_vector(15 downto 0) := (others => '0');
+  signal dac2_data   : std_logic_vector(15 downto 0) := (others => '0');
   ------------------------------------------------------------------------------
 
 
@@ -298,11 +313,11 @@ architecture Behavioral of topdpram is
 
   ------------------------------------------------------------------------------
   -- Signal for Data Acquisition
-  signal AcqEnable                                 : std_logic                     := '0';
-  signal PulsePolarity                             : std_logic                     := DEFAULT_PULSEPOLARITY;
+  signal data_acq_en                               : std_logic                     := '0';
+  signal input_polarity                            : std_logic                     := DEFAULT_PULSEPOLARITY;
   signal SourceWrEn, ModeWrEn                      : std_logic;
   signal SourceWrEnB                               : std_logic                     := '0';
-  signal EnableAccess                              : std_logic                     := '1';  -- the module is enable by default
+  signal module_en                                 : std_logic                     := '1';  -- the module is enable by default
   signal mode, UsedMode                            : std_logic_vector(2 downto 0)  := P2SERIALMODE;
   signal ModeValidFromVME                          : std_logic                     := '0';
   signal ExternalClkB, ExternalClkC, ExternalClkD  : std_logic                     := '0';
@@ -312,7 +327,10 @@ architecture Behavioral of topdpram is
   signal ChannelReady1, ChannelReady2              : std_logic;
   signal SerialMode                                : std_logic;
   signal SerialDataReg                             : std_logic_vector(31 downto 0) := (others => '0');
-  signal SoftStart, SoftStop, SoftArm              : std_logic                     := '0';
+  signal sw_start_p                                : std_logic;
+  signal sw_stop_p                                 : std_logic;
+  signal sw_reset_p                                : std_logic;
+
   ------------------------------------------------------------------------------
   -- Signals for P2 serial inputs
   signal ChannelReg       : std_logic_vector(31 downto 0) := (others => '0');
@@ -326,6 +344,7 @@ architecture Behavioral of topdpram is
   signal P2DataInClk      : std_logic;
   signal P2ClearMem       : std_logic;
   signal FirstBitatOne    : natural range 0 to 31;
+
   ------------------------------------------------------------------------------
   -- Signal for the Frequency Counter
   signal FrequencyCounter1 : std_logic_vector(31 downto 0);
@@ -347,7 +366,7 @@ begin
       I => sys_clk_i,
       O => sys_clk);
 
-  sys_rst <= sys_rst_n_a_i;
+  sys_rst_n <= sys_rst_n_a_i;
 
 
   ------------------------------------------------------------------------------
@@ -357,77 +376,92 @@ begin
   -- Front panel input polarity
   --   DEFAULT_PULSEPOLARITY=0 -> negative logic
   --   DEFAULT_PULSEPOLARITY=1 -> positive logic
-  clock_fp <= clock_fp_i when DEFAULT_PULSEPOLARITY = '1' else not clock_fp_i;
-  start_fp <= start_fp_i when DEFAULT_PULSEPOLARITY = '1' else not start_fp_i;
-  stop_fp  <= stop_fp_i  when DEFAULT_PULSEPOLARITY = '1' else not stop_fp_i;
-  bup_fp  <= bup_fp_i  when DEFAULT_PULSEPOLARITY = '1' else not bup_fp_i;
-  bdown_fp  <= bdown_fp_i  when DEFAULT_PULSEPOLARITY = '1' else not bdown_fp_i;
-  strobe_fp  <= strobe_fp_i  when DEFAULT_PULSEPOLARITY = '1' else not strobe_fp_i;
-  reset_fp <= reset_fp_i when DEFAULT_PULSEPOLARITY = '1' else not reset_fp_i;
+  fp_clock  <= fp_clock_i  when DEFAULT_PULSEPOLARITY = '1' else not fp_clock_i;
+  fp_start  <= fp_start_i  when DEFAULT_PULSEPOLARITY = '1' else not fp_start_i;
+  fp_stop   <= fp_stop_i   when DEFAULT_PULSEPOLARITY = '1' else not fp_stop_i;
+  fp_bup    <= fp_bup_i    when DEFAULT_PULSEPOLARITY = '1' else not fp_bup_i;
+  fp_bdown  <= fp_bdown_i  when DEFAULT_PULSEPOLARITY = '1' else not fp_bdown_i;
+  fp_strobe <= fp_strobe_i when DEFAULT_PULSEPOLARITY = '1' else not fp_strobe_i;
+  fp_reset  <= fp_reset_i  when DEFAULT_PULSEPOLARITY = '1' else not fp_reset_i;
 
   -- Detects rising edge on front panel inputs
-  cmp_clock_fp_sync : gc_sync_ffs
+  cmp_clock_sync : gc_sync_ffs
     port map(
       clk_i    => sys_clk,
-      rst_n_i  => sys_rst,
-      data_i   => clock_fp,
+      rst_n_i  => sys_rst_n,
+      data_i   => fp_clock,
       synced_o => open,
       npulse_o => open,
-      ppulse_o => clock_fp_p);
+      ppulse_o => fp_clock_p);
 
-  cmp_start_fp_sync : gc_sync_ffs
+  cmp_start_sync : gc_sync_ffs
     port map(
       clk_i    => sys_clk,
-      rst_n_i  => sys_rst,
-      data_i   => start_fp,
+      rst_n_i  => sys_rst_n,
+      data_i   => fp_start,
       synced_o => open,
       npulse_o => open,
-      ppulse_o => start_fp_p);
+      ppulse_o => fp_start_p);
 
-  cmp_stop_fp_sync : gc_sync_ffs
+  cmp_stop_sync : gc_sync_ffs
     port map(
       clk_i    => sys_clk,
-      rst_n_i  => sys_rst,
-      data_i   => stop_fp,
+      rst_n_i  => sys_rst_n,
+      data_i   => fp_stop,
       synced_o => open,
       npulse_o => open,
-      ppulse_o => stop_fp_p);
+      ppulse_o => fp_stop_p);
 
-  cmp_bup_fp_sync : gc_sync_ffs
+  cmp_bup_sync : gc_sync_ffs
     port map(
       clk_i    => sys_clk,
-      rst_n_i  => sys_rst,
-      data_i   => bup_fp,
+      rst_n_i  => sys_rst_n,
+      data_i   => fp_bup,
       synced_o => open,
       npulse_o => open,
-      ppulse_o => bup_fp_p);
+      ppulse_o => fp_bup_p);
 
-  cmp_bdown_fp_sync : gc_sync_ffs
+  cmp_bdown_sync : gc_sync_ffs
     port map(
       clk_i    => sys_clk,
-      rst_n_i  => sys_rst,
-      data_i   => bdown_fp,
+      rst_n_i  => sys_rst_n,
+      data_i   => fp_bdown,
       synced_o => open,
       npulse_o => open,
-      ppulse_o => bdown_fp_p);
+      ppulse_o => fp_bdown_p);
 
-  cmp_strobe_fp_sync : gc_sync_ffs
+  cmp_strobe_sync : gc_sync_ffs
     port map(
       clk_i    => sys_clk,
-      rst_n_i  => sys_rst,
-      data_i   => stobe_fp,
+      rst_n_i  => sys_rst_n,
+      data_i   => fp_stobe,
       synced_o => open,
       npulse_o => open,
-      ppulse_o => strobe_fp_p);
+      ppulse_o => fp_strobe_p);
 
-  cmp_reset_fp_sync : gc_sync_ffs
+  cmp_reset_sync : gc_sync_ffs
     port map(
       clk_i    => sys_clk,
-      rst_n_i  => sys_rst,
-      data_i   => reset_fp,
+      rst_n_i  => sys_rst_n,
+      data_i   => fp_reset,
       synced_o => open,
       npulse_o => open,
-      ppulse_o => reset_fp_p);
+      ppulse_o => fp_reset_p);
+
+  -- Combining front panel input pulse with software pulses
+  start_p <= fp_start_p or sw_start_p;
+  stop_p  <= fp_stop_p or sw_stop_p;
+  reset_p <= fp_reset_p or sw_reset_p;
+
+  -- Pulses delay
+  p_start_delay : process (sys_clk, sys_rst_n)
+  begin
+    if sys_rst_n = RESET_ACTIVE then
+      start_p_d <= (others => '0');
+    elsif rising_edge(sys_clk) then
+      start_p_d <= start_p_d(start_p_d'left-1 downto 0) & start_p;
+    end if;
+  end process p_start_delay;
 
 
   ------------------------------------------------------------------------------
@@ -443,7 +477,7 @@ begin
       InterruptEn      => '1')
     port map(
       clk              => sys_clk,
-      ResetNA          => sys_rst,
+      ResetNA          => sys_rst_n,
       VmeAddrA         => VmeAddrA,
       VmeAsNA          => VmeAsNA ,
       VmeDs1NA         => VmeDs1NA,
@@ -484,7 +518,7 @@ begin
   cmp_bus_interface_controller : BusIntControl
     port map(
       Clk   => sys_clk,
-      RstNA => sys_rst,
+      RstNA => sys_rst_n,
 
       -- Interface
       IntRead     => IntRead,           -- Interface Read Signal
@@ -508,12 +542,12 @@ begin
       );
 
   -- An interrupt is issued on the "STOP" input pulse
-  p_irq : process(sys_rst, sys_clk)
+  p_irq : process(sys_rst_n, sys_clk)
   begin
-    if sys_rst = RESET_ACTIVE then
+    if sys_rst_n = RESET_ACTIVE then
       UserIntReqN <= '1';
     elsif rising_edge(sys_clk) then
-      if EnableInt = '1' then
+      if irq_en = '1' then
         if IntProcessed = '1' then
           UserIntReqN <= '1';
         elsif stopPulse = '1' then
@@ -543,49 +577,49 @@ begin
 
   csr_reg_wren <= contToRegs.Sel(CSR_REG_P) and contToRegs.Wr;
 
-  p_csr_reg : process(sys_clk)
+  p_csr_reg : process(sys_clk, sys_rst_n)
   begin
-    if sys_rst = RESET_ACTIVE then
-      PulsePolarity <= '0';
-      EnableAccess  <= '0';
-      EnableInt     <= '0';
-      SoftStart     <= '0';
-      SoftStop      <= '0';
-      SoftArm       <= '0';
-      irqVector     <= (others => '0');
+    if sys_rst_n = RESET_ACTIVE then
+      input_polarity <= '0';
+      module_en      <= '0';
+      irq_en         <= '0';
+      sw_start_p     <= '0';
+      sw_stop_p      <= '0';
+      sw_reset_p     <= '0';
+      irq_vector     <= (others => '0');
     elsif rising_edge(sys_clk) then
       if csr_reg_wren = '1' then
-        PulsePolarity <= contToRegs.Data(0);
-        EnableAccess  <= contToRegs.Data(1);
-        EnableInt     <= contToRegs.Data(2);
-        SoftStart     <= contToRegs.Data(3);
-        SoftStop      <= contToRegs.Data(4);
-        SoftArm       <= contToRegs.Data(5);
-        irqVector     <= contToRegs.Data(15 downto 8);
+        input_polarity <= contToRegs.Data(0);
+        module_en      <= contToRegs.Data(1);
+        irq_en         <= contToRegs.Data(2);
+        sw_start_p     <= contToRegs.Data(3);
+        sw_stop_p      <= contToRegs.Data(4);
+        sw_reset_p     <= contToRegs.Data(5);
+        irq_vector     <= contToRegs.Data(15 downto 8);
       else
-        SoftStart <= '0';
-        SoftStop  <= '0';
-        SoftArm   <= '0';
+        sw_start_p <= '0';
+        sw_stop_p  <= '0';
+        sw_reset_p <= '0';
       end if;
     end if;
   end process p_csr_reg;
-  IRQStatusIDReg <= x"000000" & irqVector;
+  IRQStatusIDReg <= x"000000" & irq_vector;
 
-  regsToCont(CSR_REG_P) <= HARDVERSION &  -- [31:16]
-                           IrqVector &  -- [15:8]
+  regsToCont(CSR_REG_P) <= HARDVERSION &        -- [31:16]
+                           irq_vector &         -- [15:8]
                            ExtRamAddOverflow &  -- [7]
-                           CounterOverflow &  -- [6]
-                           AcqEnable &  -- [5]
-                           "00" &       -- [4:3]
-                           EnableInt &  -- [2]
-                           EnableAccess &  -- [1]
-                           PulsePolarity;  -- [0]
+                           ud_cnt_overflow &    -- [6]
+                           data_acq_en &        -- [5]
+                           "00" &               -- [4:3]
+                           irq_en &             -- [2]
+                           module_en &          -- [1]
+                           input_polarity;      -- [0]
 
 
   -- Memory pointer register
   --   [31:19] | ro | unused (read as 0)
   --   [18:0]  | ro | memory pointer (byte address)
-  regsToCont(MEM_PTR_REG_P) <= x"000" & "0" & std_logic_vector(ExtWriteAdd) & "00";  --Read the address counter register in byte
+  regsToCont(MEM_PTR_REG_P) <= x"000" & "0" & std_logic_vector(ExtWriteAdd) & "00";
 
 
   -- Mode register
@@ -605,9 +639,9 @@ begin
 
   mode_reg_wren <= contToRegs.Sel(MODE_REG_P) and contToRegs.Wr;
 
-  p_mode_reg : process(sys_clk)
+  p_mode_reg : process(sys_clk, sys_rst_n)
   begin
-    if sys_rst = RESET_ACTIVE then
+    if sys_rst_n = RESET_ACTIVE then
       mode_reg <= (others => '0');
     elsif rising_edge(sys_clk) then
       if mode_reg_wren = '1' then
@@ -624,10 +658,12 @@ begin
   --   [31:0] | wr | rtm serial channel enable mask
   channel_en_reg_wren <= contToRegs.Sel(CHANNEL_EN_REG_P) and contToRegs.Wr;
 
-  process(sys_clk)
+  process(sys_clk, sys_rst_n)
   begin
-    if rising_edge(sys_clk) then
-      if channel_en_reg_wren = '1' and AcqEnable = '0' then
+    if sys_rst_n = RESET_ACTIVE then
+      channel_en_reg <= (others => '0');
+    elsif rising_edge(sys_clk) then
+      if channel_en_reg_wren = '1' and data_acq_en = '0' then
         channel_en_reg <= contToRegs.Data and MASKCHANNEL;  -- ### mc -> what is this MASKCHANNEL for????
       end if;
     end if;
@@ -645,9 +681,11 @@ begin
   --   [31:0] | rw | selects rtm serial inputs to be reproduced on the front panel DAC
   dac_sel_reg_wren <= contToRegs.Sel(DAC_SEL_REG_P) and contToRegs.Wr;
 
-  process(sys_clk)
+  process(sys_clk, sys_rst_n)
   begin
-    if rising_edge(sys_clk) then
+    if sys_rst_n = RESET_ACTIVE then
+      dac_sel_reg <= (others => '0');
+    elsif rising_edge(sys_clk) then
       if dac_sel_reg_wren = '1' then
         dac_sel_reg <= contToRegs.Data;
       end if;
@@ -656,76 +694,137 @@ begin
   regsToCont(DAC_SEL_REG_P) <= dac_sel_reg;
 
 
-
-  
-  
-  
-  
-  
-  process(sys_clk)
+  ------------------------------------------------------------------------------
+  -- Data acquisition enable
+  ------------------------------------------------------------------------------
+  process(sys_clk, sys_rst_n)
   begin
-    if rising_edge(sys_clk) then
-      StartB <= iStart;
-      StartC <= StartB;
-      StartD <= StartC;
-      StopB  <= iStop;
-      StopC  <= StopB;
-      StopD  <= StopC;
-    end if;
-  end process;
-  StartPulse <= iStart and not StartD;
-  StopPulse  <= iStop and not StopD;
-  StartSBAcq <= StartC and not StartD;  -- ### mc -> check if delayed (2 ticks) start pulse is needed
-
-
-
-  
-  
-  
-  
-  -- Data Acuisition ----
-  process(sys_clk)
-  begin
-    if rising_edge(sys_clk) then
-      if (StartPulse = '1' or SoftStart = '1') and EnableAccess = '1' then
-        AcqEnable <= '1';
-      elsif StopPulse = '1' or SoftStop = '1' or EnableAccess = '0' then
-        AcqEnable <= '0';
+    if sys_rst_n = '0' then
+      data_acq_en <= '0';
+    elsif rising_edge(sys_clk) then
+      if start_p = '1' and module_en = '1' then
+        data_acq_en <= '1';
+      elsif stop_p = '1' or module_en = '0' then
+        data_acq_en <= '0';
       end if;
     end if;
   end process;
 
+  ------------------------------------------------------------------------------
+  -- Acquisition clock frequency meter
+  ------------------------------------------------------------------------------
 
 
+  ------------------------------------------------------------------------------
+  -- Inter-acquisition time measurement
+  ------------------------------------------------------------------------------
 
--- **************************************
--- * Btrain Up-Down Counter
--- **************************************
--- need a rising_edge of the External Reset
-  process(sys_clk)
-  begin
-    if rising_edge(sys_clk) then
-      rstA <= iExternalReset;
-    end if;
-  end process;
-  rstRE <= (iExternalReset and not rstA) or SoftArm;
 
-  iUDEnable <= AcqEnable when UsedMode = BTRAINMODE else '0';
-  loadValue <= (others => '0');
+  ------------------------------------------------------------------------------
+  -- 32-bit up/down counter mode (b-train)
+  ------------------------------------------------------------------------------
 
-  Btrain_UD1 : up_down_counter          -- provisoire the component must be changed
+  ud_cnt_en <= data_acq_en when mode_reg = BTRAINMODE else '0';
+
+  cmp_ud_cnt : up_down_counter
     generic map(
-      COUNTER_WIDTH => COUNTER_WIDTH)
-    port map (
-      rst             => rstRE,
-      clk             => sys_clk,
-      clk1            => bup_fp_i,
-      clk2            => bdown_fp_i,
-      CounterEnable   => iUDEnable,
-      loadValue       => loadValue,     -- must be defined
-      CounterOverflow => CounterOverflow,
-      InstantValue    => UDInstantValue,
-      TerminalCount   => UDTerminalCount);
+      g_width => 32)
+    port map(
+      rst_n_i    => sys_rst_n,
+      clk_i      => sys_clk_i,
+      clear_i    => reset_p,
+      up_i       => fp_bup_p,
+      down_i     => fp_bdown_p,
+      enable_i   => ud_cnt_en,
+      overflow_o => ud_cnt_overflow,
+      value_o    => ud_cnt_value,
+      valid_o    => ud_cnt_to_dac);
+
+
+  ------------------------------------------------------------------------------
+  -- 2x 16-bit up counter mode
+  ------------------------------------------------------------------------------
+  up_cnt_en <= data_acq_en when mode_reg = UP_CNT_MODE else '0';
+
+  cmp_up_cnt1 : up_down_counter
+    generic map(
+      g_width => 16)
+    port map(
+      rst_n_i    => sys_rst_n,
+      clk_i      => sys_clk_i,
+      clear_i    => reset_p,
+      up_i       => fp_bup_p,
+      down_i     => '0',
+      enable_i   => up_cnt_en,
+      overflow_o => up_cnt1_overflow,
+      value_o    => up_cnt1_value,
+      valid_o    => up_cnt1_to_dac);
+
+  cmp_up_cnt2 : up_down_counter
+    generic map(
+      g_width => 16)
+    port map(
+      rst_n_i    => sys_rst_n,
+      clk_i      => sys_clk_i,
+      clear_i    => reset_p,
+      up_i       => fp_bdown_p,
+      down_i     => '0',
+      enable_i   => up_cnt_en,
+      overflow_o => up_cnt2_overflow,
+      value_o    => up_cnt2_value,
+      valid_o    => up_cnt2_to_dac);
+
+
+  ------------------------------------------------------------------------------
+  -- SCI serial decoders
+  ------------------------------------------------------------------------------
+  l_sci_decoders: for I in NB_RTM_CHANNELS generate
+      cmp_sci_decoder : sci_decoder
+        port map(
+          rst_n_i      => ,
+          clk_i        => ,
+          enable_i     => ,
+          data_i       => ,
+          data_o       => ,
+          data_valid_o => );
+  end generate l_sci_decoders;
+
+
+
+  ------------------------------------------------------------------------------
+  -- CVORB serial decoders
+  ------------------------------------------------------------------------------
+    cmp_cvorb_decoder : cvorb_decoder
+    port map(
+      rst_n_i             => ,
+      clk_i               => ,
+      data_valid_o        => ,
+      zero_test_o         => ,
+      one_test_o          => ,
+      pulse_width_thres_i => ,
+      pulse_width_o       => ,
+      data_o              => ,
+      data_i              => );
+
+
+  ------------------------------------------------------------------------------
+  -- 32x serial mode data managment
+  ------------------------------------------------------------------------------
+
+
+  ------------------------------------------------------------------------------
+  -- RAM manager
+  ------------------------------------------------------------------------------
+
+
+  ------------------------------------------------------------------------------
+  -- DAC managment
+  ------------------------------------------------------------------------------
+
+
+
+
+
 
 -- *******************************
 -- * Serial Data Inputs
@@ -768,11 +867,11 @@ begin
       iSDataIn1 <= data_rtm_i(FirstBitatOne);
       iSDataIn2 <= data_rtm_i(FirstBitatOne + 1);
     elsif UsedMode(1 downto 0) = "01" then
-      iSDataIn1 <= data_optic1_fp_i;
-      iSDataIn2 <= data_optic2_fp_i;
+      iSDataIn1 <= fp_data_optic1_i;
+      iSDataIn2 <= fp_data_optic2_i;
     elsif UsedMode(1 downto 0) = "10" then
-      iSDataIn1 <= not data_cu1_fp_i;
-      iSDataIn2 <= not data_cu2_fp_i;
+      iSDataIn1 <= not fp_data_cu1_i;
+      iSDataIn2 <= not fp_data_cu2_i;
     else
       iSDataIn1 <= '0';
       iSDataIn2 <= '0';
@@ -783,7 +882,7 @@ begin
 
   Serial_Receiver1 : Serial_Receiver
     port map(
-      rst           => sys_rst,
+      rst           => sys_rst_n,
       clk           => sys_clk,
       mode          => SerialMode,
       SDataIn1      => iSDataIn1,
@@ -795,7 +894,7 @@ begin
       );
 
 
-  
+
 --******************************
 -- Frequency Counter
 --******************************
@@ -804,7 +903,7 @@ begin
       QUARTZFREQ => 40,
       ACQTIME    => 1000)
     port map(
-      rst                 => sys_rst,
+      rst                 => sys_rst_n,
       clk                 => sys_clk,
       inclk               => ExtClkRE,
       FreqCounterReady    => FreqCounterReady,
@@ -815,7 +914,7 @@ begin
     generic map(32, 8)
     port map(
       Clock      => sys_clk,
-      Reset      => sys_rst,
+      Reset      => sys_rst_n,
       SB_Ready   => FreqCounterReady,
       SB_Number  => iFCounter,          --FrequencyCounter1,
       BCD_Vector => BCD_fq1_vec,
@@ -829,7 +928,7 @@ begin
   process(sys_clk)
   begin
     if rising_edge(sys_clk) then
-      if AcqEnable = '0' then                               -- count External clock pulses between a stop and a start
+      if data_acq_en = '0' then                             -- count External clock pulses between a stop and a start
         if ExtClkRE = '1' then
           AcqCounter <= AcqCounter + 1;
         else
@@ -845,100 +944,15 @@ begin
     generic map(16, 5)
     port map(
       Clock      => sys_clk,
-      Reset      => sys_rst,
-      SB_Ready   => StartSBAcq,
+      Reset      => sys_rst_n,
+      SB_Ready   => start_p_d(2),
       SB_Number  => AcquisitionTime,    --FrequencyCounter1,
       BCD_Vector => BCD_acq_vec,
       BCD_Ready  => open
       );
 
--- *******************************
--- * RS232 Display
--- *******************************
--- first make a pulse per seconde to refresh the display
--- need a 1 MHZ Clock enable
-  clk1Mhz : process(sys_rst, sys_clk)
-    variable divider40 : natural range 0 to 39;
-  begin
-    if sys_rst = RESET_ACTIVE then
-      divider40 := 0;
-      en1M      <= '0';
-    elsif rising_edge(sys_clk) then
-      if divider40 = 39 then
-        divider40 := 0;
-        en1M      <= '1';
-      else
-        divider40 := divider40 + 1;
-        en1M      <= '0';
-      end if;
-    end if;
-  end process;
 
-  process(sys_rst, sys_clk)
-  begin
-    if sys_rst = RESET_ACTIVE then
-      localPPS           <= '0';
-      igap_counter_value <= (others => '0');
-    elsif falling_edge(sys_clk) then          -- ### mc -> what the fuck again!
-      if en1M = '1' then
-        if igap_counter_value = x"0F423E" then  --stop at 999999 us
-          igap_counter_value <= (others => '0');
-          localPPS           <= '1';
-        else
-          igap_counter_value <= igap_counter_value + 1;
-          localPPS           <= '0';
-        end if;
-      end if;
-    end if;
-  end process;
 
-  message_to_send(1) <= (
-    LETTER_C, LETTER_V, LETTER_O, LETTER_R, LETTER_A,  -- CVORA was DPRam
-    space, LETTER_V, LETTER_emin, LETTER_rmin, semicolon,
-    space, X"3" & HARDVERSION(15 downto 12), X"3" & HARDVERSION(11 downto 8),
-    dot, X"3" & HARDVERSION(7 downto 4), X"3" & HARDVERSION(3 downto 0),
-    Carriage_Return, Line_Feed);                       --info line n# 1 to display
-
-  message_to_send(2) <= (
-    space, space,
-    LETTER_B, LETTER_A, semicolon, space, LETTER_0, LETTER_xmin,  -- BASE Address BA: 0x
-    "0011" & iModuleAddr(4 downto 1), "0011" & iModuleAddr(0) & "000",
-    LETTER_0, LETTER_0, LETTER_0, LETTER_0, space, space,
-    Carriage_Return, Line_feed);
-
-  message_to_send(3) <=
-    MODEPARA32 when UsedMode(1 downto 0) = PARAMODE2BIT else
-    MODEOPT16  when UsedMode = OP16MODE                 else
-    MODEOPT32  when UsedMode = OP32MODE                 else
-    MODECU16   when UsedMode = CU16MODE                 else
-    MODECU32   when UsedMode = CU32MODE                 else
-    MODEBTRAIN when UsedMode = BTRAINMODE               else
-    MODEP2SERIAL;
-
-  message_to_send(4) <= (
-    LETTER_F, letter_1, semicolon,      -- F: "FrequencyCounter"
-    space, "0011" & BCD_fq1_vec(7), "0011" & BCD_fq1_vec(6), "0011" & BCD_fq1_vec(5),
-    "0011" & BCD_fq1_vec(4), "0011" & BCD_fq1_vec(3), dot,
-    "0011" & BCD_fq1_vec(2), "0011" & BCD_fq1_vec(1),
-    "0011" & BCD_fq1_vec(0), letter_K, letter_hmin, letter_zmin,
-    Carriage_Return, Line_feed);
-
-  message_to_send(5) <= (
-    LETTER_A, LETTER_C, LETTER_Q, semicolon,
-    space, "0011" & BCD_acq_vec(4), "0011" & BCD_acq_vec(3),
-    "0011" & BCD_acq_vec(2), "0011" & BCD_acq_vec(1), "0011" & BCD_acq_vec(0),
-    space, Letter_xmin, space, LETTER_C, Letter_lmin, Letter_kmin,
-    Carriage_Return, Line_feed);
-
-  MESSAG1 : message
-    port map(
-      rst         => sys_rst,
-      clk         => sys_clk,
-      rs232_start => localPPS,
-      message     => message_to_send,
-      message_env => open,
-      rs232out    => rs232_tx_o
-      );
 
 --*******************************
 --*****   External RAM     ******
@@ -947,9 +961,9 @@ begin
   begin
     if rising_edge(sys_clk) then
       StrobeReg    <= StrobeReg(StrobeReg'left - 1 downto 0) & (StrobeRE or ExtClkRE);  -- Valid data after 100ns
-      StrobeB      <= strobe_fp_i;
+      StrobeB      <= fp_strobe_i;
       StrobeC      <= StrobeB;
-      ExternalClkB <= clock_fp;
+      ExternalClkB <= clock;
       ExternalClkC <= ExternalClkB;
       ExternalClkD <= ExternalClkC;
     end if;
@@ -966,7 +980,8 @@ begin
       if PdataInValid = '1' then
         if SerialMode = '0' then
           SerialDataReg <= x"0000" & PDataFromSerialIn(15 downto 0);
-        else SerialDataReg <= PDataFromSerialIn;
+        else
+          SerialDataReg <= PDataFromSerialIn;
         end if;
       end if;
     end if;
@@ -975,30 +990,31 @@ begin
   process(sys_clk)
   begin
     if rising_edge(sys_clk) then
-      if AcqEnable = '1' and ExtRamAddOverflow = '0' then
+      if data_acq_en = '1' and ExtRamAddOverflow = '0' then
         if UsedMode = P2SERIALMODE then
           WriteExtRam <= P2WriteRam;
         else
           WriteExtRam <= StrobeReg(4);  -- or DataReadyFromSerialB;
         end if;
-      else WriteExtRam <= '0';
+      else
+        WriteExtRam <= '0';
       end if;
     end if;
   end process;
 
-  P2DataInClk <= PdataInValid and AcqEnable;
+  P2DataInClk <= PdataInValid and data_acq_en;
 -- the startpulse don't clear the memory
-  P2ClearMem  <= RstRE when AcqEnable = '0' else '0';  -- the memory can't be cleared during acquisition
+  P2ClearMem  <= RstRE when data_acq_en = '0' else '0';  -- the memory can't be cleared during acquisition
 -- Write the memory depending the UsedMode
   P2SerialManager : P2SerialManagerSTM
     port map(
-      rst              => sys_rst,
+      rst              => sys_rst_n,
       clk              => sys_clk,
       Mode             => UsedMode,
       DataIn           => data_rtm_i,
       DataInClk        => P2DataInClk,
       ChannelReg       => ChannelReg,
-      DataWritten      => DataFromHistoryWritten,      -- the Ram is ready to accept another write
+      DataWritten      => DataFromHistoryWritten,        -- the Ram is ready to accept another write
       ClearMem         => P2ClearMem,
       WriteRam         => P2WriteRam,
       WriteAdd         => P2WriteAdd,
@@ -1015,27 +1031,27 @@ begin
         CurrentRecordForRam <= P2DatatoRAM;
         ExtWriteAdd         <= unsigned(P2WriteAdd);
         ExtRamAddOverflow   <= P2RamAddOverflow;
-      elsif AcqEnable = '1' then                                                   -- a startpulse has no action during acquisition
+      elsif data_acq_en = '1' then                                -- a startpulse has no action during acquisition
         if ExtWriteAdd = EXTRAMFULL then
-          ExtRamAddOverflow <= '1';                                                -- The ram is full
+          ExtRamAddOverflow <= '1';                               -- The ram is full
         elsif ExtClkRE = '1' and UsedMode = BTRAINMODE then
-          CurrentRecordForRam <= UDInstantValue;
+          CurrentRecordForRam <= ud_cnt_value;
         elsif StrobeReg(2) = '1' and UsedMode(1 downto 0) = PARAMODE2BIT then
           CurrentRecordForRam <= data_rtm_i;
-        elsif StrobeReg(2) = '1' and UsedMode /= BTRAINMODE then                   -- an external clock has occured
+        elsif StrobeReg(2) = '1' and UsedMode /= BTRAINMODE then  -- an external clock has occured
           CurrentRecordForRam <= SerialDataReg;
         elsif StrobeReg(StrobeReg'left) = '1' then
           ExtWriteAdd <= ExtWriteAdd + EXTRAM_BUF_ONE;
         end if;
-      elsif StartPulse = '1' or rstRE = '1' then                                   -- reset the address counter
+      elsif StartPulse = '1' or reset_p = '1' then                -- reset the address counter
         ExtWriteAdd       <= MEMEMPTY;
         ExtRamAddOverflow <= '0';
       end if;
     end if;
   end process;
 -- read the External RAM from VME
-  ReadExtRam              <= ContToMem.Rd and ContToMem.SelectedPos(EXTRAMP);
-  ExtAddRd                <= ContToMem.Add;  --(ContToMem.Add'left downto 0); -- NO OFFSET in DPRam card
+  ReadExtRam <= ContToMem.Rd and ContToMem.SelectedPos(EXTRAMP);
+  ExtAddRd   <= ContToMem.Add;  --(ContToMem.Add'left downto 0); -- NO OFFSET in DPRam card
 
   process(sys_clk)
   begin
@@ -1054,7 +1070,7 @@ begin
 
   URAMManager : RAMManager
     port map(
-      RstN => sys_rst,
+      RstN => sys_rst_n,
       Clk  => sys_clk,
 
       -- Interface with History block
@@ -1089,49 +1105,15 @@ begin
   XORamClk40   <= not sys_clk;
   iExtWriteAdd <= std_logic_vector(ExtWriteAdd);
 
---*******************************
---*****Monostables for leds******
---*******************************
-  MONOSTABLE1 : Monostable              -- led stop
-    generic map(
-      DURATION              => MONOSTABLE_DURATION,
-      DEFAULT_PULSEPOLARITY => DEFAULT_PULSEPOLARITY)
-    port map(
-      clk        => sys_clk,
-      inputpulse => StopPulse,          -- A clock wide pulse
-      output     => iledout(2));
-  MONOSTABLE2 : Monostable              -- led start
-    generic map(
-      DURATION              => MONOSTABLE_DURATION,
-      DEFAULT_PULSEPOLARITY => DEFAULT_PULSEPOLARITY)
-    port map(
-      clk        => sys_clk,
-      inputpulse => StartPulse,         -- A clock wide pulse
-      output     => iledout(3));
-  MONOSTABLE3 : Monostable              -- led read
-    generic map(
-      DURATION              => MONOSTABLE_DURATION,
-      DEFAULT_PULSEPOLARITY => DEFAULT_PULSEPOLARITY)
-    port map(
-      clk        => sys_clk,
-      inputpulse => ReadExtRam,         -- A clock wide pulse
-      output     => iledout(4));
-  MONOSTABLE4 : Monostable              -- led write
-    generic map(
-      DURATION              => MONOSTABLE_DURATION,
-      DEFAULT_PULSEPOLARITY => DEFAULT_PULSEPOLARITY)
-    port map(
-      clk        => sys_clk,
-      inputpulse => WriteExtRam,        -- A clock wide pulse
-      output     => iledout(5));
+
 
 --*******************************
 --*****  Load of the DACs  ******
 --*******************************
 -- ldacone must be 45 ns minimum duration and start after 100ns
   dac1_load <= ChannelReady1 when UsedMode(1 downto 0) = "01" or UsedMode = "10" or UsedMode = P2SERIALMODE else
-               UDTerminalCount when UsedMode = BTRAINMODE               else
-               StrobeReg(4)    when UsedMode(1 downto 0) = PARAMODE2BIT else
+               ud_cnt_to_dac when UsedMode = BTRAINMODE               else
+               StrobeReg(4)  when UsedMode(1 downto 0) = PARAMODE2BIT else
                '0';
 
   LoadDAC1 : LoadDacDelay
@@ -1141,8 +1123,8 @@ begin
       output     => dac1_load_o);
 
   dac2_load <= ChannelReady2 when UsedMode(1 downto 0) = "01" or UsedMode = "10" or UsedMode = P2SERIALMODE else
-               UDTerminalCount when UsedMode = BTRAINMODE               else
-               StrobeReg(4)    when UsedMode(1 downto 0) = PARAMODE2BIT else
+               ud_cnt_to_dac when UsedMode = BTRAINMODE               else
+               StrobeReg(4)  when UsedMode(1 downto 0) = PARAMODE2BIT else
                '0';
 
   LoadDAC2 : LoadDacDelay
@@ -1155,9 +1137,9 @@ begin
   process (sys_clk)
   begin
     if rising_edge(sys_clk) then
-      if UDTerminalCount = '1' and UsedMode = BTRAINMODE then                -- Btrain Counter
-        dac1_data <= UDInstantValue(15 downto 0);
-        dac2_data <= UDInstantValue(15 downto 0);                            -- same as analog out1 for the moment to test the outputs
+      if ud_cnt_to_dac = '1' and UsedMode = BTRAINMODE then                  -- Btrain Counter
+        dac1_data <= ud_cnt_value(15 downto 0);
+        dac2_data <= ud_cnt_value(15 downto 0);                              -- same as analog out1 for the moment to test the outputs
       elsif StrobeReg(2) = '1' and UsedMode(1 downto 0) = PARAMODE2BIT then  -- mode parallele
         dac1_data <= data_rtm_i(15 downto 0);
         dac2_data <= data_rtm_i(31 downto 16);
@@ -1174,22 +1156,149 @@ begin
   dac1_data_o <= dac1_data;
   dac2_data_o <= dac2_data;
 
-  iledOut(0) <= ExtRamAddOverflow or CounterOverflow;
-  iledOut(1) <= EnableInt;
-  iledOut(6) <= AcqEnable;
-  iledOut(7) <= not EnableAccess;
-  led_fp_o   <= iledOut;
-  SData1Led  <= iSDataIn1;
-  SData2Led  <= iSDataIn2;
-  StrobeOut  <= strobe_fp_i;
-  XMuxCtrl   <= not EnableInt;
+  SData1Led <= iSDataIn1;
+  SData2Led <= iSDataIn2;
+  StrobeOut <= fp_strobe_i;
+  XMuxCtrl  <= not irq_en;
 
-  text_o(3) <= iLoadDAC1;
-  text_o(2) <= DataFromHistoryWritten;
-  text_o(0) <= UDTerminalCount;
-  text_o(1) <= rs232_rx_i or VmeamA(2) or vmeReset or ModuleAddr(5);
+  test_o(3) <= iLoadDAC1;
+  test_o(2) <= DataFromHistoryWritten;
+  test_o(0) <= ud_cnt_to_dac;
+  test_o(1) <= rs232_rx_i or VmeamA(2) or vmeReset or ModuleAddr(5);
 
   RamDataPar <= (others => 'Z');
+
+
+  ------------------------------------------------------------------------------
+  -- Front panel LEDs
+  ------------------------------------------------------------------------------
+
+  fp_led_o <= fp_led;
+
+  -- SPARE
+  fp_led(0) <= ExtRamAddOverflow or ud_cnt_overflow;
+
+  -- INT ENABLE
+  fp_led(1) <= irq_en;
+
+  -- STOP
+  cmp_monostable_stop_led : gc_extend_pulse
+    generic map (
+      g_width => LED_MONOSTABLE_WIDTH)
+    port map (
+      clk_i      => sys_clk,
+      rts_n_i    => sys_rst_n_n,
+      pulse_i    => StopPulse,
+      extended_o => fp_led(2));
+
+  -- START
+  cmp_monostable_start_led : gc_extend_pulse
+    generic map (
+      g_width => LED_MONOSTABLE_WIDTH)
+    port map (
+      clk_i      => sys_clk,
+      rts_n_i    => sys_rst_n_n,
+      pulse_i    => StartPulse,
+      extended_o => fp_led(3));
+
+  -- READ
+  cmp_monoastable_read_led : gc_extend_pulse
+    generic map (
+      g_width => LED_MONOSTABLE_WIDTH)
+    port map (
+      clk_i      => sys_clk,
+      rts_n_i    => sys_rst_n_n,
+      pulse_i    => ReadExtRam,
+      extended_o => fp_led(4));
+
+  -- WRITE
+  cmp_monostable_write_led : gc_extend_pulse
+    generic map (
+      g_width => LED_MONOSTABLE_WIDTH)
+    port map (
+      clk_i      => sys_clk,
+      rts_n_i    => sys_rst_n_n,
+      pulse_i    => WriteExtRam,
+      extended_o => fp_led(5));
+
+  -- ACQ ENABLE
+  fp_led(6) <= data_acq_en;
+
+  -- EXT DISABLE
+  fp_led(7) <= not module_en;
+
+
+  ------------------------------------------------------------------------------
+  -- RS232 LCD display
+  ------------------------------------------------------------------------------
+
+  -- Local PPS generation
+  process(sys_clk)
+  begin
+    if rising_edge(sys_clk) then
+      if pps_cnt = to_unsigned(39999999, pps_cnt'length) then
+        pps_cnt <= (others => '0');
+        pps_p   <= '1';
+      else
+        pps_cnt <= ppc_cnt + 1;
+        pps_p   <= '0';
+      end if;
+    end if;
+  end process;
+
+  -- "CVORA Ver: nn.nn"
+  message_to_send(1) <= (
+    LETTER_C, LETTER_V, LETTER_O, LETTER_R, LETTER_A,
+    space, LETTER_V, LETTER_emin, LETTER_rmin, semicolon,
+    space, X"3" & HARDVERSION(15 downto 12), X"3" & HARDVERSION(11 downto 8),
+    dot, X"3" & HARDVERSION(7 downto 4), X"3" & HARDVERSION(3 downto 0),
+    Carriage_Return, Line_Feed);
+
+  -- "  BA: 0xnn0000  "
+  message_to_send(2) <= (
+    space, space,
+    LETTER_B, LETTER_A, semicolon, space, LETTER_0, LETTER_xmin,  -- BASE Address BA: 0x
+    "0011" & iModuleAddr(4 downto 1), "0011" & iModuleAddr(0) & "000",
+    LETTER_0, LETTER_0, LETTER_0, LETTER_0, space, space,
+    Carriage_Return, Line_feed);
+
+  -- ""
+  message_to_send(3) <=
+    MODEPARA32 when UsedMode(1 downto 0) = PARAMODE2BIT else
+    MODEOPT16  when UsedMode = OP16MODE                 else
+    MODEOPT32  when UsedMode = OP32MODE                 else
+    MODECU16   when UsedMode = CU16MODE                 else
+    MODECU32   when UsedMode = CU32MODE                 else
+    MODEBTRAIN when UsedMode = BTRAINMODE               else
+    MODEP2SERIAL;
+
+  -- "F1: nnnnn.nnnkhz"
+  message_to_send(4) <= (
+    LETTER_F, letter_1, semicolon,      -- F: "FrequencyCounter"
+    space, "0011" & BCD_fq1_vec(7), "0011" & BCD_fq1_vec(6), "0011" & BCD_fq1_vec(5),
+    "0011" & BCD_fq1_vec(4), "0011" & BCD_fq1_vec(3), dot,
+    "0011" & BCD_fq1_vec(2), "0011" & BCD_fq1_vec(1),
+    "0011" & BCD_fq1_vec(0), letter_K, letter_hmin, letter_zmin,
+    Carriage_Return, Line_feed);
+
+  -- "ACQ: nnnnn x Clk"
+  message_to_send(5) <= (
+    LETTER_A, LETTER_C, LETTER_Q, semicolon,
+    space, "0011" & BCD_acq_vec(4), "0011" & BCD_acq_vec(3),
+    "0011" & BCD_acq_vec(2), "0011" & BCD_acq_vec(1), "0011" & BCD_acq_vec(0),
+    space, Letter_xmin, space, LETTER_C, Letter_lmin, Letter_kmin,
+    Carriage_Return, Line_feed);
+
+  -- Sends ascii message to RS232 LCD display
+  cmp_message : message
+    port map(
+      rst         => sys_rst_n,
+      clk         => sys_clk,
+      rs232_start => pps_p,
+      message     => message_to_send,
+      message_env => open,
+      rs232out    => rs232_tx_o
+      );
 
 
 end Behavioral;
