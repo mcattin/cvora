@@ -15,22 +15,29 @@ use work.message_package.all;
 package AuxDef is
 
 
-  constant RESET_ACTIVE       : std_logic := '0';
-  constant SYNCH_RESET_ACTIVE : std_logic := '1';  -- Synchronous reset polarity
-  constant COUNTER_WIDTH      : integer   := 32;
-  constant MODE_NORMAL        : std_logic := '0';
-  constant MODE_UPDOWN        : std_logic := '1';
-  constant FCWIDTH            : integer   := 32;
+  constant RESET_ACTIVE : std_logic := '0';
 
--- modes constants bits [2:0] of mode register
---      mode 000 0 --> reserved but parallele inputs for the moment
---      mode 100 4 --> parallele inputs
---      mode 001 1 --> Opticals inputs 16 bits - SDataIn2 is ignored
---      mode 101 5 --> Opticals inputs 32 bits
---      mode 010 2 --> Copper Inputs 16 bits
---      mode 110 6 --> Copper Inputs 32 bits
---      mode 011 3 --> Btrain counter
---      mode 111 7 --> P2 Serial Inputs
+  constant NB_RTM_CHANNELS : natural := 32;
+
+  -- Modes
+  constant RESERVED1_M     : std_logic_vector(3 downto 0) := "0000";
+  constant FP_OP16_SCI_M   : std_logic_vector(3 downto 0) := "0001";
+  constant FP_CU16_SCI_M   : std_logic_vector(3 downto 0) := "0010";
+  constant CNT32_M         : std_logic_vector(3 downto 0) := "0011";
+  constant RTM_PARRALEL_M  : std_logic_vector(3 downto 0) := "0100";
+  constant FP_OP32_SCI_M   : std_logic_vector(3 downto 0) := "0101";
+  constant FP_CU32_SCI_M   : std_logic_vector(3 downto 0) := "0110";
+  constant RTM_SCI_M       : std_logic_vector(3 downto 0) := "0111";
+  constant RESERVED2_M     : std_logic_vector(3 downto 0) := "1000";
+  constant FP_OP16_CVORB_M : std_logic_vector(3 downto 0) := "1001";
+  constant FP_CU16_CVORB_M : std_logic_vector(3 downto 0) := "1010";
+  constant CNT2X16_M       : std_logic_vector(3 downto 0) := "1011";
+  constant RESERVED3_M     : std_logic_vector(3 downto 0) := "1100";
+  constant FP_OP32_CVORB_M : std_logic_vector(3 downto 0) := "1101";
+  constant FP_CU32_CVORB_M : std_logic_vector(3 downto 0) := "1110";
+  constant RTM_CVORB_M     : std_logic_vector(3 downto 0) := "1111";
+
+
   constant PARAMODE     : std_logic_vector(2 downto 0) := "000";
   constant PARAMODE2BIT : std_logic_vector(1 downto 0) := "00";
   constant MODEQUATRE   : std_logic_vector(2 downto 0) := "100";
@@ -40,6 +47,8 @@ package AuxDef is
   constant CU32MODE     : std_logic_vector(2 downto 0) := "110";
   constant BTRAINMODE   : std_logic_vector(2 downto 0) := "011";
   constant P2SERIALMODE : std_logic_vector(2 downto 0) := "111";
+
+
 
   constant MEM_ADDRESS_LENGTH : integer                                   := 17;  -- Internal Ram address used (number of bits).
   constant EXTRAM_BUF_ONE     : unsigned(MEM_ADDRESS_LENGTH - 1 downto 0) := (0      => '1', others => '0');
@@ -292,17 +301,17 @@ package AuxDef is
 
   component up_down_counter
     generic (
-      COUNTER_WIDTH : integer := 16);
+      g_width : integer := 32);
     port (
-      rst             : in  std_logic;
-      clk             : in  std_logic;
-      clk1            : in  std_logic;
-      clk2            : in  std_logic;
-      CounterEnable   : in  std_logic;
-      loadValue       : in  std_logic_vector(COUNTER_WIDTH - 1 downto 0);
-      CounterOverflow : out std_logic;
-      InstantValue    : out std_logic_vector(COUNTER_WIDTH - 1 downto 0);
-      TerminalCount   : out std_logic);
+      rst_n_i    : in  std_logic;
+      clk_i      : in  std_logic;
+      clear_i    : in  std_logic;
+      up_i       : in  std_logic;
+      down_i     : in  std_logic;
+      enable_i   : in  std_logic;
+      overflow_o : out std_logic;
+      value_o    : out std_logic_vector(g_width - 1 downto 0);
+      valid_o    : out std_logic);
   end component up_down_counter;
 
   component RAMManager
@@ -337,13 +346,14 @@ package AuxDef is
     port (
       rst_n_i             : in  std_logic;
       clk_i               : in  std_logic;
-      data_valid_o        : out std_logic;
+      enable_i            : in  std_logic;
+      data_i              : in  std_logic;
       zero_test_o         : out std_logic;
       one_test_o          : out std_logic;
       pulse_width_thres_i : in  std_logic_vector (7 downto 0);
       pulse_width_o       : out std_logic_vector (7 downto 0);
       data_o              : out std_logic_vector (15 downto 0);
-      data_i              : in  std_logic);
+      data_valid_o        : out std_logic);
   end component sci_decoder;
 
   component sci_decoder

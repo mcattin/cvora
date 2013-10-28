@@ -216,16 +216,17 @@ architecture Behavioral of topdpram is
 
   ------------------------------------------------------------------------------
   -- Registers
-  signal csr_reg_wren        : std_logic;
-  signal mode_reg_wren       : std_logic;
-  signal channel_en_reg_wren : std_logic;
-  signal clk_freq_reg_wren   : std_logic;
-  signal dac_sel_reg_wren    : std_logic;
-  signal csr_reg             : std_logic_vector(31 downto 0);
-  signal mode_reg            : std_logic_vector(3 downto 0);
-  signal channel_en_reg      : std_logic_vector(31 downto 0);
-  signal clk_freq_reg        : std_logic_vector();
-  signal dac_sel_reg         : std_logic_vector();
+  signal csr_reg_wren            : std_logic;
+  signal mode_reg_wren           : std_logic;
+  signal channel_en_reg_wren     : std_logic;
+  signal clk_freq_reg_wren       : std_logic;
+  signal channel_select_reg_wren : std_logic;
+  signal cvorb_reg_wren          : std_logic;
+  signal mode                    : std_logic_vector(3 downto 0);
+  signal channel_en              : std_logic_vector(31 downto 0);
+  signal channel_select          : std_logic_vector(4 downto 0);
+  signal cvorb_pulse_width_thres : std_logic_vector(7 downto 0);
+  signal cvorb_meas_pulse_width  : std_logic_vector(7 downto 0);
 
   ------------------------------------------------------------------------------
   -- 32-bit up/down counter (b-train)
@@ -237,12 +238,48 @@ architecture Behavioral of topdpram is
   ------------------------------------------------------------------------------
   -- 16-bit up counters
   signal up_cnt_en        : std_logic;
-  signal up_cnt1_value    : std_logic_vector(31 downto 0);
+  signal up_cnt1_value    : std_logic_vector(15 downto 0);
   signal up_cnt1_overflow : std_logic;
   signal up_cnt1_to_dac   : std_logic;
-  signal up_cnt2_value    : std_logic_vector(31 downto 0);
+  signal up_cnt2_value    : std_logic_vector(15 downto 0);
   signal up_cnt2_overflow : std_logic;
   signal up_cnt2_to_dac   : std_logic;
+
+  ------------------------------------------------------------------------------
+  -- Serial decoders
+  type rtm_data_array_t is array (0 to NB_RTM_CHANNELS-1) of std_logic_vector(15 downto 0);
+
+  signal rtm_sci_channel_en       : std_logic_vector(NB_RTM_CHANNELS-1 downto 0);
+  signal rtm_data_sci             : rtm_data_array_t;
+  signal rtm_data_sci_valid       : std_logic_vector(NB_RTM_CHANNELS-1 downto 0);
+  signal fp_optic_sci_en          : std_logic;
+  signal fp_data_optic1_sci       : std_logic_vector(15 downto 0);
+  signal fp_data_optic1_sci_valid : std_logic;
+  signal fp_data_optic2_sci       : std_logic_vector(15 downto 0);
+  signal fp_data_optic2_sci_valid : std_logic;
+  signal fp_data_cu1_sci          : std_logic_vector(15 downto 0);
+  signal fp_data_cu1_sci_valid    : std_logic;
+  signal fp_data_cu2_sci          : std_logic_vector(15 downto 0);
+  signal fp_data_cu2_sci_valid    : std_logic;
+
+  signal rtm_cvorb_channel_en       : std_logic_vector(NB_RTM_CHANNELS-1 downto 0);
+  signal rtm_data_cvorb             : rtm_data_array_t;
+  signal rtm_data_cvorb_valid       : std_logic_vector(NB_RTM_CHANNELS-1 downto 0);
+  signal fp_optic_cvorb_en          : std_logic;
+  signal fp_data_optic1_cvorb       : std_logic_vector(15 downto 0);
+  signal fp_data_optic1_cvorb_valid : std_logic;
+  signal fp_data_optic2_cvorb       : std_logic_vector(15 downto 0);
+  signal fp_data_optic2_cvorb_valid : std_logic;
+  signal fp_data_cu1_cvorb          : std_logic_vector(15 downto 0);
+  signal fp_data_cu1_cvorb_valid    : std_logic;
+  signal fp_data_cu2_cvorb          : std_logic_vector(15 downto 0);
+  signal fp_data_cu2_cvorb_valid    : std_logic;
+
+  ------------------------------------------------------------------------------
+  -- CVORB protocol pulse width measurement
+  type cvorb_pulse_width_array_t is array (0 to NB_RTM_CHANNELS-1) of std_logic_vector(7 downto 0);
+  signal rtm_cvorb_meas_pulse_width : cvorb_pulse_width_array_t;
+
 
   ------------------------------------------------------------------------------
   -- RS232 LCD display
@@ -627,30 +664,30 @@ begin
   --   [7:4]  | ro | 0x0
   --   [3:0]  | rw | mode
   --                 0x0 = parallel rtm input (32-bit)
-  --                 0x1 = front panel optical input 1 only (16-bit serial)
-  --                 0x2 = front panel copper input 1 only (16-bit serial)
+  --                 0x1 = front panel optical input 1 only (16-bit serial, SCI protocol)
+  --                 0x2 = front panel copper input 1 only (16-bit serial, SCI protocol)
   --                 0x3 = btain up/down counter (32-bit counter)
   --                 0x4 = parallel rtm input (32-bit)
-  --                 0x5 = front panel optical input 1 and 2 (2x 16-bit serial)
-  --                 0x6 = front panel copper input 1 and 2 (2x 16-bit serial)
-  --                 0x7 = rtm copper inputs (32x 16-bit serial)
+  --                 0x5 = front panel optical input 1 and 2 (2x 16-bit serial, SCI protocol)
+  --                 0x6 = front panel copper input 1 and 2 (2x 16-bit serial, SCI protocol)
+  --                 0x7 = rtm copper inputs (32x 16-bit serial, SCI protocol)
   --                 0x8 = 
-  --                 0x9 = 
+  --                 0x9 = rtm copper inputs (32x 16-bit serial, CVORB protocol)
 
   mode_reg_wren <= contToRegs.Sel(MODE_REG_P) and contToRegs.Wr;
 
   p_mode_reg : process(sys_clk, sys_rst_n)
   begin
     if sys_rst_n = RESET_ACTIVE then
-      mode_reg <= (others => '0');
+      mode <= (others => '0');
     elsif rising_edge(sys_clk) then
       if mode_reg_wren = '1' then
-        mode_reg <= contToRegs.Data(3 downto 0);
+        mode <= contToRegs.Data(3 downto 0);
       end if;
     end if;
   end process p_mode_reg;
 
-  regsToCont(MODE_REG_P) <= x"43564f" & "0000" & mode_reg;
+  regsToCont(MODE_REG_P) <= x"43564f" & x"0" & mode;
 
 
   -- Channel enable register
@@ -661,14 +698,14 @@ begin
   process(sys_clk, sys_rst_n)
   begin
     if sys_rst_n = RESET_ACTIVE then
-      channel_en_reg <= (others => '0');
+      channel_en <= (others => '0');
     elsif rising_edge(sys_clk) then
       if channel_en_reg_wren = '1' and data_acq_en = '0' then
-        channel_en_reg <= contToRegs.Data and MASKCHANNEL;  -- ### mc -> what is this MASKCHANNEL for????
+        channel_en <= contToRegs.Data and MASKCHANNEL;  -- ### mc -> what is this MASKCHANNEL for????
       end if;
     end if;
   end process;
-  regsToCont(CHANNEL_EN_REG_P) <= channel_en_reg;
+  regsToCont(CHANNEL_EN_REG_P) <= channel_en;
 
 
   -- Input clock frequency register
@@ -679,19 +716,38 @@ begin
   -- DAC select register
   --   ONLY unsed in 32x serial rtm input mode
   --   [31:0] | rw | selects rtm serial inputs to be reproduced on the front panel DAC
-  dac_sel_reg_wren <= contToRegs.Sel(DAC_SEL_REG_P) and contToRegs.Wr;
+  channel_select_reg_wren <= contToRegs.Sel(CHAN_SEL_REG_P) and contToRegs.Wr;
 
   process(sys_clk, sys_rst_n)
   begin
     if sys_rst_n = RESET_ACTIVE then
-      dac_sel_reg <= (others => '0');
+      channel_select <= (others => '0');
     elsif rising_edge(sys_clk) then
-      if dac_sel_reg_wren = '1' then
-        dac_sel_reg <= contToRegs.Data;
+      if channel_select_reg_wren = '1' then
+        channel_select <= contToRegs.Data(4 downto 0);
       end if;
     end if;
   end process;
-  regsToCont(DAC_SEL_REG_P) <= dac_sel_reg;
+  regsToCont(CHAN_SEL_REG_P) <= channel_select;
+
+
+  -- CVORB serial decoder setting
+  --   [7:0]   | rw | pulse width threshold
+  --   [15:8]  | ro | measured pulse width (from cvorb serial stream)
+  --   [31:16] | ro | unused (read as 0)
+  cvorb_reg_wren <= contToRegs.Sel(CVORB_REG_P) and contToRegs.Wr;
+
+  process(sys_clk, sys_rst_n)
+  begin
+    if sys_rst_n = RESET_ACTIVE then
+      cvorb_pulse_width_thres <= (others => '0');
+    elsif rising_edge(sys_clk) then
+      if cvorb_reg_wren = '1' then
+        cvorb_pulse_width_thres <= contToRegs.Data(7 downto 0);
+      end if;
+    end if;
+  end process;
+  regsToCont(CVORB_REG_P) <= x"0000" & cvorb_meas_pulse_width & cvorb_pulse_width_thres;
 
 
   ------------------------------------------------------------------------------
@@ -723,8 +779,7 @@ begin
   ------------------------------------------------------------------------------
   -- 32-bit up/down counter mode (b-train)
   ------------------------------------------------------------------------------
-
-  ud_cnt_en <= data_acq_en when mode_reg = BTRAINMODE else '0';
+  ud_cnt_en <= data_acq_en when mode = CNT32_M else '0';
 
   cmp_ud_cnt : up_down_counter
     generic map(
@@ -744,7 +799,7 @@ begin
   ------------------------------------------------------------------------------
   -- 2x 16-bit up counter mode
   ------------------------------------------------------------------------------
-  up_cnt_en <= data_acq_en when mode_reg = UP_CNT_MODE else '0';
+  up_cnt_en <= data_acq_en when mode = CNT2X16_M else '0';
 
   cmp_up_cnt1 : up_down_counter
     generic map(
@@ -776,35 +831,140 @@ begin
 
 
   ------------------------------------------------------------------------------
-  -- SCI serial decoders
+  -- RTM serial decoders
   ------------------------------------------------------------------------------
-  l_sci_decoders: for I in NB_RTM_CHANNELS generate
-      cmp_sci_decoder : sci_decoder
-        port map(
-          rst_n_i      => ,
-          clk_i        => ,
-          enable_i     => ,
-          data_i       => ,
-          data_o       => ,
-          data_valid_o => );
-  end generate l_sci_decoders;
+
+  -- SCI protocol
+  rtm_sci_channel_en <= channel_en when mode = RTM_SCI_M else (others => '0');
+
+  l_rtm_sci_decoders : for I in 0 to NB_RTM_CHANNELS - 1 generate
+    cmp_rtm_sci_decoder : sci_decoder
+      port map(
+        rst_n_i      => sys_rst_n,
+        clk_i        => sys_clk_i,
+        enable_i     => rtm_sci_channel_en(I),
+        data_i       => rtm_data_i(I),
+        data_o       => rtm_data_sci(I),
+        data_valid_o => rtm_data_sci_valid(I));
+  end generate l_rtm_sci_decoders;
+
+  -- CVORB protocol
+  rtm_cvorb_channel_en <= channel_en when mode = RTM_CVORB_M else (others => '0');
+
+  l_rtm_cvorb_decoders : for I in 0 to NB_RTM_CHANNELS - 1 generate
+    cmp_rtm_cvorb_decoder : cvorb_decoder
+      port map(
+        rst_n_i             => sys_rst_n,
+        clk_i               => sys_clk_i,
+        enable_i            => rtm_cvorb_channel_en(I),
+        data_i              => rtm_data_i(I),
+        zero_test_o         => open,
+        one_test_o          => open,
+        pulse_width_thres_i => cvorb_pulse_width_thres,
+        pulse_width_o       => rtm_cvorb_meas_pulse_width(I),
+        data_o              => rtm_data_cvorb(I),
+        data_valid_o        => rtm_data_cvorb_valid(I));
+  end generate l_rtm_cvorb_decoders;
+
+  -- Data buffering and RAM managment
+  rtm_data <= rtm_data_sci when mode = RTM_SCI_M else
+              rtm_data_cvorb when mode = RTM_CVORB_M else
+              (others => '0');
+
+  rtm_data_valid <= rtm_data_sci_valid when mode = RTM_SCI_M else
+                    rtm_data_cvorb_valid when mode = RTM_CVORB_M else
+                    (others => '0');
+
+  cmp_rtm_data_manager : rtm_data_manager
+    port map (
+      rst_n_i      => sys_rst_n,
+      clk_i        => sys_clk_i,
+      data_i       => rtm_data,
+      data_valid_i => rtm_data_valid
+      );
 
 
+  ------------------------------------------------------------------------------
+  -- Front panel serial decoders, SCI protocol
+  ------------------------------------------------------------------------------
+  fp_sci_en <= '1' when
+               (mode = FP_OP16_SCI_M) or
+               (mode = FP_OP32_SCI_M) or
+               (mode = FP_CU16_SCI_M) or
+               (mode = FP_CU32_SCI_M) else '0';
 
-  ------------------------------------------------------------------------------
-  -- CVORB serial decoders
-  ------------------------------------------------------------------------------
-    cmp_cvorb_decoder : cvorb_decoder
+  -- Selects between optical or copper input
+  fp_data1_sci_serial <= fp_data_optic1_i when (mode = FP_OP16_SCI_M) or (mode = FP_OP32_SCI_M) else
+                         fp_data_cu1_i when (mode = FP_CU16_SCI_M) or (mode = FP_CU32_SCI_M) else
+                         (others => '0');
+
+  fp_data2_sci_serial <= fp_data_optic2_i when (mode = FP_OP16_SCI_M) or (mode = FP_OP32_SCI_M) else
+                         fp_data_cu2_i when (mode = FP_CU16_SCI_M) or (mode = FP_CU32_SCI_M) else
+                         (others => '0');
+
+  -- Decoders
+  cmp_fp_sci_decoder1 : sci_decoder
     port map(
-      rst_n_i             => ,
-      clk_i               => ,
-      data_valid_o        => ,
-      zero_test_o         => ,
-      one_test_o          => ,
-      pulse_width_thres_i => ,
-      pulse_width_o       => ,
-      data_o              => ,
-      data_i              => );
+      rst_n_i      => sys_rst_n,
+      clk_i        => sys_clk_i,
+      enable_i     => fp_sci_en,
+      data_i       => fp_data1_sci_serial,
+      data_o       => fp_data1_sci,
+      data_valid_o => fp_data1_sci_valid);
+
+  cmp_fp_sci_decoder2 : sci_decoder
+    port map(
+      rst_n_i      => sys_rst_n,
+      clk_i        => sys_clk_i,
+      enable_i     => fp_optic_sci_en,
+      data_i       => fp_data2_sci_serial,
+      data_o       => fp_data2_sci,
+      data_valid_o => fp_data2_sci_valid);
+
+  ------------------------------------------------------------------------------
+  -- Front panel serial decoders, CVORB protocol
+  ------------------------------------------------------------------------------
+  fp_cvorb_en <= '1' when
+                 (mode = FP_OP16_CVORB_M) or
+                 (mode = FP_OP32_CVORB_M) or
+                 (mode = FP_CU16_CVORB_M) or
+                 (mode = FP_CU32_CVORB_M) else '0';
+
+  -- Selects between optical or copper inputs
+  fp_data1_cvorb_serial <= fp_data_optic1_i when (mode = FP_OP16_CVORB_M) or (mode = FP_OP32_CVORB_M) else
+                           fp_data_cu1_i when (mode = FP_CU16_CVORB_M) or (mode = FP_CU32_CVORB_M) else
+                           (others => '0');
+
+  fp_data2_cvorb_serial <= fp_data_optic2_i when (mode = FP_OP16_CVORB_M) or (mode = FP_OP32_CVORB_M) else
+                           fp_data_cu2_i when (mode = FP_CU16_CVORB_M) or (mode = FP_CU32_CVORB_M) else
+                           (others => '0');
+
+  -- Decoders
+  cmp_fp_cvorb_decoder1 : cvorb_decoder
+    port map(
+      rst_n_i             => sys_rst_n,
+      clk_i               => sys_clk_i,
+      enable_i            => fp_cvorb_en,
+      data_i              => fp_data1_cvorb_serial,
+      zero_test_o         => open,
+      one_test_o          => open,
+      pulse_width_thres_i => cvorb_pulse_width_thres,
+      pulse_width_o       => fp_cvorb_meas_pulse_width,
+      data_o              => fp_data1_cvorb,
+      data_valid_o        => fp_data1_cvorb_valid);
+
+  cmp_fp_cvorb_decoder2 : cvorb_decoder
+    port map(
+      rst_n_i             => sys_rst_n,
+      clk_i               => sys_clk_i,
+      enable_i            => fp_cvorb_en,
+      data_i              => fp_data2_cvorb_serial,
+      zero_test_o         => open,
+      one_test_o          => open,
+      pulse_width_thres_i => cvorb_pulse_width_thres,
+      pulse_width_o       => fp_cvorb_meas_pulse_width,
+      data_o              => fp_data2_cvorb,
+      data_valid_o        => fp_data2_cvorb_valid);
 
 
   ------------------------------------------------------------------------------
