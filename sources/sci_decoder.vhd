@@ -48,7 +48,7 @@ entity sci_decoder is
     clk_i        : in  std_logic;
     enable_i     : in  std_logic;
     data_i       : in  std_logic;
-    data_o       : out std_logic_vector (15 downto 0);
+    data_o       : out std_logic_vector(15 downto 0);
     data_valid_o : out std_logic
     );
 end sci_decoder;

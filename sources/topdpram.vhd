@@ -246,38 +246,26 @@ architecture Behavioral of topdpram is
   signal up_cnt2_to_dac   : std_logic;
 
   ------------------------------------------------------------------------------
-  -- Serial decoders
-  type rtm_data_array_t is array (0 to NB_RTM_CHANNELS-1) of std_logic_vector(15 downto 0);
+  -- Front panel serial decoders
+  signal fp_sci_en           : std_logic;
+  signal fp_data1_sci_serial : std_logic;
+  signal fp_data1_sci        : std_logic_vector(15 downto 0);
+  signal fp_data1_sci_valid  : std_logic;
+  signal fp_data2_sci_serial : std_logic;
+  signal fp_data2_sci        : std_logic_vector(15 downto 0);
+  signal fp_data2_sci_valid  : std_logic;
 
-  signal rtm_sci_channel_en       : std_logic_vector(NB_RTM_CHANNELS-1 downto 0);
-  signal rtm_data_sci             : rtm_data_array_t;
-  signal rtm_data_sci_valid       : std_logic_vector(NB_RTM_CHANNELS-1 downto 0);
-  signal fp_optic_sci_en          : std_logic;
-  signal fp_data_optic1_sci       : std_logic_vector(15 downto 0);
-  signal fp_data_optic1_sci_valid : std_logic;
-  signal fp_data_optic2_sci       : std_logic_vector(15 downto 0);
-  signal fp_data_optic2_sci_valid : std_logic;
-  signal fp_data_cu1_sci          : std_logic_vector(15 downto 0);
-  signal fp_data_cu1_sci_valid    : std_logic;
-  signal fp_data_cu2_sci          : std_logic_vector(15 downto 0);
-  signal fp_data_cu2_sci_valid    : std_logic;
-
-  signal rtm_cvorb_channel_en       : std_logic_vector(NB_RTM_CHANNELS-1 downto 0);
-  signal rtm_data_cvorb             : rtm_data_array_t;
-  signal rtm_data_cvorb_valid       : std_logic_vector(NB_RTM_CHANNELS-1 downto 0);
-  signal fp_optic_cvorb_en          : std_logic;
-  signal fp_data_optic1_cvorb       : std_logic_vector(15 downto 0);
-  signal fp_data_optic1_cvorb_valid : std_logic;
-  signal fp_data_optic2_cvorb       : std_logic_vector(15 downto 0);
-  signal fp_data_optic2_cvorb_valid : std_logic;
-  signal fp_data_cu1_cvorb          : std_logic_vector(15 downto 0);
-  signal fp_data_cu1_cvorb_valid    : std_logic;
-  signal fp_data_cu2_cvorb          : std_logic_vector(15 downto 0);
-  signal fp_data_cu2_cvorb_valid    : std_logic;
+  signal fp_cvorb_en           : std_logic;
+  signal fp_data1_cvorb_serial : std_logic;
+  signal fp_data1_cvorb        : std_logic_vector(15 downto 0);
+  signal fp_data1_cvorb_valid  : std_logic;
+  signal fp_data2_cvorb_serial : std_logic;
+  signal fp_data2_cvorb        : std_logic_vector(15 downto 0);
+  signal fp_data2_cvorb_valid  : std_logic;
 
   ------------------------------------------------------------------------------
   -- CVORB protocol pulse width measurement
-  type cvorb_pulse_width_array_t is array (0 to NB_RTM_CHANNELS-1) of std_logic_vector(7 downto 0);
+  type   cvorb_pulse_width_array_t is array (0 to NB_RTM_CHANNELS-1) of std_logic_vector(7 downto 0);
   signal rtm_cvorb_meas_pulse_width : cvorb_pulse_width_array_t;
 
 
@@ -295,13 +283,13 @@ architecture Behavioral of topdpram is
   signal BCD_acq_vec             : BCD_vector_TYPE (4 downto 0);
   ------------------------------------------------------------------------------
   -- Signal for the External Ram
-  signal ExtWriteAdd             : unsigned(MEM_ADDRESS_LENGTH - 1 downto 0)         := MEMEMPTY;
-  signal iExtWriteAdd            : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0) := std_logic_vector(MEMEMPTY);
+  signal ExtWriteAdd             : unsigned(RAM_ADDR_LENGTH - 1 downto 0)         := MEMEMPTY;
+  signal iExtWriteAdd            : std_logic_vector(RAM_ADDR_LENGTH - 1 downto 0) := std_logic_vector(MEMEMPTY);
   signal ExtAddRd                : std_logic_vector(18 downto 0);
   signal DataFromHistoryWritten  : std_logic;
   signal DataToContValidRM       : std_logic;
   signal ReadExtRam, WriteExtRam : std_logic                                         := '0';
-  signal ExtRdAdd                : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0);
+  signal ExtRdAdd                : std_logic_vector(RAM_ADDR_LENGTH - 1 downto 0);
   signal DataToContRM            : std_logic_vector(31 downto 0);
   signal CurrentRecordForRam     : std_logic_vector(31 downto 0)                     := (others => '0');
   signal ExtRamAddOverflow       : std_logic;
@@ -375,7 +363,7 @@ architecture Behavioral of topdpram is
   signal ChannelWr        : std_logic;
   signal DacWr            : std_logic;
   signal P2WriteRam       : std_logic;
-  signal P2WriteAdd       : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0);
+  signal P2WriteAdd       : std_logic_vector(RAM_ADDR_LENGTH - 1 downto 0);
   signal P2DatatoRAM      : std_logic_vector(31 downto 0);
   signal P2RamAddOverflow : std_logic;
   signal P2DataInClk      : std_logic;
@@ -834,46 +822,7 @@ begin
   -- RTM serial decoders
   ------------------------------------------------------------------------------
 
-  -- SCI protocol
-  rtm_sci_channel_en <= channel_en when mode = RTM_SCI_M else (others => '0');
-
-  l_rtm_sci_decoders : for I in 0 to NB_RTM_CHANNELS - 1 generate
-    cmp_rtm_sci_decoder : sci_decoder
-      port map(
-        rst_n_i      => sys_rst_n,
-        clk_i        => sys_clk_i,
-        enable_i     => rtm_sci_channel_en(I),
-        data_i       => rtm_data_i(I),
-        data_o       => rtm_data_sci(I),
-        data_valid_o => rtm_data_sci_valid(I));
-  end generate l_rtm_sci_decoders;
-
-  -- CVORB protocol
-  rtm_cvorb_channel_en <= channel_en when mode = RTM_CVORB_M else (others => '0');
-
-  l_rtm_cvorb_decoders : for I in 0 to NB_RTM_CHANNELS - 1 generate
-    cmp_rtm_cvorb_decoder : cvorb_decoder
-      port map(
-        rst_n_i             => sys_rst_n,
-        clk_i               => sys_clk_i,
-        enable_i            => rtm_cvorb_channel_en(I),
-        data_i              => rtm_data_i(I),
-        zero_test_o         => open,
-        one_test_o          => open,
-        pulse_width_thres_i => cvorb_pulse_width_thres,
-        pulse_width_o       => rtm_cvorb_meas_pulse_width(I),
-        data_o              => rtm_data_cvorb(I),
-        data_valid_o        => rtm_data_cvorb_valid(I));
-  end generate l_rtm_cvorb_decoders;
-
-  -- Data buffering and RAM managment
-  rtm_data <= rtm_data_sci when mode = RTM_SCI_M else
-              rtm_data_cvorb when mode = RTM_CVORB_M else
-              (others => '0');
-
-  rtm_data_valid <= rtm_data_sci_valid when mode = RTM_SCI_M else
-                    rtm_data_cvorb_valid when mode = RTM_CVORB_M else
-                    (others => '0');
+  
 
   cmp_rtm_data_manager : rtm_data_manager
     port map (
@@ -916,7 +865,7 @@ begin
     port map(
       rst_n_i      => sys_rst_n,
       clk_i        => sys_clk_i,
-      enable_i     => fp_optic_sci_en,
+      enable_i     => fp_sci_en,
       data_i       => fp_data2_sci_serial,
       data_o       => fp_data2_sci,
       data_valid_o => fp_data2_sci_valid);
@@ -965,11 +914,6 @@ begin
       pulse_width_o       => fp_cvorb_meas_pulse_width,
       data_o              => fp_data2_cvorb,
       data_valid_o        => fp_data2_cvorb_valid);
-
-
-  ------------------------------------------------------------------------------
-  -- 32x serial mode data managment
-  ------------------------------------------------------------------------------
 
 
   ------------------------------------------------------------------------------

@@ -50,13 +50,18 @@ package AuxDef is
 
 
 
-  constant MEM_ADDRESS_LENGTH : integer                                   := 17;  -- Internal Ram address used (number of bits).
-  constant EXTRAM_BUF_ONE     : unsigned(MEM_ADDRESS_LENGTH - 1 downto 0) := (0      => '1', others => '0');
-  constant MEMEMPTY           : unsigned(MEM_ADDRESS_LENGTH - 1 downto 0) := (3      => '1', others => '0');  -- memory begin at 8
-  constant EXTRAMFULL         : unsigned(MEM_ADDRESS_LENGTH - 1 downto 0) := (others => '1');
-  constant COMENTSOFF         : boolean                                   := false;                           -- It adds simulations comments
-  constant QUARTZFREQ         : integer                                   := 40;  -- Define here the FREQUENCE of your clock in MHz
-  constant NUMBER_OF_CHANNEL  : integer                                   := 32;  -- must always be even
+  constant RAM_ADDR_LENGTH   : integer                                := 17;                              -- Internal Ram address used (number of bits).
+  constant EXTRAM_BUF_ONE    : unsigned(RAM_ADDR_LENGTH - 1 downto 0) := (0      => '1', others => '0');
+  constant MEMEMPTY          : unsigned(RAM_ADDR_LENGTH - 1 downto 0) := (3      => '1', others => '0');  -- memory begin at 8
+  constant EXTRAMFULL        : unsigned(RAM_ADDR_LENGTH - 1 downto 0) := (others => '1');
+  constant QUARTZFREQ        : integer                                := 40;                              -- Define here the FREQUENCE of your clock in MHz
+  constant NUMBER_OF_CHANNEL : integer                                := 32;                              -- must always be even
+
+
+
+  type rtm_data_array_t is array (0 to NB_RTM_CHANNELS-1) of std_logic_vector(15 downto 0);
+
+
 
   type    array8by8 is array(0 to 7) of std_logic_vector(7 downto 0);
   type    array16by8 is array(0 to 15) of std_logic_vector(7 downto 0);
@@ -350,9 +355,9 @@ package AuxDef is
       data_i              : in  std_logic;
       zero_test_o         : out std_logic;
       one_test_o          : out std_logic;
-      pulse_width_thres_i : in  std_logic_vector (7 downto 0);
-      pulse_width_o       : out std_logic_vector (7 downto 0);
-      data_o              : out std_logic_vector (15 downto 0);
+      pulse_width_thres_i : in  std_logic_vector(7 downto 0);
+      pulse_width_o       : out std_logic_vector(7 downto 0);
+      data_o              : out std_logic_vector(15 downto 0);
       data_valid_o        : out std_logic);
   end component sci_decoder;
 
@@ -362,10 +367,27 @@ package AuxDef is
       clk_i        : in  std_logic;
       enable_i     : in  std_logic;
       data_i       : in  std_logic;
-      data_o       : out std_logic_vector (15 downto 0);
+      data_o       : out std_logic_vector(15 downto 0);
       data_valid_o : out std_logic
       );
   end component sci_decoder;
+
+  component rtm_serial_manager
+    port (
+      rst_n_i            : in  std_logic;
+      clk_i              : in  std_logic;
+      rtm_data_i         : in  std_logic_vector(31 downto 0);
+      mode_i             : in  std_logic;
+      channel_en_i       : in  std_logic_vector(31 downto 0);
+      data_clk_i         : in  std_logic;
+      ram_data_o         : out std_logic_vector(31 downto 0);
+      ram_data_valid_o   : out std_logic;
+      ram_addr_o         : out std_logic_vector(RAM_ADDR_LENGTH-1 downto 0);
+      ram_overflow_o     : out std_logic;
+      ram_data_written_i : in  std_logic;
+      reset_ram_addr_i   : in  std_logic
+      );
+  end component rtm_serial_manager;
 
 
 end AuxDef;
