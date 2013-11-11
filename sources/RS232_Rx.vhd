@@ -29,20 +29,19 @@
 --Simulator:               ModelSim
 --==============================================================--
 --Revision List
---Version Author Date            Changes
+--Version Author Date           Changes
 --
---1.0     BMT    05.02.2002 New Version
---2.0     BMT    15.02.2002 Instructions and constants added
---3.0     BMT    20.02.2002 Error Signal removed
---3.1     P.N.   20.06.2006 Adapted for the DPram card serial inputs from sampler-transceiver card
---                          128kBaud
---3.2     P.N.   31.10.2006 Generic for Number of bit, quartz frequency and baud rate
+--1.0     BMT    05.02.2002     New Version
+--2.0     BMT    15.02.2002     Instructions and constants added
+--3.0     BMT    20.02.2002     Error Signal removed
+--3.1     P.N.   20.06.2006     Adapted for the DPram card serial inputs from sampler-transceiver card
+--                              128kBaud
+--3.2     P.N.   31.10.2006     Generic for Number of bit, quartz frequency and baud rate
 --==============================================================--
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 use IEEE.STD_LOGIC_ARITH.all;
 use IEEE.STD_LOGIC_UNSIGNED.all;
-use auxdef.RESET_ACTIVE;
 
 
 entity RS232_Rx is
@@ -70,7 +69,6 @@ architecture Behavioral of RS232_Rx is
   signal   number_of_Bits       : natural range 0 to NUMBER_OF_BIT + 2;  -- Add Start  and stop bits
   signal   iRegister            : std_logic_vector (NUMBER_OF_BIT + 1 downto 0);
 --==============================================================--
---constant RESET_ACTIVE : std_logic := '1'; --Change the reset to active high here
   constant HALF_BIT_SAMPLE_TIME : natural := 156;  --QUARTZFREQ * 500000 / BAUD_RATE;--156;
   constant FULL_BIT_SAMPLE_TIME : natural := 312;  -- 2 * HALF_BIT_SAMPLE_TIME;--312; -- 40000000/256000 * 2
 --signal iCounter : natural range 0 to FULL_BIT_SAMPLE_TIME;
@@ -98,7 +96,7 @@ begin
 --a synchronous one shot of the serial code
   Detect_Edges : process (clock, reset)
   begin
-    if Reset = RESET_ACTIVE then
+    if Reset = '0' then
       iSerial  <= '0';
       iSerial2 <= '0';
     elsif rising_edge (clock) then
@@ -111,7 +109,7 @@ begin
 --signal when the number of bits received is ten.
   Make_Sampler : process (clock, reset)
   begin
-    if Reset = RESET_ACTIVE then
+    if Reset = '0' then
       iReady               <= '0';
       Divided_Clock_Enable <= '0';
     elsif rising_edge (clock) then
@@ -135,7 +133,7 @@ begin
   Divided_Clock_Generation : process (clock, reset)
     variable vCounter : natural range 0 to FULL_BIT_SAMPLE_TIME;
   begin
-    if Reset = RESET_ACTIVE then                                         -- on an active low reset
+    if Reset = '0' then                                         -- on an active low reset
       vCounter       := HALF_BIT_SAMPLE_TIME;                            -- half of the 19200 max count value
 --      iRegister <= (others => '0');
       Number_of_Bits <= 0;

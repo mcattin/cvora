@@ -30,6 +30,7 @@ entity cvorb_decoder is
     data_i              : in  std_logic;
     zero_test_o         : out std_logic;
     one_test_o          : out std_logic;
+    strobe_test_o       : out std_logic;
     pulse_width_thres_i : in  std_logic_vector(7 downto 0);
     pulse_width_o       : out std_logic_vector(7 downto 0);
     data_o              : out std_logic_vector(15 downto 0);
@@ -51,7 +52,8 @@ architecture rtl of cvorb_decoder is
   signal pulse_length    : std_logic_vector(7 downto 0);
   signal strobe          : std_logic;
 
-  signal pulse_length_counter : std_logic_vector(7 downto 0);
+  signal pulse_length_counter : unsigned(7 downto 0);
+
   type   states1 is (idle, acquire);
   signal state1               : states1;
 
@@ -72,7 +74,7 @@ architecture rtl of cvorb_decoder is
 
 begin
 
-  serial_data <= data_i & enable_i;
+  serial_data <= data_i and enable_i;
 
 
 -- DOUBLE FLIP FLOP
@@ -81,7 +83,7 @@ begin
 
   process(clk_i, rst_n_i)
   begin
-    if rst_n_i = '1' then
+    if rst_n_i = '0' then
       data_ff_pos_one <= '0';
     elsif (rising_edge(clk_i)) then
       data_ff_pos_one <= serial_data;
@@ -89,7 +91,7 @@ begin
   end process;
   process(clk_i, rst_n_i)
   begin
-    if rst_n_i = '1' then
+    if rst_n_i = '0' then
       data_ff_neg_one <= '0';
     elsif (falling_edge(clk_i)) then
       data_ff_neg_one <= serial_data;
@@ -98,7 +100,7 @@ begin
 
   process(clk_i, rst_n_i)
   begin
-    if rst_n_i = '1' then
+    if rst_n_i = '0' then
       data_pos <= '0';
       data_neg <= '0';
     elsif (rising_edge(clk_i)) then
@@ -117,13 +119,13 @@ begin
 
   process(clk_i, rst_n_i)
   begin
-    if rst_n_i = '1' then
+    if rst_n_i = '0' then
       pulse_length_counter <= X"00";
       pulse_length         <= X"00";
       strobe               <= '0';
       state1               <= idle;
     elsif (rising_edge(clk_i)) then
-      if (state1 = idle and data_pos = '0' and data_neg = '0' and enable_i = '0') then
+      if (state1 = idle and data_pos = '0' and data_neg = '0') then
         pulse_length_counter <= X"00";
         strobe               <= '0';
         state1               <= idle;
@@ -134,15 +136,17 @@ begin
         pulse_length_counter <= pulse_length_counter + 2;
         state1               <= acquire;
       elsif (state1 = acquire and data_pos = '0' and data_neg = '0') then
-        pulse_length <= pulse_length_counter;
+        pulse_length <= std_logic_vector(pulse_length_counter);
         strobe       <= '1';
         state1       <= idle;
       else
         state1 <= idle;
+        strobe <= '0';
       end if;
     end if;
   end process;
 
+  strobe_test_o <= strobe;
 
 
 
@@ -151,7 +155,7 @@ begin
 -- OUT: Data_Out_CVORB, data_valid_o, Zero_Test_O, One_Test_O
   process(clk_i, rst_n_i)
   begin
-    if rst_n_i = '1' then
+    if rst_n_i = '0' then
       shift_register       <= X"0000";
       current_bit_position <= "00000";
       timeout_delay        <= X"00";
@@ -159,11 +163,11 @@ begin
       data_out_cvorb       <= X"0000";
       data_valid_o         <= '0';
       data_o               <= X"0000";
-      zero_test_o          <= '0';
-      one_test_o           <= '0';
+--      zero_test_o          <= '0';
+--      one_test_o           <= '0';
       state2               <= idle;
     elsif (rising_edge(clk_i)) then
-      if (state2 = idle and strobe = '0' and enable_i = '0') then
+      if (state2 = idle and strobe = '0') then
         shift_register       <= X"0000";
         current_bit_position <= "00000";
         timeout_delay        <= X"00";

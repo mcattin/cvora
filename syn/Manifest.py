@@ -9,4 +9,7 @@ syn_project = "cvora.xise"
 
 files = ["../sources/topdpram.ucf"]
 
-modules = { "local" : "../sources" }
+modules = { "local" : ["../sources"],
+            "git"   : ["git://ohwr.org/hdl-core-lib/general-cores.git::proposed_master"]}
+
+fetchto="../ip_cores"

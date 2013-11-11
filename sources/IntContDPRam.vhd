@@ -1,16 +1,17 @@
 --      Package File Template
 --
---      Purpose: This package defines supplemental types, subtypes, 
+--      Purpose: This package defines supplemental types, subtypes,
 --               constants, and functions for the core BIC module
 
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
-use work.vme.all;
+
+use work.vme_pkg.all;
+
 
 package IntContPackage is
 
--- in auxdef --  constant RESET_ACTIVE : std_logic := '0';
 
   constant ADDTOP  : integer := 16#7FFFF#;  --
   constant NUMREGS : integer := 7;          -- Number of registers !!!!!
@@ -27,7 +28,7 @@ package IntContPackage is
   constant KINDOFMUX : KINDOFMUXType := USEMUXCOMB;
 
   subtype IntDataType is std_logic_vector(31 downto 0);
---  subtype IntAddrOutType is std_logic_vector(SlaveAddrOutType'left - 1 downto 0);  
+--  subtype IntAddrOutType is std_logic_vector(SlaveAddrOutType'left - 1 downto 0);
 
   subtype MemIntWrAddrType is std_logic_vector(SlaveAddrOutType'left downto 0);     -- 18 downto 0
   subtype MemIntRdAddrType is std_logic_vector(SlaveAddrOutType'left -1 downto 0);  --17 downto 0
@@ -87,18 +88,18 @@ package IntContPackage is
 --*****************************************
 --VME Address Map
 --*****************************************
-  constant CSR_REG_ADDR         : RegAType := 16#00000#;
-  constant MEM_PTR_REG_ADDR     : RegAType := 16#00004#;
-  constant MODE_REG_ADDR        : RegAType := 16#00008#;
+  constant CSR_REG_ADDR      : RegAType := 16#00000#;
+  constant MEM_PTR_REG_ADDR  : RegAType := 16#00004#;
+  constant MODE_REG_ADDR     : RegAType := 16#00008#;
   constant CHAN_EN_REG_ADDR  : RegAType := 16#0000C#;
-  constant CLK_FREQ_REG_ADDR    : RegAType := 16#00010#;
+  constant CLK_FREQ_REG_ADDR : RegAType := 16#00010#;
   constant CHAN_SEL_REG_ADDR : RegAType := 16#00014#;
-  constant CVORB_REG_ADDR       : RegAType := 16#00018#;
+  constant CVORB_REG_ADDR    : RegAType := 16#00018#;
 
-  constant EXT_RAM_P   : RamPType := 0;
-  constant EXT_RAM_ADDRL  : RamAType := 16#00020#;
-  constant EXT_RAM_ADDRH  : RamAType := 16#7FFFF#;
-  constant MEMOFFSET : RamAType := 16#00008#;  --long word offset
+  constant EXT_RAM_P     : RamPType := 0;
+  constant EXT_RAM_ADDRL : RamAType := 16#00020#;
+  constant EXT_RAM_ADDRH : RamAType := 16#7FFFF#;
+  constant MEMOFFSET     : RamAType := 16#00008#;  --long word offset
 
 --********************************************
 --********************************************
