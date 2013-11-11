@@ -38,7 +38,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 use IEEE.std_logic_unsigned.all;
 
-use work.IntContPackage.all;
+use work.bus_int_pkg.all;
 use work.vme_pkg.all;
 use work.cvora_pkg.all;
 

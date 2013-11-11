@@ -1,10 +1,11 @@
-
 library ieee;
 use ieee.std_logic_1164.all;
-use ieee.std_logic_arith.all;
-use ieee.std_logic_unsigned.all;
+use ieee.numeric_std.all;
 
-package message_package is
+
+package message_pkg is
+
+
   constant LINE_NUMBER : natural := 5;
   constant LINE_LENGTH : natural := 18;
 
@@ -161,9 +162,9 @@ package message_package is
                                       LETTER_O, LETTER_D, LETTER_E, space, space, space,
                                       Carriage_Return, Line_Feed);
 
-end message_package;
+end message_pkg;
 
 
-package body message_package is
+package body message_pkg is
 
-end message_package;
+end message_pkg;

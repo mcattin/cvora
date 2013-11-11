@@ -17,9 +17,8 @@
 ------------------------------------------
 ------------------------------------------
 library ieee;
-use ieee.STD_LOGIC_1164.all;
-use ieee.NUMERIC_STD.all;
-use ieee.std_logic_unsigned.all;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 
 entity cvorb_decoder is
@@ -64,8 +63,8 @@ architecture rtl of cvorb_decoder is
   --signal zero_test_o : std_logic;
   --signal one_test_o : std_logic;
   signal shift_register       : std_logic_vector(15 downto 0);
-  signal current_bit_position : std_logic_vector(4 downto 0);
-  signal timeout_delay        : std_logic_vector(7 downto 0);  -- Timeout: 400 ns
+  signal current_bit_position : unsigned(4 downto 0);
+  signal timeout_delay        : unsigned(7 downto 0);  -- Timeout: 400 ns
   signal bit_updated          : std_logic;
 
   type   states2 is (idle, wait_bit, output);

@@ -4,19 +4,18 @@
 --               constants, and functions for the core BIC module
 
 
-library IEEE;
-use IEEE.STD_LOGIC_1164.all;
+library ieee;
+use ieee.std_logic_1164.all;
 
 use work.vme_pkg.all;
 
 
-package IntContPackage is
+package bus_int_pkg is
 
 
   constant ADDTOP  : integer := 16#7FFFF#;  --
   constant NUMREGS : integer := 7;          -- Number of registers !!!!!
   constant NUMRAM  : integer := 1;          -- Number of RAMs!!!!!
-
 
   constant FIRSTREGPOS : integer := 2;
   constant FIRSTRAMPOS : integer := NUMREGS + 2;
@@ -77,7 +76,6 @@ package IntContPackage is
 
   type MemToContType is array (integer range 0 to NUMRAM - 1) of MemToContCellType;
 
-
   type AddRwRecord is
   record
     Add : RegAType;
@@ -85,6 +83,7 @@ package IntContPackage is
   end record;
 
   type     ADDMAPPINGType is array (integer range 0 to NUMREGS - 1) of AddRwRecord;
+
 --*****************************************
 --VME Address Map
 --*****************************************
@@ -124,4 +123,4 @@ package IntContPackage is
   constant CVORB_REG_P    : RegPType := 6;
 
 
-end IntContPackage;
+end bus_int_pkg;

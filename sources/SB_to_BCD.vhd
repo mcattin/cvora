@@ -35,7 +35,7 @@ use IEEE.STD_LOGIC_ARITH.all;
 use IEEE.STD_LOGIC_UNSIGNED.all;
 
 use work.cvora_pkg.all;
-use work.message_package.all;           -- declares unconstrained BCD_Vector_Type
+use work.message_pkg.all;           -- declares unconstrained BCD_Vector_Type
 
 
 entity SB_to_BCD is

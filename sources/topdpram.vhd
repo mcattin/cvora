@@ -86,11 +86,12 @@
 --         2.00 MC      23.10.2013 Code clean-up, re-structuring, external inputs sync,
 --                                 add, 2x 16-bit up counter mode, add CVORB protocol decoding.
 ----------------------------------------------------------------------------------
-library IEEE;
-use IEEE.STD_LOGIC_1164.all;
-use IEEE.NUMERIC_STD.all;
-use work.IntContPackage.all;
-use work.message_package.all;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+use work.bus_int_pkg.all;
+use work.message_pkg.all;
 use work.cvora_pkg.all;
 use work.vme_pkg.all;
 use work.gencores_pkg.all;
