@@ -789,6 +789,7 @@ begin
 
   ------------------------------------------------------------------------------
   -- Acquisition clock frequency meter
+  -- !! Stays at last value if no clock is present !!
   ------------------------------------------------------------------------------
   cmp_clk_freq_meter : gc_frequency_meter
     generic map(
