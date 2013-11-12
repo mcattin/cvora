@@ -42,7 +42,7 @@ package cvora_pkg is
 
 
 --******************* Constants *********************
-  constant c_NB_RTM_CHAN : natural   := 32;
+  constant c_NB_RTM_CHAN : natural := 32;
 
   -- Modes
   constant c_RESERVED1_M     : std_logic_vector(3 downto 0) := "0000";
@@ -63,25 +63,16 @@ package cvora_pkg is
   constant c_RTM_CVORB_M     : std_logic_vector(3 downto 0) := "1111";
 
 
-  constant RAM_ADDR_LENGTH   : integer                                := 17;                              -- Internal Ram address used (number of bits).
-  constant EXTRAM_BUF_ONE    : unsigned(RAM_ADDR_LENGTH - 1 downto 0) := (0      => '1', others => '0');
-  constant MEMEMPTY          : unsigned(RAM_ADDR_LENGTH - 1 downto 0) := (3      => '1', others => '0');  -- memory begin at 8
-  constant EXTRAMFULL        : unsigned(RAM_ADDR_LENGTH - 1 downto 0) := (others => '1');
-  constant QUARTZFREQ        : integer                                := 40;                              -- Define here the FREQUENCE of your clock in MHz
+  constant RAM_ADDR_LENGTH : integer                                := 17;                              -- Internal Ram address used (number of bits).
+  constant EXTRAM_BUF_ONE  : unsigned(RAM_ADDR_LENGTH - 1 downto 0) := (0      => '1', others => '0');
+  constant MEMEMPTY        : unsigned(RAM_ADDR_LENGTH - 1 downto 0) := (3      => '1', others => '0');  -- memory begin at 8
+  constant EXTRAMFULL      : unsigned(RAM_ADDR_LENGTH - 1 downto 0) := (others => '1');
+  constant QUARTZFREQ      : integer                                := 40;                              -- Define here the FREQUENCE of your clock in MHz
 
 
 --******************* Types *********************
   type rtm_data_array_t is array (0 to c_NB_RTM_CHAN-1) of std_logic_vector(15 downto 0);
   type cvorb_pulse_width_array_t is array (0 to c_NB_RTM_CHAN-1) of std_logic_vector(7 downto 0);
-
-
---******************* Functions *********************
-  -- This funtions fills of zeros the input register giving a 32 bits output
-  function Extend32StdLogicVector(S      : std_logic_vector) return std_logic_vector;
-  -- This funtions fills of zeros the input register giving a 16 bits output
-  function Extend16StdLogicVector(S      : std_logic_vector) return std_logic_vector;
-  -- This funtions fills of zeros the input register giving a n bits output
-  function ExtendStdLogicVector(signal S : std_logic_vector; constant n : integer) return std_logic_vector;
 
 
 --******************* Components *********************
@@ -104,12 +95,13 @@ package cvora_pkg is
       dReady : out std_logic);
   end component RS232_Rx;
 
-  component LoadDacDelay
+  component dac_load_delay
     port (
-      clk        : in  std_logic;
-      inputpulse : in  std_logic;
-      output     : out std_logic);
-  end component LoadDacDelay;
+      rst_n_i   : in  std_logic;
+      clk_i     : in  std_logic;
+      pulse_i   : in  std_logic;
+      d_pulse_o : out std_logic);
+  end component dac_load_delay;
 
   component Vme_intfce
     generic (
@@ -172,50 +164,6 @@ package cvora_pkg is
       MemToCont   : in  MemToContType);
   end component BusIntControl;
 
-  component VmeIntfceWrapped
-    generic (
-      AddrWidth        : integer   := 24;
-      BaseAddrWidth    : integer   := 8;
-      DataWidth        : integer   := 32;
-      DirSamePolarity  : std_logic := '0';
-      UnalignDataWidth : integer   := 8;
-      InterruptEn      : std_logic := '0');
-    port (
-      ResetNA        : in    std_logic;
-      Clk            : in    std_logic;
-      VmeAddrA       : in    std_logic_vector(AddrWidth-1 downto 1);
-      VmeAsNA        : in    std_logic;
-      VmeDs1NA       : in    std_logic;
-      VmeDs0NA       : in    std_logic;
-      VmeData        : inout std_logic_vector(DataWidth-1 downto 0);
-      VmeDataUnAlign : inout std_logic_vector(UnalignDataWidth-1 downto 0);
-      VmeDirTri      : out   std_logic;
-      VmeBufOeN      : out   std_logic;
-      VmeWriteNA     : in    std_logic;
-      VmeLwordNA     : in    std_logic;
-      VmeIackNA      : in    std_logic;
-      IackOutNA      : out   std_logic;
-      IackInNA       : in    std_logic;
-      VmeIntReqN     : out   std_logic_vector (7 downto 1);
-      vmeDtackNTri   : out   std_logic;
-      ModuleAddr     : in    std_logic_vector(BaseAddrWidth-1 downto 0);
-      VmeAmA         : in    std_logic_vector(4 downto 0);
-
-      AddrMem          : out std_logic_vector(AddrWidth-BaseAddrWidth-1 downto 0);
-      ReadMem          : out std_logic;
-      WriteMem         : out std_logic;
-      DataFromMemValid : in  std_logic;
-      DataFromMem      : in  std_logic_vector(DataWidth-1 downto 0);
-      DataToMem        : out std_logic_vector(DataWidth-1 downto 0);
-      IntProcessed     : out std_logic;
-      UserIntReqN      : in  std_logic;
-      UserBlocks       : in  std_logic;
-      OpFinishedOut    : out std_logic;
-      IRQLevelReg      : in  std_logic_vector (3 downto 1);
-      IRQStatusIDReg   : in  std_logic_vector (DataWidth-1 downto 0);
-      VmeState         : out std_logic_vector (3 downto 0));
-  end component VmeIntfceWrapped;
-
   component message
     port (
       rst         : in  std_logic;
@@ -238,17 +186,6 @@ package cvora_pkg is
       BCD_Vector : out BCD_vector_TYPE ((BCD_Numbers - 1) downto 0);
       BCD_Ready  : out std_logic);
   end component;
-
-  component Monostable
-    generic(
-      DURATION              : natural   := 255;
-      DEFAULT_PULSEPOLARITY : std_logic := '1');  -- Determine polarity of the inputs
-    -- '0' is from TG8 (negative logic), '1' if inputs come from new timing modules
-    port (
-      clk        : in  std_logic;
-      inputpulse : in  std_logic;                 -- A clock wide pulse
-      output     : out std_logic);
-  end component Monostable;
 
   component up_down_counter
     generic (
@@ -345,45 +282,5 @@ end cvora_pkg;
 
 
 package body cvora_pkg is
-
-
-  function Extend32StdLogicVector(S : std_logic_vector) return std_logic_vector is
-    variable SL : std_logic_vector(31 downto 0);
-  begin
-    for I in 0 to 31 loop
-      if I > (S'left - S'right) then
-        SL(I) := '0';
-      else
-        SL(I) := S(I + S'right);
-      end if;
-    end loop;
-    return SL;
-  end Extend32StdLogicVector;
-
-  function Extend16StdLogicVector(S : std_logic_vector) return std_logic_vector is
-    variable SL : std_logic_vector(15 downto 0);
-  begin
-    for I in 0 to 15 loop
-      if I > (S'left - S'right) then
-        SL(I) := '0';
-      else
-        SL(I) := S(I + S'right);
-      end if;
-    end loop;
-    return SL;
-  end Extend16StdLogicVector;
-
-  function ExtendStdLogicVector(signal S : std_logic_vector; constant n : integer) return std_logic_vector is
-    variable SL : std_logic_vector(n - 1 downto 0);
-  begin
-    for I in SL'range loop
-      if I > S'left then
-        SL(I) := '0';
-      else
-        SL(I) := S(I);
-      end if;
-    end loop;
-    return SL;
-  end ExtendStdLogicVector;
 
 end package body cvora_pkg;
