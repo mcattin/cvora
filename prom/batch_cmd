@@ -1,0 +1,7 @@
+setMode -bs
+addDevice -p 1 -sprom "xcf08p" -file "cvora.mcs"
+setAttribute -position 1 -attr packageName -value ""
+setCable -port xsvf -file "cvora.xsvf"
+Program -p 1 -e -loadfpga -defaultVersion 0
+closeCable
+quit
