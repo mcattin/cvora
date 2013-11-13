@@ -1,0 +1,20 @@
+
+Required material:
+
+- 1x sampler-transciever Tx
+- 1x sampler-transciever Rx
+- 1x sampler-transciever Tx 3U crate
+- 1x sampler-transciever Rx 3U crate
+- 1x Waveform generator (e.g. Agilent 33250A)
+- 1x Oscilloscope
+- 1x VME crate (with RTM and MEN-A20)
+- 1x CTRV + PSB timing cable
+- 1x CVORB + RTM
+- 1x LCD display "Timing display" + 10-pin ribbon cable
+- LEMO 00 cables
+- LEMO 0 2-pin cables
+- plastic fiber
+- LEMO 00 to LEMO 0 2-pin adapter
+- BNC to LEMO 00 adapters
+- 34-pin ribbon cable (~2m)
+
