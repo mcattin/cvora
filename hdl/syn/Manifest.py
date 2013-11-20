@@ -7,9 +7,9 @@ syn_package = "fg456"
 syn_top = "top_cvora"
 syn_project = "cvora.xise"
 
-files = ["../sources/top_cvora.ucf"]
+files = ["../src/top_cvora.ucf"]
 
-modules = { "local" : ["../sources"],
+modules = { "local" : ["../src"],
             "git"   : ["git://ohwr.org/hdl-core-lib/general-cores.git::proposed_master"]}
 
 fetchto="../ip_cores"
