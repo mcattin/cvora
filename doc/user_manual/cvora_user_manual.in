@@ -30,7 +30,7 @@
 @iftex
 @afourpaper
 @end iftex
-@c @paragraphindent 0
+@paragraphindent 0
 @comment %**end of header
 
 @setchapternewpage off
@@ -57,20 +57,28 @@
 @node Top
 @top Introduction
 
+The CVORA board is a sampler of digital data sources in VME form factor.
+Depending on the mode, it accepts different type of data sources; parallel, serial (SCI, CVORB).
+It also implements two counter modes, used to count train of pulses.
+A detailed description of the modes is available in @ref{Acquisition modes}.
+
+The board also contains two analogue outputs, reflecting two of the inputs.
+The analogue outputs are not meant to be used in operation, but only for testing/debugging purpose.
+
 
 @c ##########################################################################
 @node Repositories and Releases
 @chapter Repositories and Releases
 
-The following wiki page gathers link to all the information about the board (schematics, layout, test procedures, software support, etc...):
+The following wiki page gathers link to all the information about the CVORA board (schematics, PCB layout, test/installation procedures, software support, etc...):
 @uref{https://wikis/display/HT/CVORA+-+Dual+port+RAM+for+digital+aquisition}
 
-The hdl and documentation sources are hosted on the CERN git repository at the following link:
+The hdl and documentation sources are hosted on the CERN git repository at the following address:
 @uref{https://git.cern.ch/web/cvora.git}
 
 On the git repository the official releases have a tag named
 @code{cvora-v#maj.#min} where @code{#maj} represent the major release
-version of the firmware and @code{#min} the minor one (e.g @code{cvora-v1.2}).
+version of the gateware and @code{#min} the minor one (e.g @code{cvora-v1.2}).
 The released FPGA binary files follow the same naming convention.
 
 @b{Note:} If you got this from the repository (as opposed to a named
@@ -83,13 +91,13 @@ to ensure where you are.
 @c --------------------------------------------------------------------------
 @section Software Support
 
-As a general rule, a new minor version of the firmware, for a given major version, should be backward compatible.
+As a general rule, a new minor version of the gateware, for a given major version, should be backward compatible.
 If the interface with the driver changes, the major version should be incremented.
-It means that driver versions 1.x should work with any firmware version 1.x.
-But the driver version 2.0 might not work with the firmware version 1.1.
+It means that driver versions 1.x should work with any gateware version 1.x.
+But the driver version 2.0 might not work with the gateware version 1.1.
 
 @c ##########################################################################
-@page
+@c page
 @node About source code
 @chapter About Source Code
 
@@ -109,14 +117,14 @@ Here is the procedure to build the FPGA binary image from the hdl source.
       @code{cd <dest_dir>/hdl/syn/}
 @item Fetch the dependencies.@*
       @code{hdlmake -f}
+@item Check that all dependencies are fetched.@*
+      @code{hdlmake --list}
 @item Generate an ISE project file.@*
       @code{hdlmake --ise-proj}@*
       This will generate a basic ISE project file with default settings.
       If non-default setting is needed (e.g. binary bitstream output file .bin), the project file must be opened using ISE project navigator GUI and the setting changed manually.
 @item Generate a synthesis Makefile.@*
       @code{hdlmake --make-ise}
-@item Check that all dependencies are fetched.@*
-      @code{hdlmake --list}
 @item Synthesis, place and route.@*
       @code{make}
 @end enumerate
@@ -134,21 +142,25 @@ Here is the procedure to build the FPGA binary image from the hdl source.
 @item hdl/syn/
       Synthesis directory. This is where the synthesis top manifest and the ISE project are stored.
       For each release, the synthesis, place&route and timing reports are also saved here.
+@item hdl/prom
+      Directory containing FPGA programming files. This directory contains a Makefile to automatically generate the .xsvf file for remote programming of the CVORA board.
 @item hdl/release
       Directory containing a script to make releases.
 @item doc/
       Documentation directory. Contains user manual sources and figures.
-@item jtagvmecvora/
+@item jtag2vme/
       CPLD source and project. The CPLD is used for remote programming of the FPGA configration flash. It is basically a VME to JTAG bridge.
 @end table
 
-It could happen that a hdl source directory contains extra source files that are not used in the current firmware release.
+It could happen that a hdl source directory contains extra source files that are not used in the current gateware release.
 In order to identify the source files used in a given release, refer to the @file{Manifest.py} files.
+
+TODO -> Add python test program stuff...
 
 @c --------------------------------------------------------------------------
 @section Dependencies
 
-The CVORA firmware depends on the following hdl cores and libraries:
+The CVORA gateware depends on the following hdl cores and libraries:
 @table @b
 @item general-cores
       @code{repo  : git://ohwr.org/hdl-core-lib/general-cores.git}@*
@@ -158,161 +170,358 @@ The CVORA firmware depends on the following hdl cores and libraries:
 @c --------------------------------------------------------------------------
 @section Gateware release
 
-release script, directory, etc...
+When a new gateware release is needed, first go to the @code{hdl/prom/} folder and run @code{make}.
+This will automatically generate an .xsvf file from the .bit file in @code{hdl/syn/} by calling @code{Impact} from Xilinx.
+
+Then got to @code{hdl/release/} and run @code{./release.sh NN_nn}, were @code{NN} is the major version and @code{nn} the minor version.
+This will copy and rename the .xsvf and .bit file in the hdl/release/ folder.
+The .xsvf file is also copied to the official release location (using scp).
+Note that the official release location might have to be updated before running the script.
+
+TODO -> were is the official release location?
 
 
 @c ##########################################################################
-@page
+@c page
+@node Acquisition modes
+@chapter Acquisition modes
+
+The CVORA module is considered in acquisition when it is enabled (via the CSR register) and between a START and a STOP pulse.
+When acquiring, the module is storing one sample (16 bits) per channel on CLOCK (sampling clock) rising edge, independently from the input data rate.
+Then every sample is written to RAM.
+Note that the data bus to the RAM is 32-bit wide.
+Therefore, if only one channel has to be written in RAM the remaining 16 bits are set to zero.
+
+The STROBE input is only used in RTM_PARALLEL mode to sample/synchronise incoming data.
+Nevertheless, as for other modes, the data are then sampled with the CLOCK.
+
+TODO -> add acquisition waveforms example...
+
+@quotation Note
+In this document, START, STOP and RESET can be either pulses from the front panel or software triggers from the CSR register.
+@end quotation
+
+@quotation Note
+The RESET is ignored during acquisition, except for counter modes.
+@end quotation
+
+The CVORA modes of operation are listed below and descibed in detail in the comming sections.
+
+@float Table,tab:modes
+@multitable {Value}{FP_OP16_CVORB}{Front panel optical input 1 only (16-bit serial, CVORB protocol)}
+@headitem Value @tab Name @tab Description
+@item @code{0x0} @tab RESERVED_1             @tab Reserved
+@item @code{0x1} @tab FP_OP16_SCI            @tab Front panel optical input 1 only (16-bit serial, SCI protocol)
+@item @code{0x2} @tab FP_CU16_SCI            @tab Front panel copper input 1 only (16-bit serial, SCI protocol)
+@item @code{0x3} @tab CNT32                  @tab 32-bit up/down counter (btrain)
+@item @code{0x4} @tab RTM_PARALLEL           @tab Parallel rtm input (32-bit)
+@item @code{0x5} @tab FP_OP32_SCI            @tab Front panel optical inputs (2x 16-bit serial, SCI protocol)
+@item @code{0x6} @tab FP_CU32_SCI            @tab Front panel copper inputs (2x 16-bit serial, SCI protocol)
+@item @code{0x7} @tab RTM_SCI                @tab RTM copper inputs (32x 16-bit serial, SCI protocol)
+@item @code{0x8} @tab RESERVED_2             @tab Reserved
+@item @code{0x9} @tab FP_OP16_CVORB          @tab Front panel optical input 1 only (16-bit serial, CVORB protocol)
+@item @code{0xA} @tab FP_CU16_CVORB          @tab Front panel copper input 1 only (16-bit serial, CVORB protocol)
+@item @code{0xB} @tab CNT2X16                @tab 2x 16-bit up counter
+@item @code{0xC} @tab RTM_PARALLEL_STROBE    @tab Parallel rtm input (31-bit) with strobe on 32nd bit
+@item @code{0xD} @tab FP_OP32_CVORB          @tab Front panel optical inputs (2x 16-bit serial, CVORB protocol)
+@item @code{0xE} @tab FP_CU32_CVORB          @tab Front panel copper inputs (2x 16-bit serial, CVORB protocol)
+@item @code{0xF} @tab RTM_CVORB              @tab RTM copper inputs (32x 16-bit serial, CVORB protocol)
+@end multitable
+@caption{Modes list.}
+@end float
+
+@quotation Note
+The module @b{must} be disabled (in CSR register) to change the mode.
+@end quotation
+
+
+@c --------------------------------------------------------------------------
+@node Serial protocols
+@section Serial protocols
+
+The CVORA board supports two different serial protocols; SCI and CVORB.
+Each of those protocol is used to transmit streams of 16-bit data.
+The CVORA board implements deserialiser and decoder for those two protocols.
+
+@table @b
+@item SCI
+      The SCI (Serial Communication Interface) port configuration is the following: 128kbaud, 1 start, 1 stop, no parity.
+      A frame is made of two 9-bit words and the frame rate is 4kHz.
+      The first word is made of the eigth MSBs of the data and the ninth bit to one.
+      The second word is made of the eigth LSBs of the data and the ninth bit to zero.
+      Note that the data bits are transmitted LSB first.
+      For more information on the SCI protocol, look at the MC68HC05 processor datasheet@footnote{@uref{www.freescale.com/files/microcontrollers/doc/data_sheet/MC68HC05C8A.pdf}} at chapter 9.
+@item CVORB
+      The CVORB protocol has been developped at CERN. It is also know as GFAS protocol.
+      It is based on 16-bit frames transmitted at a rate of 200kHz.
+      A frame is made of 16 slots of 250ns, where ones are coded with 150ns pulses and zeros with 50ns pulses.
+      For more information on the CVORB protocol is available in this document@footnote{@uref{https://wikis/download/attachments/42729596/GFAS_like_serial_transmission_format.pdf}}.
+@end table
+
+@c --------------------------------------------------------------------------
+@section Counter modes
+
+There are two counter modes; 32-bit up/down (CNT32) and 2x 16-bit up only (CNT2X16).
+
+In counter modes, only the front panel timing inputs CLOCK, START, STOP, BUP, BDOWN and RESET are used.
+As for the other modes, an acquisition takes place between a START and a STOP pulse.
+
+A bit in the CSR indicates if a counter overflow occured.
+In CNT2X16 mode, the two overflow flags are combined.
+The overflow flags are cleared by a RESET or a STOP.
+
+@table @b
+@item 32-bit up/down (CNT32)
+      A pulse on BUP incerments the counter, while a pulse on BDOWN decrements it.
+      A pulse on RESET sets the counter to zero.
+      The counter is sampled on rising edge of CLOCK and stored in RAM.
+      The mode is used at CERN to sample the B-train.
+@item 2x 16-bit up only (CNT2X16)
+      A pulse on BUP increments the counter 1, while a pulse on BDOWN increments the counter 2.
+      A pulse on RESET sets both counters to zero.
+      The counters are sampled on rising edge of CLOCK and stored in RAM.
+      The counter 1 occupies the lower 16 bits and the counter 2 the upper 16 bits of the 32-bit data word written to RAM.
+@end table
+
+
+@c --------------------------------------------------------------------------
+@section Front panel serial input modes
+
+When the CVORA module is set in one of the front panel serial input modes (FP_*), serial data streams are received on one or two of the front panel inputs pairs (copper or optical).
+Either SCI or CVORB protocol can be decoded (See @ref{Serial protocols}).
+The serial data streams are decoded, sampled on CLOCK rising edge and stored in RAM.
+
+In "single input" modes (FP_*16_*) the upper 16 bits of the 32-bit data word written to RAM are set to zero, while the lower 16 bits contains the data from input 1.
+
+In "dual inputs" modes (FP_*32_*), the lower 16 bits of the 32-bit data word written to RAM contains data from input 1 and the upper 16 bits data from input 2.
+
+
+@c --------------------------------------------------------------------------
+@section RTM input modes
+
+In RTM input modes (RTM_*), data are coming from Rear Transition Modules (RTM) via the VME P2 connector.
+The CVORA P2 connector contains 32 differential input channels, that can be used in three RTM modes; one parallel (RTM_PARALLEL) and two serial (RTM_SCI and RTM_CVORB).
+In RTM input modes dedicated rear transition module has to be used (See @ref{Rear Transition Modules}).
+
+@table @b
+@item Parallel mode (RTM_PARALLEL)
+      In parallel mode the rear transition module contains two inputs; "DATA LOW" and "DATA HIGH".
+      The lower 16 bits of the 32-bit data word written to RAM contains "DATA LOW" and the upper 16 bits "DATA HIGH".
+@item Parallel mode with strobe on 32nd bit (RTM_PARALLEL_STROBE)
+      Idem to RTM_PARALLEL mode, except that the strobe is taken from the input data line 31 (MSB) instead of from the STROBE input on the front panel.
+@item Serial modes (RTM_SCI or RTM_CVORB)
+      In RTM serial modes the rear transition module contains up to 32 serial inputs.
+      Each channel can be enabled independently via the "Channel enable register".
+      The channels are stored in RAM by pairs.
+      If for a given pair none of the channels is enabled, the pair is skipped.
+      If only one of the channel in a pair is enabled, the data are stored in RAM and the disabled channel data are replaced by zeros.
+      If both channel are enabled, the data are stored in RAM.
+      The data storage for RTM serial modes is illustrated in @ref{fig:rtm_serial_manager}.
+@end table
+
+@float Figure,fig:rtm_serial_manager
+@center @image{figures/rtm_serial_manager, 10cm,,,pdf}
+@caption{RTM serial modes data storage example.}
+@end float
+
+
+@c ##########################################################################
+@c page
 @node Architecture
 @chapter Architecture
 
 This chapter describes the internal blocks of the FPGA.
 
-
 @sp 1
 
-
-@float Figure,fig:spec_fw_arch
-@c @center @image{../../figures/spec_fw_arch_module, 15cm,,,pdf}
-@caption{FPGA firmware architecture block diagram.}
+@float Figure,fig:gw_arch
+@center @image{figures/arch_diag, 15cm,,,pdf}
+@caption{Simplified FPGA gateware architecture block diagram.}
 @end float
 
 @sp 1
 
+TODO -> describe blocks?
+
+
 @c ##########################################################################
-@page
+@c page
 @node Registers description
 @chapter Registers description
+
+TODO -> VME address modifiers, address ranges (along with jumper settings??)
 
 @c --------------------------------------------------------------------------
 @section Memory map
 
-The @ref{tab:memory_map} shows the Wishbone slaves mapping.
-
-@float Table,tab:memory_map
-@multitable {0x0020-0x7FFC}{Access}{Control and Status (CSR) register}
+@float
+@multitable {0x0020-0x7FFC}{Access}{Reserved, unmapped (do not access)}
 @headitem Byte offset @tab Access @tab Description
-@item @code{0x0000}        @tab r/w @tab Control and Status (CSR) register
-@item @code{0x0004}        @tab ro  @tab Memory pointer register
-@item @code{0x0008}        @tab r/w @tab Mode register
-@item @code{0x000C}        @tab r/w @tab Channel enable register
-@item @code{0x0010}        @tab ro  @tab Sampling clock frequency register
-@item @code{0x0014}        @tab r/w @tab Channel select register
-@item @code{0x0018}        @tab r/w @tab CVORB mode setting register
-@item @code{0x0020-0x7FFC} @tab ro  @tab RAM
+@item @code{0x0000}        @tab rw @tab Control and Status (CSR) register
+@item @code{0x0004}        @tab ro @tab Memory pointer register
+@item @code{0x0008}        @tab rw @tab Mode register
+@item @code{0x000C}        @tab rw @tab Channel enable register
+@item @code{0x0010}        @tab ro @tab Sampling clock frequency register
+@item @code{0x0014}        @tab rw @tab Channel select register
+@item @code{0x0018}        @tab rw @tab CVORB mode setting register
+@item @code{0x001C}        @tab -  @tab Reserved, unmapped (do not access)
+@item @code{0x0020-0x7FFC} @tab ro @tab RAM
 @end multitable
-@caption{CVORA memory map.}
+@c caption{CVORA memory map.}
 @end float
 
 
 @c --------------------------------------------------------------------------
 @section Control and Status (CSR) register
 
+@float
+@multitable {Byte offset}{Access}{Soft reset (in write), acquisition in progress (in read)}
+@headitem Byte offset @tab Access @tab Description
+@item @code{[0]}     @tab rw @tab Front panel input pulse polarity (unused)
+@item @code{[1]}     @tab rw @tab Enable/disable module
+@item @code{[2]}     @tab rw @tab Enable/disable IRQ
+@item @code{[3]}     @tab wo @tab Soft start (ignore on read)
+@item @code{[4]}     @tab wo @tab Soft stop (ignore on read)
+@item @code{[5]}     @tab rw @tab Soft reset (in write), acquisition in progress (in read)
+@item @code{[6]}     @tab ro @tab Counter overflow (32-bit and 2x 16-bit counter modes)
+@item @code{[7]}     @tab ro @tab RAM overflow
+@item @code{[15:8]}  @tab rw @tab IRQ vector
+@item @code{[31:16]} @tab rw @tab Gateware version (4 digits BCD, e.g 0x0142=v1.42)
+@end multitable
+@c caption{CSR register fields.}
+@end float
+
 
 @c --------------------------------------------------------------------------
 @section Memory pointer register
+
+The memory pointer allows the user to know where to read the data in RAM.
+The memory pointer is reset to 0x20 (first address of the RAM) on a START or RESET pulse.
+Then during an acquisition, the pointer is automatically incremented by 4 on a rising edge of CLOCK (every time a sample is written to RAM).
+If the pointer equals 0x7FFFF the "RAM overflow" bit in the CSR register is set.
+
+@float
+@multitable {Byte offset}{Access}{RAM memory write address pointer (byte address)}
+@headitem Byte offset @tab Access @tab Description
+@item @code{[18:0]}  @tab ro @tab RAM memory write address pointer (byte address)
+@item @code{[31:19]} @tab ro @tab Unused (write as 0's, ignore on read)
+@end multitable
+@c caption{Memory pointer register fields.}
+@end float
 
 
 @c --------------------------------------------------------------------------
 @section Mode register
 
+All modes are described in detail in the @ref{Acquisition modes}.
+
+The module @b{must} be disabled (in CSR register) to change the mode.
+
+@float
+@multitable {Byte offset}{Access}{Unused (write as 0's, ignore on read)}
+@headitem Byte offset @tab Access @tab Description
+@item @code{[3:0]}  @tab rw @tab Mode
+@item @code{[7:4]}  @tab ro @tab Unused (write as 0's, ignore on read)
+@item @code{[31:8]} @tab ro @tab Contains 0x43564F = "CVO"
+@end multitable
+@c caption{Mode register fields.}
+@end float
+
 
 @c --------------------------------------------------------------------------
 @section Channel enable register
+
+This register is the channel enable mask for RTM serial modes: RTM_SCI and RTM_CVORB (See @ref{Acquisition modes}).
+A channel is enabled when a one is written to the corresponding bit.
+
+The module @b{must not} be acquiring to change the channel enable mask.
+
+@float
+@multitable {Byte offset}{Access}{RTM serial channel enable mask}
+@headitem Byte offset @tab Access @tab Description
+@item @code{[31:0]}  @tab rw @tab RTM serial channel enable mask
+@end multitable
+@c caption{Channel enable register.}
+@end float
 
 
 @c --------------------------------------------------------------------------
 @section Sampling clock frequency register
 
+The sampling clock is taken from the "CLOCK" front panel input.
+
+@float
+@multitable {Byte offset}{Access}{Sampling clock frequency}
+@headitem Byte offset @tab Access @tab Description
+@item @code{[31:0]}  @tab ro @tab Sampling clock frequency in Hz
+@end multitable
+@c caption{Sampling clock frequency register.}
+@end float
+
+@quotation Note
+@c Note that if no pulse are detected on the input, the frequency will not be updated!
+@end quotation
 
 @c --------------------------------------------------------------------------
 @section Channel select register
 
+This register select which RTM serial channel is reproduced on the analogue outputs.
+There are two analogue outputs. Therefore the selected channel and the next one are reproduced on the analogue outputs.
+Note that only even channels can be selected (bit 0 is ignored in the gateware).
+This register is also used in RTM_CVORB mode to select the channels to be measured and published in "CVORB mode setting" register.
+
+@float
+@multitable {Byte offset}{Access}{Unused (write as 0's, ignore on read)}
+@headitem Byte offset @tab Access @tab Description
+@item @code{[4:0]}  @tab rw @tab RTM serial channel selection
+@item @code{[31:5]} @tab ro @tab Unused (write as 0's, ignore on read)
+@end multitable
+@c caption{Channel select register fields.}
+@end float
 
 @c --------------------------------------------------------------------------
 @section CVORB mode setting register
 
+This register allows to set the pulse width threshold for the CVORB protocol decoder.
 
-@c ##########################################################################
-@page
-@node Modes
-@chapter Modes
+The convertion formula between pulse time and value to be written to the register is:
 
-mode list table here...
+@center @math{regval = 2 * (time / 25ns)}
 
-@c --------------------------------------------------------------------------
-@section front panel optical input 1 only (16-bit serial, SCI protocol)
+@float
+@multitable {Byte offset}{Access}{Unused (write as 0's, ignore on read)}
+@headitem Byte offset @tab Access @tab Description
+@item @code{[7:0]}   @tab rw @tab Pulse width threshold
+@item @code{[15:8]}  @tab ro @tab Unused (write as 0's, ignore on read)
+@item @code{[23:16]} @tab ro @tab Measured pulse width 1
+@item @code{[31:24]} @tab ro @tab Measured pulse width 2
+@end multitable
+@c caption{CVORB mode setting register fields.}
+@end float
 
-
-@c --------------------------------------------------------------------------
-@section front panel copper input 1 only (16-bit serial, SCI protocol)
-
-
-@c --------------------------------------------------------------------------
-@section 32-bit up/down counter (btrain)
-
-@c --------------------------------------------------------------------------
-@section parallel rtm input (32-bit)
-
-@c --------------------------------------------------------------------------
-@section front panel optical input 1 and 2 (2x 16-bit serial, SCI protocol)
-
-@c --------------------------------------------------------------------------
-@section front panel copper input 1 and 2 (2x 16-bit serial, SCI protocol)
-
-@c --------------------------------------------------------------------------
-@section rtm copper inputs (32x 16-bit serial, SCI protocol)
-
-@c --------------------------------------------------------------------------
-@section front panel optical input 1 only (16-bit serial, CVORB protocol)
-
-@c --------------------------------------------------------------------------
-@section front panel copper input 1 only (16-bit serial, CVORB protocol)
-
-@c --------------------------------------------------------------------------
-@section 2x 16-bit up counter
-
-@c --------------------------------------------------------------------------
-@section front panel optical input 1 and 2 (2x 16-bit serial, CVORB protocol)
-
-@c --------------------------------------------------------------------------
-@section front panel copper input 1 and 2 (2x 16-bit serial, CVORB protocol)
-
-@c --------------------------------------------------------------------------
-@section rtm copper inputs (32x 16-bit serial, CVORB protocol)
+For front panel modes (FP_*), the measured values 1 and 2 reflect the corresponding input.
+In RTM_CVORB mode, the measured value 1 and 2 depend on the channel select register.
 
 
 @c ##########################################################################
-@page
-@node Physical description
-@chapter Physical description
-
-
-@c --------------------------------------------------------------------------
-@section Front panel
-
-@c --------------------------------------------------------------------------
-@section Jumper settings
-
-@c --------------------------------------------------------------------------
-@section Rear Transition Modules (RTM)
-
-
-@c ##########################################################################
-@page
+@c page
 @node Installation
 @chapter Installation
 
+TODO -> is this section useful?
 
 @c --------------------------------------------------------------------------
 @node Test programs
 @section Test programs
 
+TODO -> python test prog, dependencies (vmeio driver, lib, scipy, ...)
 
 @c ##########################################################################
-@page
+@c page
 @node Missing Features and Improvements
 @chapter Missing Features and Improvements
+
+TODO -> any?
 
 @itemize @textdegree
 @item tt
@@ -320,12 +529,113 @@ mode list table here...
 @end itemize
 
 @c ##########################################################################
-@page
+@c page
 @node Appendix
 @appendix
 
+
 @c --------------------------------------------------------------------------
-@section 
+@section Front panel
+
+@float
+@center @image{figures/cvora_fp, 3cm,,,pdf}
+@end float
+
+@float Table,tab:fp_leds
+@multitable {EXT DISABLE}{Yellow}{Flashes when the module acknowledges a VME transfer}
+@headitem Label @tab Color @tab Description
+@item EXT DISABLE @tab Yellow @tab ON when the module is disabled
+@item ACQ ENABLE  @tab Green  @tab ON when the module is acquiring
+@item WRITE       @tab Green  @tab ON when data are written to RAM
+@item READ        @tab Green  @tab ON when data are read from RAM
+@item START       @tab Green  @tab Flashes on START
+@item STOP        @tab Green  @tab Flashes on STOP
+@item INT ENABLE  @tab Green  @tab ON when IRQ is enabled
+@item SPARE       @tab Green  @tab ON when RAM pointer or counter overflows
+@item DTACK       @tab Green  @tab Flashes when the module acknowledges a VME transfer
+@end multitable
+@caption{Front panel LEDs description.}
+@end float
+
+@float Table,tab:fp_io
+@multitable {ANALOG OUT1}{Direction}{Optical}{LEMO 0 2-pin}
+@headitem Label @tab Direction @tab Level @tab Connector
+@item CLOCK @tab Input @tab TTL @tab LEMO 00
+@item START @tab Input @tab TTL @tab LEMO 00
+@item STOP  @tab Input @tab TTL @tab LEMO 00
+@item BUP   @tab Input @tab TTL @tab LEMO 00
+@item BDOWN @tab Input @tab TTL @tab LEMO 00
+@item ANALOG OUT1 @tab Output @tab +/-10V @tab LEMO 00
+@item ANALOG OUT2 @tab Output @tab +/-10V @tab LEMO 00
+@item DATA IN 1   @tab Input @tab  @tab LEMO 0 2-pin
+@item DATA IN 2   @tab Input @tab  @tab LEMO 0 2-pin
+@item SDATA IN 1  @tab Input @tab Optical @tab HFBR2521
+@item SDATA IN 2  @tab Input @tab Optical @tab HFBR2521
+@item RS232       @tab Output @tab RS232 @tab 2x5 header
+@end multitable
+@caption{Front panel connectors description.}
+@end float
+
+The analogue outputs reflects the state of the seleted input @b{before sampling}.
+It means that the DAC refresh rate is equal to the input data rate.
+
+The RS232 port is used to send ASCII strings to a LCD display ("Timing Display").
+The button "New Line" on the LCD display allows to select the next string.
+The CVORA module is sending the following five strings.
+
+@float
+@multitable {String #}{Sampling clock frequency}{"F1: nnnnn.nnnkhz"}
+@headitem String # @tab Description @tab Example
+@item 1 @tab Gateware version         @tab @code{CVORA Ver: nn.nn}
+@item 2 @tab A24 base address         @tab @code{BA: 0xnn0000}
+@item 3 @tab Mode                     @tab @code{FP OP16 SCI}
+@item 4 @tab Sampling clock frequency @tab @code{F1: nnnnn.nnnkHz}
+@item 5 @tab Inter-acquisition time   @tab @code{ACQ: nnnnn x Clk}
+@end multitable
+@end float
+
+
+@c --------------------------------------------------------------------------
+@section Jumper settings
+
+@float Table,tab:jumper_settings
+@multitable {Module #}{0x300000}{A16 (SW1)}
+@headitem Module # @tab A24 (SW2) @tab A16 (SW1)
+@item 1st @tab @code{0x300000} @tab @code{0x6000}
+@item 2nd @tab @code{0x400000} @tab @code{0x6100}
+@item 3rd @tab @code{0x500000} @tab @code{0x6200}
+@end multitable
+@caption{Address jumpers configuration.}
+@end float
+
+The base address increment is @code{0x100000} for the A24 address range and @code{0x100} for the A16 address range.
+
+The A16 address range is used for remote programming of the FPGA configuration flash memory.
+Note that jumpers ST1->ST4 must be present for the remote programming to work.
+
+A graphical illustration of the CVORA jumper settings can be found at the following address:
+@uref{http://ab-dep-co-ex.web.cern.ch/ab-dep-co-ex/hard/cards/cvora.html}
+
+
+@c --------------------------------------------------------------------------
+@node Rear Transition Modules
+@section Rear Transition Modules
+
+@float Table,tab:rtm_modules
+@multitable {Eqp. code}{Input number}{RTM 6U with 32x LEMO 0 2-pin connectors (2 slots)}
+@headitem Eqp. code @tab Input number @tab Description
+@item CVARB @tab 32 @tab RTM 5U with 32x LEMO 0 2-pin connectors (3 slots)
+@item CVARB @tab 22 @tab RTM 5U with 22x LEMO 0 2-pin connectors (2 slots)
+@item CVARB @tab 11 @tab RTM 5U with 11x LEMO 0 2-pin connectors (1 slot)
+@item CVARC @tab 2  @tab RTM 5U with 2x 34-pin connector for Ribbon cable
+@item CVARH @tab 32 @tab RTM 6U with 32x LEMO 0 2-pin connectors (2 slots)
+@item CVARH @tab 16 @tab RTM 6U with 16x LEMO 0 2-pin connectors (1 slot)
+@item CVARI @tab 2  @tab RTM 6U with 2x 34-pin connector for Ribbon cable
+@end multitable
+@caption{CVORA compatible RTM modules.}
+@end float
+
+
 
 
 
