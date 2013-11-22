@@ -1,90 +1,39 @@
-----------------------------------------------------------------------------------
--- Company:  CERN
--- Engineer: Philippe Nouchi
+--------------------------------------------------------------------------------
+-- CERN (BE-CO-HT)
+-- CVORA top level entity
+--------------------------------------------------------------------------------
 --
--- Create Date:    10:30:24 04/25/2006
--- Design Name:    cvora
--- Module Name:    cvora_top - Behavioral
--- Project Name:   cvora
--- Target Devices: Spartan 3
--- Description:    Top level module for the cvora card FPGA
+-- unit name: top_cvora
 --
--- Dependencies:
+-- author: Philippe Nouchi
+--         Matthieu Cattin (matthieu.cattin@cern.ch)
 --
--- Revision:
--- Revision 0.01 - File Created
+-- date: 25-04-2006
 --
--- Version 0.02 P.N. le 16-05-2006 VME access in 32 bits data
--- Version 0.03 P.N. le 17-05-2006 Progress on the Btrain Up/Down counter and RS232 Display
--- Version 0.04 P.N. le 20-06-2006 Add Serial Data input and output for the DAC
--- Version 0.05 P.N. le 20-06-2006 Construct cadence composant, so all IOs must be used
--- Version 0.06 P.N. le 21-06-2006 Add the internal RAM
--- Version 0.07 P.N. le 22-06-2006 Reduce Memory --> 16 kLword
--- Version 0.08 P.N. le 22-06-2006 Add External Ram pins
--- Version 0.09 P.N. le 17-10-2006 Add Monostable for leds (300ms)
--- Version 0.10 P.N. le 18-10-2006 Add Base address display (line 2)
--- Version 0.11 P.N. le 19-10-2006 Works on leds and data acquisition signals
--- Version 0.12 P.N. le 23-10-2006 Add input pulses polarity ('0' is from a TG8)
--- Version 0.13 P.N. le 26-10-2006 Add logic for IRQ vector
--- Version 0.14 P.N. le 30-10-2006 Start works on serial inputs
--- Version 1.00 P.N. le 16-11-2006 First compilation with final ucf file
--- Version 1.01 P.N. le 30-01-2007 First compilation with ise9
--- Version 1.02 P.N. le 01-02-2007 Works on monostable part
--- Version 1.03 P.N. le 02-02-2007 Works on polarity of the inputs
--- Version 1.04 P.N. le 05-02-2007 Works on DAC outputs
--- Version 1.05 P.N. le 05-02-2007 Works on Optical fiber inputs and Btrain Counter
--- Version 1.10 P.N. le 06-02-2007 Compilation for the Flash
--- Version 1.11 P.N. le 05-03-2007 Inverse ModuleAddr
--- Version 1.12 P.N. le 06-03-2007 Works on memory
--- Version 1.13 P.N. le 07-03-2007 Compilation with distributed RAM only
--- Version 1.14 P.N. le 07-03-2007 Back to BlockRam + work on the Paralleles inputs
--- Version 1.15 P.N. le 08-03-2007 Value of the address pointer returned in byte (x4)
--- Version 1.16 P.N. le 09-03-2007 Analog outputs is independant of the 16/32 bit mode (serial only)
--- Version 1.17 P.N. le 12-03-2007 Utilisation of the External RAM (idt71v35761)
--- Version 1.18 P.N. le 12-03-2007 Remove the Internal RAM
--- Version 1.19 P.N. le 13-03-2007 modification for the external Ram
--- Version 1.20 P.N. le 13-03-2007 Creation of the LoadDACDelay component
--- Version 1.21 P.N. le 14-03-2007 Works on Analog output
--- Version 1.22 P.N. le 21-03-2007 Modification to use all the external memory 512 kLword
--- Version 1.23 P.N. le 21-03-2007 In serail mode write only the memory on a rising edge of external clock
--- Version 1.24 P.N. le 27-03-2007 Change register mode + change mapping (asked by JMN)
---                                 Add a Software start and stop
--- Version 1.25 P.N. le 28-03-2007 Change memory pointer offset (0x20 to 0x7fffc) and add P2 serial inputs
---                                 in place of paralleles inputs
---                                 Protection againt mask change during acquisition (must be stopped to change the mask)
--- Version 1.26 P.N. le 29-03-2007 Works on mode P2Serial - creation of the component P2SerialManagerSTM for this mode
--- Version 1.27 P.N. le 03-04-2007 Modification of the P2SerialManager component
--- Version 1.28 P.N. le 04-04-2007 Modification in the STM of the P2Serial component and valid all 32 inputs (MASKCHANNEL)
--- Version 1.29 P.N. le 04-04-2007 Add the signal P2MemBusy to be sure no read from VME bus occurs when there is a write in the External memory
--- Version 1.30 P.N. le 05-04-2007 Mods on  serial acquisition - the startpulse don't clear the memory - remove signal P2MemBusy
--- Version 1.31 P.N. le 05-04-2007 Need a time out if one of the rear inputs are not cabled
--- Version 1.32 P.N. le 10-04-2007 Remove of this annoying RAMPar warning during compilation
---                                 and mods in P2SerialManager (see version 1.3 of the component)
--- Version 1.33 P.N. le 18-04-2007 Add a frequency Counter to monitor the external input clock
--- Version 1.34 P.N. le 19-04-2007 Modification of the time acquisition of the frequencymeter
--- Version 1.35 P.N. le 20-04-2007 Modification of external clock rising edge detection for the frequency meter
---                                 The analog outputs show also the inputs one and two of the rear panel in P2SERIALMODE
--- Version 1.36 P.N. le 20-04-2007 Inverse P2 inputs one and two for analog reconstruction in P2SERIALMODE
--- Version 1.37 P.N. le 23-04-2007 Bug in offset address of the memory: fixed
--- Version 1.38 P.N. le 24-04-2007 Bug to read the frequency register: fixed
--- Version 1.39 P.N. le 24-04-2007 Add a spare register
--- Version 1.40 P.N. le 25-04-2007 start Frequency meter with local PPS rising_edge (localPPSRE signal)
--- Version 1.41 P.N. le 26-04-2007 Write a complete new and simple Frequency Meter generic component
--- Version 1.42 P.N. le 26-04-2007 MPPR Compilation and cosmetic change
--- Version 1.43 P.N. le 22-10-2007 Default Pulse change for '0' and some minor change when the board receive command in SOURCEREG
--- Version 1.44 P.N. le 23-10-2007 Wide the Stop and start edge detection
--- Version 1.45 P.N. le 23-10-2007 Add a display line with time between stop and start pulses
--- Version 1.46 P.N. le 23-10-2007 modify the display process  of the line5 line
--- Version 1.47 P.N. le 24-10-2007 Remove unused signals
--- Version 1.48 P.N. le 07-02-2008 Bug found in the parallel mode by JM Nonglaton - the first address memory was not written
--- Version 1.49 P.N. le 08-02-2008 Add Dac Register to monitor P2 Inputs
--- Version 1.50 P.N. le 11-02-2008 Work on memory pointer in the others mode than P2Serial
--- Version 1.51 P.N. le 14-02-2008 Mods in BTRAIN Counter component
--- Version 1.52 P.N. le 19-02-2008 In BTRAIN Counter mode the memory is written only when an external clock pulse arise.
--- Version 1.53 P.N. le 20-02-2008 JMN found a bug in the BTRAIN Mode, works again on this one...
---                                 The memory was not written in a good timing.
---         2.00 MC      23.10.2013 Code clean-up, re-structuring, external inputs sync,
---                                 add, 2x 16-bit up counter mode, add CVORB protocol decoding.
+-- description: Top level module for the CVORA board.
+--
+-- dependencies:
+--
+--------------------------------------------------------------------------------
+-- GNU LESSER GENERAL PUBLIC LICENSE
+--------------------------------------------------------------------------------
+-- This source file is free software; you can redistribute it and/or modify it
+-- under the terms of the GNU Lesser General Public License as published by the
+-- Free Software Foundation; either version 2.1 of the License, or (at your
+-- option) any later version. This source is distributed in the hope that it
+-- will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+-- of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+-- See the GNU Lesser General Public License for more details. You should have
+-- received a copy of the GNU Lesser General Public License along with this
+-- source; if not, download it from http://www.gnu.org/licenses/lgpl-2.1.html
+--------------------------------------------------------------------------------
+-- changes history: see git log
+--------------------------------------------------------------------------------
+-- last changes:
+--   23.10.2013 mcattin  New major version 2.0
+--                       Code clean-up, re-structuring, external inputs sync,
+--                       unify sampling for all modes.
+--                       Add, 2x 16-bit up counter mode, add CVORB protocol decoding.
 ----------------------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
@@ -105,7 +54,7 @@ entity top_cvora is
   generic(
     g_GATEWARE_VER      : std_logic_vector(15 downto 0) := X"0200";
     g_LED_PULSE_WIDTH   : natural                       := 8000000;  -- in sys_clk cycles
-    g_DEFAULT_INPUT_POL : std_logic                     := '0';      -- 0 = negative logic, 1 = positive logic
+    g_DEFAULT_INPUT_POL : std_logic                     := '1';      -- 0 = negative logic, 1 = positive logic
     g_DEFAULT_IRQ_VECT  : std_logic_vector(7 downto 0)  := x"86"     -- 134 decimal
     );
 
@@ -238,6 +187,8 @@ architecture Behavioral of top_cvora is
   ------------------------------------------------------------------------------
   -- parallel mode
   signal parallel_data : std_logic_vector(31 downto 0);
+  signal rtm_data_d    : std_logic_vector(31 downto 0);
+  signal rtm_data_d2   : std_logic_vector(31 downto 0);
 
   ------------------------------------------------------------------------------
   -- 32-bit up/down counter (b-train)
@@ -310,29 +261,29 @@ architecture Behavioral of top_cvora is
 
   ------------------------------------------------------------------------------
   -- Front panel input sync and edge detect
-  signal fp_clock         : std_logic;
-  signal fp_start         : std_logic;
-  signal fp_stop          : std_logic;
-  signal fp_bup           : std_logic;
-  signal fp_bdown         : std_logic;
-  signal fp_strobe        : std_logic;
-  signal fp_reset         : std_logic;
-  signal fp_clock_p       : std_logic;
-  signal fp_start_p       : std_logic;
-  signal fp_stop_p        : std_logic;
-  signal fp_bup_p         : std_logic;
-  signal fp_bdown_p       : std_logic;
-  signal fp_strobe_p      : std_logic;
-  signal fp_reset_p       : std_logic;
-  signal sw_start_p       : std_logic;
-  signal sw_stop_p        : std_logic;
-  signal sw_reset_p       : std_logic;
-  signal start_p          : std_logic;
-  signal stop_p           : std_logic;
-  signal reset_p          : std_logic;
-  signal start_p_d        : std_logic_vector(3 downto 0);
-  signal clock_p_d        : std_logic_vector(2 downto 0);
-  signal strobe_p_d       : std_logic_vector(4 downto 0);
+  signal fp_clock    : std_logic;
+  signal fp_start    : std_logic;
+  signal fp_stop     : std_logic;
+  signal fp_bup      : std_logic;
+  signal fp_bdown    : std_logic;
+  signal fp_strobe   : std_logic;
+  signal fp_reset    : std_logic;
+  signal fp_clock_p  : std_logic;
+  signal fp_start_p  : std_logic;
+  signal fp_stop_p   : std_logic;
+  signal fp_bup_p    : std_logic;
+  signal fp_bdown_p  : std_logic;
+  signal fp_strobe_p : std_logic;
+  signal fp_reset_p  : std_logic;
+  signal sw_start_p  : std_logic;
+  signal sw_stop_p   : std_logic;
+  signal sw_reset_p  : std_logic;
+  signal start_p     : std_logic;
+  signal stop_p      : std_logic;
+  signal reset_p     : std_logic;
+  signal start_p_d   : std_logic_vector(3 downto 0);
+  signal clock_p_d   : std_logic_vector(2 downto 0);
+  signal strobe_p_d  : std_logic_vector(4 downto 0);
 
   ------------------------------------------------------------------------------
   -- DAC
@@ -343,7 +294,6 @@ architecture Behavioral of top_cvora is
   -- RAM manager
   signal ram_rd            : std_logic;
   signal ram_rd_addr       : std_logic_vector(RAM_ADDR_LENGTH-1 downto 0);
-  signal ram_rd_done_d     : std_logic_vector(1 downto 0);
   signal ram_rd_data       : std_logic_vector(31 downto 0);
   signal ram_rd_data_valid : std_logic;
 
@@ -356,16 +306,19 @@ architecture Behavioral of top_cvora is
 
   ------------------------------------------------------------------------------
   -- Input clock frequency counter
-  signal clock_freq       : std_logic_vector(31 downto 0);
-  signal clock_freq_t     : std_logic_vector(31 downto 0);
-  signal clock_freq_valid : std_logic;
-  signal clock_freq_bcd   : BCD_vector_TYPE(7 downto 0);
+  signal clock_freq         : std_logic_vector(31 downto 0);
+  signal clock_freq_t       : std_logic_vector(31 downto 0);
+  signal clock_freq_valid   : std_logic;
+  signal clock_freq_valid_d : std_logic;
+  signal clock_freq_valid_p : std_logic;
+  signal clock_freq_wd      : std_logic;
+  signal clock_freq_bcd     : BCD_vector_TYPE(7 downto 0);
 
   ------------------------------------------------------------------------------
   -- Signal for Data Acquisition
   signal data_acq_en    : std_logic;
   signal input_polarity : std_logic;
-  signal module_en      : std_logic := '1';  -- the module is enable by default
+  signal module_en      : std_logic;
 
 
 begin
@@ -404,15 +357,15 @@ begin
   ------------------------------------------------------------------------------
 
   -- Front panel input polarity
-  --   g_DEFAULT_INPUT_POL=0 -> negative logic
-  --   g_DEFAULT_INPUT_POL=1 -> positive logic
-  fp_clock  <= fp_clock_i  when g_DEFAULT_INPUT_POL = '1' else not fp_clock_i;
-  fp_start  <= fp_start_i  when g_DEFAULT_INPUT_POL = '1' else not fp_start_i;
-  fp_stop   <= fp_stop_i   when g_DEFAULT_INPUT_POL = '1' else not fp_stop_i;
-  fp_bup    <= fp_bup_i    when g_DEFAULT_INPUT_POL = '1' else not fp_bup_i;
-  fp_bdown  <= fp_bdown_i  when g_DEFAULT_INPUT_POL = '1' else not fp_bdown_i;
-  fp_strobe <= fp_strobe_i when g_DEFAULT_INPUT_POL = '1' else not fp_strobe_i;
-  fp_reset  <= fp_reset_i  when g_DEFAULT_INPUT_POL = '1' else not fp_reset_i;
+  --   0 -> negative logic
+  --   1 -> positive logic (default)
+  fp_clock  <= fp_clock_i  when input_polarity = '1' else not fp_clock_i;
+  fp_start  <= fp_start_i  when input_polarity = '1' else not fp_start_i;
+  fp_stop   <= fp_stop_i   when input_polarity = '1' else not fp_stop_i;
+  fp_bup    <= fp_bup_i    when input_polarity = '1' else not fp_bup_i;
+  fp_bdown  <= fp_bdown_i  when input_polarity = '1' else not fp_bdown_i;
+  fp_strobe <= fp_strobe_i when input_polarity = '1' else not fp_strobe_i;
+  fp_reset  <= fp_reset_i  when input_polarity = '1' else not fp_reset_i;
 
   -- Detects rising edge on front panel inputs
   cmp_clock_sync : gc_sync_ffs
@@ -630,7 +583,7 @@ begin
   p_csr_reg : process(sys_clk, sys_rst_n)
   begin
     if sys_rst_n = '0' then
-      input_polarity <= '0';
+      input_polarity <= g_DEFAULT_INPUT_POL;
       module_en      <= '0';
       irq_en         <= '0';
       sw_start_p     <= '0';
@@ -700,7 +653,8 @@ begin
     if sys_rst_n = '0' then
       mode <= (others => '0');
     elsif rising_edge(sys_clk) then
-      if mode_reg_wren = '1' then
+      -- the module MUST be disable to change the mode!
+      if (mode_reg_wren = '1' and module_en = '0') then
         mode <= contToRegs.Data(3 downto 0);
       end if;
     end if;
@@ -719,6 +673,7 @@ begin
     if sys_rst_n = '0' then
       channel_en <= (others => '0');
     elsif rising_edge(sys_clk) then
+      -- the module MUST NOT be acquiring to change the channel enable mask
       if channel_en_reg_wren = '1' and data_acq_en = '0' then
         channel_en <= contToRegs.Data;
       end if;
@@ -797,7 +752,6 @@ begin
 
   ------------------------------------------------------------------------------
   -- Acquisition clock frequency meter
-  -- !! Stays at last value if no clock is present !!
   ------------------------------------------------------------------------------
   cmp_clk_freq_meter : gc_frequency_meter
     generic map(
@@ -815,13 +769,26 @@ begin
   p_clk_freq_reg : process (sys_rst_n, sys_clk)
   begin
     if sys_rst_n = '0' then
-      clock_freq <= (others => '0');
+      clock_freq         <= (others => '0');
+      clock_freq_wd      <= '0';
+      clock_freq_valid_d <= '0';
     elsif rising_edge(sys_clk) then
-      if clock_freq_valid = '1' then
-        clock_freq <= clock_freq_t;
+      clock_freq_valid_d <= clock_freq_valid;
+
+      if clock_freq_valid_p = '1' then
+        clock_freq    <= clock_freq_t;
+        clock_freq_wd <= '0';
+      elsif pps_p = '1' then
+        if clock_freq_wd = '1' then
+          clock_freq <= (others => '0');
+        else
+          clock_freq_wd <= '1';
+        end if;
       end if;
     end if;
   end process p_clk_freq_reg;
+
+  clock_freq_valid_p <= clock_freq_valid and not(clock_freq_valid_d);
 
 
   ------------------------------------------------------------------------------
@@ -850,14 +817,19 @@ begin
   ------------------------------------------------------------------------------
   -- Parallel mode
   ------------------------------------------------------------------------------
-  p_parallel_sampling: process (sys_rst_n, sys_clk)
+  p_parallel_sampling : process (sys_rst_n, sys_clk)
   begin
     if sys_rst_n = '0' then
       parallel_data <= (others => '0');
+      rtm_data_d    <= (others => '0');
+      rtm_data_d2   <= (others => '0');
     elsif rising_edge(sys_clk) then
+      rtm_data_d  <= rtm_data_i;
+      rtm_data_d2 <= rtm_data_d;
+
       -- Samples parallel data input 50ns after STROBE rising edge
       if strobe_p_d(2) = '1' then
-        parallel_data <= rtm_data_i;
+        parallel_data <= rtm_data_d2;
       end if;
     end if;
   end process p_parallel_sampling;
@@ -927,7 +899,7 @@ begin
   -- RTM serial decoders
   ------------------------------------------------------------------------------
 
-  rtm_data_clk_p     <= fp_clock_p and data_acq_en;
+  rtm_data_clk_p <= fp_clock_p and data_acq_en;
 
   -- RESET ignored during acquisition
   rtm_reset_ram_addr <= reset_p when data_acq_en = '0' else '0';
@@ -1051,17 +1023,15 @@ begin
   begin
     if sys_rst_n = '0' then
       ram_rd_addr <= (others => '0');
---      ram_rd_done_d <= (others => '0');
     elsif rising_edge(sys_clk) then
       if ram_rd = '1' then
         -- VME provides byte address, RAM manager takes 32-bit word address
         ram_rd_addr <= ContToMem.Add(18 downto 2);
       end if;
---      ram_rd_done_d <= ram_rd_done_d(0) & ram_rd_data_valid;
     end if;
   end process p_ram_read;
 
-  MemToCont(EXT_RAM_P).RdDone <= ram_rd_data_valid;  -- ### ram_rd_done_d(1);
+  MemToCont(EXT_RAM_P).RdDone <= ram_rd_data_valid;
   MemToCont(EXT_RAM_P).Data   <= ram_rd_data;
 
   -- Sample data from sources and write to RAM
@@ -1071,23 +1041,26 @@ begin
       ram_wr_data <= (others => '0');
     elsif rising_edge(sys_clk) then
       -- priority on data_acq_en as the rtm_serial_manager might still be writing data to RAM after the STOP
-      if (mode = c_RTM_SCI_M) or (mode = c_RTM_CVORB_M) then
+      if (mode = c_RTM_SCI_M or mode = c_RTM_CVORB_M) then
         ram_wr_data <= rtm_ram_data;
-      elsif data_acq_en = '1' then
-        if (fp_clock_p = '1') and (mode = c_CNT32_M) then
+      elsif (data_acq_en = '1' and fp_clock_p = '1') then
+        if mode = c_CNT32_M then
           ram_wr_data <= ud_cnt_value;
-        elsif (fp_clock_p = '1') and (mode = c_CNT2X16_M) then
+        elsif mode = c_CNT2X16_M then
           ram_wr_data <= up_cnt2_value & up_cnt1_value;
-        elsif (fp_clock_p = '1') and (mode = c_RTM_PARALLEL_M) then
-          ram_wr_data <= rtm_data_i;
-        elsif (fp_clock_p = '1') and (mode = c_FP_OP16_SCI_M or mode = c_FP_CU16_SCI_M) then
+        elsif mode = c_RTM_PARALLEL_M then
+          ram_wr_data <= parallel_data;
+        elsif (mode = c_FP_OP16_SCI_M or mode = c_FP_CU16_SCI_M) then
           ram_wr_data <= x"0000" & fp_data1_sci;
-        elsif (fp_clock_p = '1') and (mode = c_FP_OP16_CVORB_M or mode = c_FP_CU16_CVORB_M) then
+        elsif (mode = c_FP_OP16_CVORB_M or mode = c_FP_CU16_CVORB_M) then
           ram_wr_data <= x"0000" & fp_data1_cvorb;
-        elsif (fp_clock_p = '1') and (mode = c_FP_OP32_SCI_M or mode = c_FP_CU32_SCI_M) then
+        elsif (mode = c_FP_OP32_SCI_M or mode = c_FP_CU32_SCI_M) then
           ram_wr_data <= fp_data2_sci & fp_data1_sci;
-        elsif (fp_clock_p = '1') and (mode = c_FP_OP32_CVORB_M or mode = c_FP_CU32_CVORB_M) then
+        elsif (mode = c_FP_OP32_CVORB_M or mode = c_FP_CU32_CVORB_M) then
           ram_wr_data <= fp_data2_cvorb & fp_data1_cvorb;
+        else
+          -- if no valid mode is selected, write zeros to RAM
+          ram_wr_data <= (others => '0');
         end if;
       end if;
     end if;
@@ -1331,8 +1304,8 @@ begin
     port map(
       Clock      => sys_clk,
       Reset      => sys_rst_n,
-      SB_Ready   => clock_freq_valid,
-      SB_Number  => clock_freq_t,
+      SB_Ready   => pps_p,
+      SB_Number  => clock_freq,
       BCD_Vector => clock_freq_bcd,
       BCD_Ready  => open);
 
@@ -1380,13 +1353,13 @@ begin
     c_RTM_CVORB_LINE     when mode = c_RTM_CVORB_M     else
     c_RESERVED_LINE;
 
-  -- "F1: nnnnn.nnnkhz"
+  -- "F1: nnnnn.nnnkHz"
   message_to_send(4) <= (
     LETTER_F, letter_1, semicolon,
     space, "0011" & clock_freq_bcd(7), "0011" & clock_freq_bcd(6), "0011" & clock_freq_bcd(5),
     "0011" & clock_freq_bcd(4), "0011" & clock_freq_bcd(3), dot,
     "0011" & clock_freq_bcd(2), "0011" & clock_freq_bcd(1),
-    "0011" & clock_freq_bcd(0), letter_K, letter_hmin, letter_zmin,
+    "0011" & clock_freq_bcd(0), letter_kmin, LETTER_H, letter_zmin,
     Carriage_Return, Line_feed);
 
   -- "ACQ: nnnnn x Clk"
