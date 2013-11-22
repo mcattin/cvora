@@ -45,22 +45,22 @@ package cvora_pkg is
   constant c_NB_RTM_CHAN : natural := 32;
 
   -- Modes
-  constant c_RESERVED1_M     : std_logic_vector(3 downto 0) := "0000";
-  constant c_FP_OP16_SCI_M   : std_logic_vector(3 downto 0) := "0001";
-  constant c_FP_CU16_SCI_M   : std_logic_vector(3 downto 0) := "0010";
-  constant c_CNT32_M         : std_logic_vector(3 downto 0) := "0011";
-  constant c_RTM_PARALLEL_M  : std_logic_vector(3 downto 0) := "0100";
-  constant c_FP_OP32_SCI_M   : std_logic_vector(3 downto 0) := "0101";
-  constant c_FP_CU32_SCI_M   : std_logic_vector(3 downto 0) := "0110";
-  constant c_RTM_SCI_M       : std_logic_vector(3 downto 0) := "0111";
-  constant c_RESERVED2_M     : std_logic_vector(3 downto 0) := "1000";
-  constant c_FP_OP16_CVORB_M : std_logic_vector(3 downto 0) := "1001";
-  constant c_FP_CU16_CVORB_M : std_logic_vector(3 downto 0) := "1010";
-  constant c_CNT2X16_M       : std_logic_vector(3 downto 0) := "1011";
-  constant c_RESERVED3_M     : std_logic_vector(3 downto 0) := "1100";
-  constant c_FP_OP32_CVORB_M : std_logic_vector(3 downto 0) := "1101";
-  constant c_FP_CU32_CVORB_M : std_logic_vector(3 downto 0) := "1110";
-  constant c_RTM_CVORB_M     : std_logic_vector(3 downto 0) := "1111";
+  constant c_RESERVED1_M           : std_logic_vector(3 downto 0) := "0000";
+  constant c_FP_OP16_SCI_M         : std_logic_vector(3 downto 0) := "0001";
+  constant c_FP_CU16_SCI_M         : std_logic_vector(3 downto 0) := "0010";
+  constant c_CNT32_M               : std_logic_vector(3 downto 0) := "0011";
+  constant c_RTM_PARALLEL_M        : std_logic_vector(3 downto 0) := "0100";
+  constant c_FP_OP32_SCI_M         : std_logic_vector(3 downto 0) := "0101";
+  constant c_FP_CU32_SCI_M         : std_logic_vector(3 downto 0) := "0110";
+  constant c_RTM_SCI_M             : std_logic_vector(3 downto 0) := "0111";
+  constant c_RESERVED2_M           : std_logic_vector(3 downto 0) := "1000";
+  constant c_FP_OP16_CVORB_M       : std_logic_vector(3 downto 0) := "1001";
+  constant c_FP_CU16_CVORB_M       : std_logic_vector(3 downto 0) := "1010";
+  constant c_CNT2X16_M             : std_logic_vector(3 downto 0) := "1011";
+  constant c_RTM_PARALLEL_STROBE_M : std_logic_vector(3 downto 0) := "1100";
+  constant c_FP_OP32_CVORB_M       : std_logic_vector(3 downto 0) := "1101";
+  constant c_FP_CU32_CVORB_M       : std_logic_vector(3 downto 0) := "1110";
+  constant c_RTM_CVORB_M           : std_logic_vector(3 downto 0) := "1111";
 
 
   constant RAM_ADDR_LENGTH : integer                                := 17;                              -- Internal Ram address used (number of bits).
