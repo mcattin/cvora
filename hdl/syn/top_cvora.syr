@@ -5,14 +5,14 @@ Parameter TMPDIR set to xst/projnav.tmp
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.04 secs
+Total CPU time to Xst completion: 0.05 secs
  
 --> 
 Parameter xsthdpdir set to xst
 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.04 secs
+Total CPU time to Xst completion: 0.06 secs
  
 --> 
 Reading design: top_cvora.prj
@@ -118,23 +118,23 @@ Compiling vhdl file "/home/mcattin/projects/general-cores/modules/genrams/xilinx
 Architecture syn of Entity generic_dpram_dualclock is up to date.
 Compiling vhdl file "/home/mcattin/projects/general-cores/modules/genrams/xilinx/generic_dpram.vhd" in Library work.
 Architecture syn of Entity generic_dpram is up to date.
-Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/sources/vme_pkg.vhd" in Library work.
+Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/hdl/src/vme_pkg.vhd" in Library work.
 Architecture vme_pkg of Entity vme_pkg is up to date.
 Compiling vhdl file "/home/mcattin/projects/general-cores/modules/genrams/inferred_sync_fifo.vhd" in Library work.
 Architecture syn of Entity inferred_sync_fifo is up to date.
-Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/sources/bus_interface_pkg.vhd" in Library work.
-Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/sources/message_pkg.vhd" in Library work.
+Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/hdl/src/bus_interface_pkg.vhd" in Library work.
+Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/hdl/src/message_pkg.vhd" in Library work.
 Architecture message_pkg of Entity message_pkg is up to date.
 Compiling vhdl file "/home/mcattin/projects/general-cores/modules/wishbone/wb_i2c_master/i2c_master_bit_ctrl.vhd" in Library work.
 Architecture structural of Entity i2c_master_bit_ctrl is up to date.
 Compiling vhdl file "/home/mcattin/projects/general-cores/modules/wishbone/wbgen2/wbgen2_pkg.vhd" in Library work.
 Compiling vhdl file "/home/mcattin/projects/general-cores/modules/genrams/generic/generic_sync_fifo.vhd" in Library work.
 Architecture syn of Entity generic_sync_fifo is up to date.
-Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/sources/cvora_pkg.vhd" in Library work.
+Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/hdl/src/cvora_pkg.vhd" in Library work.
 Architecture cvora_pkg of Entity cvora_pkg is up to date.
 Compiling vhdl file "/home/mcattin/projects/general-cores/modules/common/gencores_pkg.vhd" in Library work.
 Architecture gencores_pkg of Entity gencores_pkg is up to date.
-Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/sources/rs232_rx.vhd" in Library work.
+Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/hdl/src/rs232_rx.vhd" in Library work.
 Architecture behavioral of Entity rs232_rx is up to date.
 Compiling vhdl file "/home/mcattin/projects/general-cores/modules/wishbone/wishbone_pkg.vhd" in Library work.
 Architecture wishbone_pkg of Entity wishbone_pkg is up to date.
@@ -150,17 +150,17 @@ Compiling vhdl file "/home/mcattin/projects/general-cores/platform/xilinx/wb_xil
 Architecture xldr_wbgen2_pkg of Entity xldr_wbgen2_pkg is up to date.
 Compiling vhdl file "/home/mcattin/projects/general-cores/modules/wishbone/wbgen2/wbgen2_fifo_sync.vhd" in Library work.
 Architecture rtl of Entity wbgen2_fifo_sync is up to date.
-Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/sources/rs232_tx.vhd" in Library work.
+Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/hdl/src/rs232_tx.vhd" in Library work.
 Architecture behavioral of Entity rs232_tx is up to date.
 Compiling vhdl file "/home/mcattin/projects/general-cores/modules/common/gc_extend_pulse.vhd" in Library work.
 Architecture rtl of Entity gc_extend_pulse is up to date.
-Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/sources/sci_decoder.vhd" in Library work.
+Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/hdl/src/sci_decoder.vhd" in Library work.
 Architecture rtl of Entity sci_decoder is up to date.
-Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/sources/cvorb_decoder.vhd" in Library work.
+Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/hdl/src/cvorb_decoder.vhd" in Library work.
 Architecture rtl of Entity cvorb_decoder is up to date.
 Compiling vhdl file "/home/mcattin/projects/general-cores/modules/common/gc_pulse_synchronizer.vhd" in Library work.
 Architecture rtl of Entity gc_pulse_synchronizer is up to date.
-Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/sources/rom_mux.vhd" in Library work.
+Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/hdl/src/rom_mux.vhd" in Library work.
 Architecture casewhen of Entity rommux is up to date.
 Compiling vhdl file "/home/mcattin/projects/general-cores/modules/wishbone/wb_slave_adapter/wb_slave_adapter.vhd" in Library work.
 Architecture rtl of Entity wb_slave_adapter is up to date.
@@ -190,23 +190,23 @@ Compiling vhdl file "/home/mcattin/projects/general-cores/modules/wishbone/wb_si
 Architecture syn of Entity simple_pwm_wb is up to date.
 Compiling vhdl file "/home/mcattin/projects/general-cores/platform/xilinx/wb_xilinx_fpga_loader/xloader_wb.vhd" in Library work.
 Architecture syn of Entity xloader_wb is up to date.
-Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/sources/vme_interface.vhd" in Library work.
+Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/hdl/src/vme_interface.vhd" in Library work.
 Architecture vme_intfce of Entity vme_intfce is up to date.
-Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/sources/bus_interface.vhd" in Library work.
+Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/hdl/src/bus_interface.vhd" in Library work.
 Architecture comb of Entity busintcontrol is up to date.
 Compiling vhdl file "/home/mcattin/projects/general-cores/modules/common/gc_frequency_meter.vhd" in Library work.
 Architecture behavioral of Entity gc_frequency_meter is up to date.
-Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/sources/up_down_counter.vhd" in Library work.
+Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/hdl/src/up_down_counter.vhd" in Library work.
 Architecture rtl of Entity up_down_counter is up to date.
-Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" in Library work.
+Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" in Library work.
 Architecture rtl of Entity rtm_serial_manager is up to date.
-Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/sources/ram_manager.vhd" in Library work.
+Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/hdl/src/ram_manager.vhd" in Library work.
 Architecture rtl of Entity rammanager is up to date.
-Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/sources/dac_load_delay.vhd" in Library work.
+Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/hdl/src/dac_load_delay.vhd" in Library work.
 Architecture behavioral of Entity dac_load_delay is up to date.
-Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/sources/bin2bcd.vhd" in Library work.
+Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/hdl/src/bin2bcd.vhd" in Library work.
 Architecture dynamic of Entity sb_to_bcd is up to date.
-Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/sources/message.vhd" in Library work.
+Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/hdl/src/message.vhd" in Library work.
 Architecture behavioral of Entity message is up to date.
 Compiling vhdl file "/home/mcattin/projects/general-cores/modules/common/gc_prio_encoder.vhd" in Library work.
 Architecture rtl of Entity gc_prio_encoder is up to date.
@@ -310,27 +310,27 @@ Compiling vhdl file "/home/mcattin/projects/general-cores/modules/common/gc_dual
 Architecture behavioral of Entity gc_dual_pi_controller is up to date.
 Compiling vhdl file "/home/mcattin/projects/general-cores/modules/common/gc_delay_gen.vhd" in Library work.
 Architecture behavioral of Entity gc_delay_gen is up to date.
-Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" in Library work.
+Compiling vhdl file "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" in Library work.
 Entity <top_cvora> compiled.
 Entity <top_cvora> (Architecture <behavioral>) compiled.
 Compiling vhdl file "/home/mcattin/projects/general-cores/modules/common/gc_moving_average.vhd" in Library work.
 Architecture rtl of Entity gc_moving_average is up to date.
 Compiling vhdl file "/home/mcattin/projects/general-cores/modules/common/gc_crc_gen.vhd" in Library work.
 Architecture rtl of Entity gc_crc_gen is up to date.
-Compiling verilog file "../../../general-cores/modules/wishbone/wb_onewire_master/sockit_owm.v" in library work
-Compiling verilog file "../../../general-cores/modules/wishbone/wb_spi/spi_clgen.v" in library work
-Compiling verilog include file "../../../general-cores/modules/wishbone/wb_spi/spi_defines.v"
-Compiling verilog include file "../../../general-cores/modules/wishbone/wb_spi/timescale.v"
+Compiling verilog file "../../../../general-cores/modules/wishbone/wb_onewire_master/sockit_owm.v" in library work
+Compiling verilog file "../../../../general-cores/modules/wishbone/wb_spi/spi_clgen.v" in library work
+Compiling verilog include file "../../../../general-cores/modules/wishbone/wb_spi/spi_defines.v"
+Compiling verilog include file "../../../../general-cores/modules/wishbone/wb_spi/timescale.v"
 Module <sockit_owm> compiled
-Compiling verilog file "../../../general-cores/modules/wishbone/wb_spi/spi_shift.v" in library work
-Compiling verilog include file "../../../general-cores/modules/wishbone/wb_spi/spi_defines.v"
-Compiling verilog include file "../../../general-cores/modules/wishbone/wb_spi/timescale.v"
+Compiling verilog file "../../../../general-cores/modules/wishbone/wb_spi/spi_shift.v" in library work
+Compiling verilog include file "../../../../general-cores/modules/wishbone/wb_spi/spi_defines.v"
+Compiling verilog include file "../../../../general-cores/modules/wishbone/wb_spi/timescale.v"
 Module <spi_clgen> compiled
-Compiling verilog file "../../../general-cores/modules/wishbone/wb_spi/spi_top.v" in library work
-Compiling verilog include file "../../../general-cores/modules/wishbone/wb_spi/spi_defines.v"
-Compiling verilog include file "../../../general-cores/modules/wishbone/wb_spi/timescale.v"
+Compiling verilog file "../../../../general-cores/modules/wishbone/wb_spi/spi_top.v" in library work
+Compiling verilog include file "../../../../general-cores/modules/wishbone/wb_spi/spi_defines.v"
+Compiling verilog include file "../../../../general-cores/modules/wishbone/wb_spi/timescale.v"
 Module <spi_shift> compiled
-Compiling verilog file "../../../general-cores/modules/wishbone/wb_lm32/generated/lm32_allprofiles.v" in library work
+Compiling verilog file "../../../../general-cores/modules/wishbone/wb_lm32/generated/lm32_allprofiles.v" in library work
 Module <spi_top> compiled
 Module <lm32_top_full_debug> compiled
 Module <lm32_mc_arithmetic_full_debug> compiled
@@ -393,27 +393,27 @@ Module <lm32_cpu_minimal> compiled
 Module <lm32_load_store_unit_minimal> compiled
 Module <lm32_decoder_minimal> compiled
 Module <lm32_instruction_unit_minimal> compiled
-Compiling verilog file "../../../general-cores/modules/wishbone/wb_lm32/src/lm32_mc_arithmetic.v" in library work
-Compiling verilog include file "../../../general-cores/modules/wishbone/wb_lm32/src/lm32_include.v"
+Compiling verilog file "../../../../general-cores/modules/wishbone/wb_lm32/src/lm32_mc_arithmetic.v" in library work
+Compiling verilog include file "../../../../general-cores/modules/wishbone/wb_lm32/src/lm32_include.v"
 Module <lm32_interrupt_minimal> compiled
-Compiling verilog file "../../../general-cores/modules/wishbone/wb_lm32/src/jtag_cores.v" in library work
+Compiling verilog file "../../../../general-cores/modules/wishbone/wb_lm32/src/jtag_cores.v" in library work
 Module <lm32_mc_arithmetic> compiled
-Compiling verilog file "../../../general-cores/modules/wishbone/wb_lm32/src/lm32_adder.v" in library work
-Compiling verilog include file "../../../general-cores/modules/wishbone/wb_lm32/src/lm32_include.v"
+Compiling verilog file "../../../../general-cores/modules/wishbone/wb_lm32/src/lm32_adder.v" in library work
+Compiling verilog include file "../../../../general-cores/modules/wishbone/wb_lm32/src/lm32_include.v"
 Module <jtag_cores> compiled
-Compiling verilog file "../../../general-cores/modules/wishbone/wb_lm32/src/lm32_addsub.v" in library work
-Compiling verilog include file "../../../general-cores/modules/wishbone/wb_lm32/src/lm32_include.v"
+Compiling verilog file "../../../../general-cores/modules/wishbone/wb_lm32/src/lm32_addsub.v" in library work
+Compiling verilog include file "../../../../general-cores/modules/wishbone/wb_lm32/src/lm32_include.v"
 Module <lm32_adder> compiled
-Compiling verilog file "../../../general-cores/modules/wishbone/wb_lm32/src/lm32_logic_op.v" in library work
-Compiling verilog include file "../../../general-cores/modules/wishbone/wb_lm32/src/lm32_include.v"
+Compiling verilog file "../../../../general-cores/modules/wishbone/wb_lm32/src/lm32_logic_op.v" in library work
+Compiling verilog include file "../../../../general-cores/modules/wishbone/wb_lm32/src/lm32_include.v"
 Module <lm32_addsub> compiled
-Compiling verilog file "../../../general-cores/modules/wishbone/wb_lm32/src/lm32_shifter.v" in library work
-Compiling verilog include file "../../../general-cores/modules/wishbone/wb_lm32/src/lm32_include.v"
+Compiling verilog file "../../../../general-cores/modules/wishbone/wb_lm32/src/lm32_shifter.v" in library work
+Compiling verilog include file "../../../../general-cores/modules/wishbone/wb_lm32/src/lm32_include.v"
 Module <lm32_logic_op> compiled
-Compiling verilog file "../../../general-cores/modules/wishbone/wb_lm32/platform/generic/lm32_multiplier.v" in library work
-Compiling verilog include file "../../../general-cores/modules/wishbone/wb_lm32/platform/generic/../../src/lm32_include.v"
+Compiling verilog file "../../../../general-cores/modules/wishbone/wb_lm32/platform/generic/lm32_multiplier.v" in library work
+Compiling verilog include file "../../../../general-cores/modules/wishbone/wb_lm32/platform/generic/../../src/lm32_include.v"
 Module <lm32_shifter> compiled
-Compiling verilog file "../../../general-cores/modules/wishbone/wb_lm32/platform/generic/jtag_tap.v" in library work
+Compiling verilog file "../../../../general-cores/modules/wishbone/wb_lm32/platform/generic/jtag_tap.v" in library work
 Module <lm32_multiplier> compiled
 Module <jtag_tap> compiled
 No errors in compilation
@@ -424,7 +424,7 @@ Analysis of file <"top_cvora.prj"> succeeded.
 *                     Design Hierarchy Analysis                         *
 =========================================================================
 Analyzing hierarchy for entity <top_cvora> in library <work> (architecture <behavioral>) with generics.
-	g_DEFAULT_INPUT_POL = '0'
+	g_DEFAULT_INPUT_POL = '1'
 	g_DEFAULT_IRQ_VECT = "10000110"
 	g_GATEWARE_VER = "0000001000000000"
 	g_LED_PULSE_WIDTH = 8000000
@@ -495,7 +495,7 @@ Analyzing hierarchy for entity <RS232_Tx> in library <work> (architecture <behav
 *                            HDL Analysis                               *
 =========================================================================
 Analyzing generic Entity <top_cvora> in library <work> (Architecture <behavioral>).
-	g_DEFAULT_INPUT_POL = '0'
+	g_DEFAULT_INPUT_POL = '1'
 	g_DEFAULT_IRQ_VECT = "10000110"
 	g_GATEWARE_VER = "0000001000000000"
 	g_LED_PULSE_WIDTH = 8000000
@@ -503,44 +503,44 @@ Analyzing generic Entity <top_cvora> in library <work> (Architecture <behavioral
     Set user-defined property "IBUF_DELAY_VALUE =  0" for instance <cmp_sys_clk_buf> in unit <top_cvora>.
     Set user-defined property "IBUF_LOW_PWR =  TRUE" for instance <cmp_sys_clk_buf> in unit <top_cvora>.
     Set user-defined property "IOSTANDARD =  DEFAULT" for instance <cmp_sys_clk_buf> in unit <top_cvora>.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 417: Unconnected output port 'synced_o' of component 'gc_sync_ffs'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 417: Unconnected output port 'npulse_o' of component 'gc_sync_ffs'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 426: Unconnected output port 'synced_o' of component 'gc_sync_ffs'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 426: Unconnected output port 'npulse_o' of component 'gc_sync_ffs'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 435: Unconnected output port 'synced_o' of component 'gc_sync_ffs'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 435: Unconnected output port 'npulse_o' of component 'gc_sync_ffs'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 444: Unconnected output port 'synced_o' of component 'gc_sync_ffs'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 444: Unconnected output port 'npulse_o' of component 'gc_sync_ffs'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 453: Unconnected output port 'synced_o' of component 'gc_sync_ffs'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 453: Unconnected output port 'npulse_o' of component 'gc_sync_ffs'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 462: Unconnected output port 'synced_o' of component 'gc_sync_ffs'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 462: Unconnected output port 'npulse_o' of component 'gc_sync_ffs'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 471: Unconnected output port 'synced_o' of component 'gc_sync_ffs'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 471: Unconnected output port 'npulse_o' of component 'gc_sync_ffs'.
-WARNING:Xst:754 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 511: Unconnected inout port 'VmeDataUnAlign' of component 'Vme_intfce'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 511: Unconnected output port 'VmeDirFloat' of component 'Vme_intfce'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 511: Unconnected output port 'VmeState' of component 'Vme_intfce'.
-WARNING:Xst:790 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 770: Index value(s) does not match array range, simulation mismatch.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 373: Unconnected output port 'synced_o' of component 'gc_sync_ffs'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 373: Unconnected output port 'npulse_o' of component 'gc_sync_ffs'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 382: Unconnected output port 'synced_o' of component 'gc_sync_ffs'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 382: Unconnected output port 'npulse_o' of component 'gc_sync_ffs'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 391: Unconnected output port 'synced_o' of component 'gc_sync_ffs'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 391: Unconnected output port 'npulse_o' of component 'gc_sync_ffs'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 400: Unconnected output port 'synced_o' of component 'gc_sync_ffs'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 400: Unconnected output port 'npulse_o' of component 'gc_sync_ffs'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 409: Unconnected output port 'synced_o' of component 'gc_sync_ffs'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 409: Unconnected output port 'npulse_o' of component 'gc_sync_ffs'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 418: Unconnected output port 'synced_o' of component 'gc_sync_ffs'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 418: Unconnected output port 'npulse_o' of component 'gc_sync_ffs'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 427: Unconnected output port 'synced_o' of component 'gc_sync_ffs'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 427: Unconnected output port 'npulse_o' of component 'gc_sync_ffs'.
+WARNING:Xst:754 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 473: Unconnected inout port 'VmeDataUnAlign' of component 'Vme_intfce'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 473: Unconnected output port 'VmeDirFloat' of component 'Vme_intfce'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 473: Unconnected output port 'VmeState' of component 'Vme_intfce'.
+WARNING:Xst:790 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 734: Index value(s) does not match array range, simulation mismatch.
 INFO:Xst:1432 - Contents of array <rtm_cvorb_meas_pulse_width> may be accessed with a negative index, causing simulation mismatch.
 INFO:Xst:1433 - Contents of array <rtm_cvorb_meas_pulse_width> may be accessed with an index that exceeds the array size. This could cause simulation mismatch.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 1008: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 1008: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 1008: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 1133: Unconnected output port 'RAMCS0' of component 'RAMManager'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 1133: Unconnected output port 'RAMCS1N' of component 'RAMManager'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 1133: Unconnected output port 'RAMZZ' of component 'RAMManager'.
-WARNING:Xst:790 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 1170: Index value(s) does not match array range, simulation mismatch.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 1006: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 1006: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 1006: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 1119: Unconnected output port 'RAMCS0' of component 'RAMManager'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 1119: Unconnected output port 'RAMCS1N' of component 'RAMManager'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 1119: Unconnected output port 'RAMZZ' of component 'RAMManager'.
+WARNING:Xst:790 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 1156: Index value(s) does not match array range, simulation mismatch.
 INFO:Xst:1432 - Contents of array <rtm_data_valid> may be accessed with a negative index, causing simulation mismatch.
 INFO:Xst:1433 - Contents of array <rtm_data_valid> may be accessed with an index that exceeds the array size. This could cause simulation mismatch.
-WARNING:Xst:790 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 1233: Index value(s) does not match array range, simulation mismatch.
+WARNING:Xst:790 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 1224: Index value(s) does not match array range, simulation mismatch.
 INFO:Xst:1432 - Contents of array <rtm_data_valid> may be accessed with a negative index, causing simulation mismatch.
 INFO:Xst:1433 - Contents of array <rtm_data_valid> may be accessed with an index that exceeds the array size. This could cause simulation mismatch.
-WARNING:Xst:790 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 1234: Index value(s) does not match array range, simulation mismatch.
+WARNING:Xst:790 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 1225: Index value(s) does not match array range, simulation mismatch.
 INFO:Xst:1432 - Contents of array <rtm_data> may be accessed with a negative index, causing simulation mismatch.
 INFO:Xst:1433 - Contents of array <rtm_data> may be accessed with an index that exceeds the array size. This could cause simulation mismatch.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 1324: Unconnected output port 'BCD_Ready' of component 'SB_to_BCD'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 1335: Unconnected output port 'BCD_Ready' of component 'SB_to_BCD'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd" line 1396: Unconnected output port 'message_env' of component 'message'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 1315: Unconnected output port 'BCD_Ready' of component 'SB_to_BCD'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 1326: Unconnected output port 'BCD_Ready' of component 'SB_to_BCD'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd" line 1388: Unconnected output port 'message_env' of component 'message'.
 Entity <top_cvora> analyzed. Unit <top_cvora> generated.
 
 Analyzing generic Entity <gc_sync_ffs> in library <work> (Architecture <behavioral>).
@@ -584,102 +584,102 @@ INFO:Xst:2679 - Register <overflow_o> in unit <up_down_counter.2> has a constant
 Entity <up_down_counter.2> analyzed. Unit <up_down_counter.2> generated.
 
 Analyzing Entity <rtm_serial_manager> in library <work> (Architecture <rtl>).
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
-WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'zero_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'one_test_o' of component 'cvorb_decoder'.
+WARNING:Xst:753 - "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd" line 105: Unconnected output port 'strobe_test_o' of component 'cvorb_decoder'.
 Entity <rtm_serial_manager> analyzed. Unit <rtm_serial_manager> generated.
 
 Analyzing Entity <sci_decoder> in library <work> (Architecture <rtl>).
@@ -746,7 +746,7 @@ Unit <gc_sync_ffs> synthesized.
 
 
 Synthesizing Unit <Vme_intfce>.
-    Related source file is "/home/mcattin/projects/cvora/cvora_git/sources/vme_interface.vhd".
+    Related source file is "/home/mcattin/projects/cvora/cvora_git/hdl/src/vme_interface.vhd".
 WARNING:Xst:2563 - Inout <VmeDataUnAlign<0>> is never assigned. Tied to value Z.
 WARNING:Xst:2563 - Inout <VmeDataUnAlign<1>> is never assigned. Tied to value Z.
 WARNING:Xst:2563 - Inout <VmeDataUnAlign<2>> is never assigned. Tied to value Z.
@@ -824,7 +824,7 @@ Unit <Vme_intfce> synthesized.
 
 
 Synthesizing Unit <up_down_counter_1>.
-    Related source file is "/home/mcattin/projects/cvora/cvora_git/sources/up_down_counter.vhd".
+    Related source file is "/home/mcattin/projects/cvora/cvora_git/hdl/src/up_down_counter.vhd".
     Found 1-bit register for signal <overflow_o>.
     Found 1-bit register for signal <valid_o>.
     Found 32-bit updown counter for signal <cnt>.
@@ -835,7 +835,7 @@ Unit <up_down_counter_1> synthesized.
 
 
 Synthesizing Unit <up_down_counter_2>.
-    Related source file is "/home/mcattin/projects/cvora/cvora_git/sources/up_down_counter.vhd".
+    Related source file is "/home/mcattin/projects/cvora/cvora_git/hdl/src/up_down_counter.vhd".
     Found 1-bit register for signal <valid_o>.
     Found 16-bit updown counter for signal <cnt>.
     Summary:
@@ -845,7 +845,7 @@ Unit <up_down_counter_2> synthesized.
 
 
 Synthesizing Unit <cvorb_decoder>.
-    Related source file is "/home/mcattin/projects/cvora/cvora_git/sources/cvorb_decoder.vhd".
+    Related source file is "/home/mcattin/projects/cvora/cvora_git/hdl/src/cvorb_decoder.vhd".
     Found finite state machine <FSM_0> for signal <state2>.
     -----------------------------------------------------------------------
     | States             | 3                                              |
@@ -871,28 +871,29 @@ Synthesizing Unit <cvorb_decoder>.
     Found 1-bit register for signal <data_neg>.
     Found 16-bit register for signal <data_out_cvorb>.
     Found 1-bit register for signal <data_pos>.
-    Found 8-bit comparator lessequal for signal <one_test_o$cmp_le0000> created at line 181.
+    Found 8-bit comparator lessequal for signal <one_test_o$cmp_le0000> created at line 188.
     Found 8-bit register for signal <pulse_length>.
     Found 8-bit register for signal <pulse_length_counter>.
     Found 8-bit adder for signal <pulse_length_counter$addsub0000>.
+    Found 3-bit register for signal <serial_data>.
     Found 16-bit register for signal <shift_register>.
-    Found 8-bit comparator greater for signal <shift_register$cmp_gt0000> created at line 181.
+    Found 8-bit comparator greater for signal <shift_register$cmp_gt0000> created at line 188.
     Found 1-bit register for signal <state1<0>>.
-    Found 1-bit xor2 for signal <state1_0$xor0000> created at line 130.
+    Found 1-bit xor2 for signal <state1_0$xor0000> created at line 137.
     Found 1-bit register for signal <strobe>.
     Found 8-bit register for signal <timeout_delay>.
-    Found 8-bit adder for signal <timeout_delay$addsub0000> created at line 204.
+    Found 8-bit adder for signal <timeout_delay$addsub0000> created at line 211.
     Summary:
 	inferred   1 Finite State Machine(s).
 	inferred   1 Counter(s).
-	inferred  82 D-type flip-flop(s).
+	inferred  85 D-type flip-flop(s).
 	inferred   2 Adder/Subtractor(s).
 	inferred   2 Comparator(s).
 Unit <cvorb_decoder> synthesized.
 
 
 Synthesizing Unit <RAMManager>.
-    Related source file is "/home/mcattin/projects/cvora/cvora_git/sources/ram_manager.vhd".
+    Related source file is "/home/mcattin/projects/cvora/cvora_git/hdl/src/ram_manager.vhd".
     Found finite state machine <FSM_1> for signal <currentState>.
     -----------------------------------------------------------------------
     | States             | 7                                              |
@@ -939,7 +940,7 @@ Unit <gc_extend_pulse_1> synthesized.
 
 
 Synthesizing Unit <SB_to_BCD_1>.
-    Related source file is "/home/mcattin/projects/cvora/cvora_git/sources/bin2bcd.vhd".
+    Related source file is "/home/mcattin/projects/cvora/cvora_git/hdl/src/bin2bcd.vhd".
     Found 1-bit register for signal <BCD_Ready>.
     Found 6-bit up counter for signal <BitCounter>.
     Found 4-bit comparator greatequal for signal <GreaterThanFive_6$cmp_ge0000> created at line 183.
@@ -975,7 +976,7 @@ Unit <SB_to_BCD_1> synthesized.
 
 
 Synthesizing Unit <SB_to_BCD_2>.
-    Related source file is "/home/mcattin/projects/cvora/cvora_git/sources/bin2bcd.vhd".
+    Related source file is "/home/mcattin/projects/cvora/cvora_git/hdl/src/bin2bcd.vhd".
     Found 1-bit register for signal <BCD_Ready>.
     Found 5-bit up counter for signal <BitCounter>.
     Found 1-bit register for signal <Hold>.
@@ -1005,7 +1006,7 @@ Unit <SB_to_BCD_2> synthesized.
 
 
 Synthesizing Unit <ROMMUX>.
-    Related source file is "/home/mcattin/projects/cvora/cvora_git/sources/rom_mux.vhd".
+    Related source file is "/home/mcattin/projects/cvora/cvora_git/hdl/src/rom_mux.vhd".
     Found 19-bit comparator greatequal for signal <DataOut$cmp_ge0000>.
     Summary:
 	inferred   1 Comparator(s).
@@ -1027,7 +1028,7 @@ Unit <gc_pulse_synchronizer> synthesized.
 
 
 Synthesizing Unit <RS232_Rx>.
-    Related source file is "/home/mcattin/projects/cvora/cvora_git/sources/rs232_rx.vhd".
+    Related source file is "/home/mcattin/projects/cvora/cvora_git/hdl/src/rs232_rx.vhd".
 WARNING:Xst:646 - Signal <iRegister<0>> is assigned but never used. This unconnected signal will be trimmed during the optimization process.
     Found 1-bit register for signal <Divided_Clock_Enable>.
     Found 1-bit register for signal <iReady>.
@@ -1053,7 +1054,7 @@ Unit <gc_extend_pulse_2> synthesized.
 
 
 Synthesizing Unit <RS232_Tx>.
-    Related source file is "/home/mcattin/projects/cvora/cvora_git/sources/rs232_tx.vhd".
+    Related source file is "/home/mcattin/projects/cvora/cvora_git/hdl/src/rs232_tx.vhd".
     Found 1-bit register for signal <Ready>.
     Found 1-bit register for signal <divided_clock>.
     Found 10-bit register for signal <iData>.
@@ -1066,7 +1067,7 @@ Unit <RS232_Tx> synthesized.
 
 
 Synthesizing Unit <BusIntControl>.
-    Related source file is "/home/mcattin/projects/cvora/cvora_git/sources/bus_interface.vhd".
+    Related source file is "/home/mcattin/projects/cvora/cvora_git/hdl/src/bus_interface.vhd".
 WARNING:Xst:646 - Signal <nxSelectedPos<1:0>> is assigned but never used. This unconnected signal will be trimmed during the optimization process.
 WARNING:Xst:1780 - Signal <muxSelPos> is never used or assigned. This unconnected signal will be trimmed during the optimization process.
 WARNING:Xst:1780 - Signal <eRegSelectedPos> is never used or assigned. This unconnected signal will be trimmed during the optimization process.
@@ -1098,7 +1099,7 @@ Unit <gc_frequency_meter> synthesized.
 
 
 Synthesizing Unit <sci_decoder>.
-    Related source file is "/home/mcattin/projects/cvora/cvora_git/sources/sci_decoder.vhd".
+    Related source file is "/home/mcattin/projects/cvora/cvora_git/hdl/src/sci_decoder.vhd".
 WARNING:Xst:1780 - Signal <odready> is never used or assigned. This unconnected signal will be trimmed during the optimization process.
 WARNING:Xst:1780 - Signal <idReady> is never used or assigned. This unconnected signal will be trimmed during the optimization process.
 WARNING:Xst:1780 - Signal <iSDataIn> is never used or assigned. This unconnected signal will be trimmed during the optimization process.
@@ -1112,7 +1113,7 @@ Unit <sci_decoder> synthesized.
 
 
 Synthesizing Unit <dac_load_delay>.
-    Related source file is "/home/mcattin/projects/cvora/cvora_git/sources/dac_load_delay.vhd".
+    Related source file is "/home/mcattin/projects/cvora/cvora_git/hdl/src/dac_load_delay.vhd".
     Found 5-bit register for signal <pulse_d>.
     Summary:
 	inferred   5 D-type flip-flop(s).
@@ -1120,7 +1121,7 @@ Unit <dac_load_delay> synthesized.
 
 
 Synthesizing Unit <message>.
-    Related source file is "/home/mcattin/projects/cvora/cvora_git/sources/message.vhd".
+    Related source file is "/home/mcattin/projects/cvora/cvora_git/hdl/src/message.vhd".
     Register <imess<5><13>> equivalent to <imess<1><0>> has been removed
     Register <imess<5><1>> equivalent to <imess<1><0>> has been removed
     Register <imess<1><5>> equivalent to <imess<1><10>> has been removed
@@ -1129,9 +1130,6 @@ Synthesizing Unit <message>.
     Register <imess<2><15>> equivalent to <imess<1><10>> has been removed
     Register <imess<2><1>> equivalent to <imess<1><10>> has been removed
     Register <imess<2><5>> equivalent to <imess<1><10>> has been removed
-    Register <imess<3><13>> equivalent to <imess<1><10>> has been removed
-    Register <imess<3><14>> equivalent to <imess<1><10>> has been removed
-    Register <imess<3><15>> equivalent to <imess<1><10>> has been removed
     Register <imess<4><3>> equivalent to <imess<1><10>> has been removed
     Register <imess<5><10>> equivalent to <imess<1><10>> has been removed
     Register <imess<5><12>> equivalent to <imess<1><10>> has been removed
@@ -1159,19 +1157,20 @@ Synthesizing Unit <message>.
     Register <imess<4><2>> equivalent to <imess<1><9>> has been removed
     Register <imess<5><3>> equivalent to <imess<1><9>> has been removed
     Register <imess<5><11>> equivalent to <imess<2><7>> has been removed
+    Register <imess<5><15>> equivalent to <imess<4><13>> has been removed
     Found 3-bit up counter for signal <iindex>.
     Found 40-bit register for signal <imess<1><0:4>>.
     Found 56-bit register for signal <imess<1><7:13>>.
     Found 16-bit register for signal <imess<1><16:17>>.
     Found 8-bit register for signal <imess<2><2>>.
     Found 24-bit register for signal <imess<2><7:9>>.
-    Found 104-bit register for signal <imess<3><0:12>>.
+    Found 128-bit register for signal <imess<3><0:15>>.
     Found 16-bit register for signal <imess<4><0:1>>.
     Found 40-bit register for signal <imess<4><4:8>>.
     Found 48-bit register for signal <imess<4><10:15>>.
     Found 8-bit register for signal <imess<5><2>>.
     Found 40-bit register for signal <imess<5><5:9>>.
-    Found 16-bit register for signal <imess<5><14:15>>.
+    Found 8-bit register for signal <imess<5><14>>.
     Found 5-bit register for signal <jindex>.
     Found 5-bit adder for signal <jindex$addsub0000> created at line 104.
     Found 1-bit register for signal <message_stop>.
@@ -1180,13 +1179,13 @@ Synthesizing Unit <message>.
     Found 1-bit register for signal <rs232_ReadyB>.
     Summary:
 	inferred   1 Counter(s).
-	inferred 432 D-type flip-flop(s).
+	inferred 448 D-type flip-flop(s).
 	inferred   1 Adder/Subtractor(s).
 Unit <message> synthesized.
 
 
 Synthesizing Unit <rtm_serial_manager>.
-    Related source file is "/home/mcattin/projects/cvora/cvora_git/sources/rtm_serial_manager.vhd".
+    Related source file is "/home/mcattin/projects/cvora/cvora_git/hdl/src/rtm_serial_manager.vhd".
     Using one-hot encoding for signal <fsm_state>.
     Found 1-bit register for signal <ram_data_valid_o>.
     Found 32-bit register for signal <ram_data_o>.
@@ -1211,7 +1210,7 @@ Unit <rtm_serial_manager> synthesized.
 
 
 Synthesizing Unit <top_cvora>.
-    Related source file is "/home/mcattin/projects/cvora/cvora_git/sources/top_cvora.vhd".
+    Related source file is "/home/mcattin/projects/cvora/cvora_git/hdl/src/top_cvora.vhd".
 WARNING:Xst:647 - Input <rs232_rx_i> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <vme_rst_i> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <mode_select_sw_i> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
@@ -1219,10 +1218,7 @@ WARNING:Xst:647 - Input <module_addr_i<5>> is never used. This port will be pres
 WARNING:Xst:647 - Input <vme_am_i<2>> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:646 - Signal <vme_intreq_n<7:3>> is assigned but never used. This unconnected signal will be trimmed during the optimization process.
 WARNING:Xst:646 - Signal <vme_intreq_n<1>> is assigned but never used. This unconnected signal will be trimmed during the optimization process.
-WARNING:Xst:646 - Signal <up_cnt2_overflow> is assigned but never used. This unconnected signal will be trimmed during the optimization process.
-WARNING:Xst:646 - Signal <up_cnt1_overflow> is assigned but never used. This unconnected signal will be trimmed during the optimization process.
 WARNING:Xst:646 - Signal <start_p_d<3>> is assigned but never used. This unconnected signal will be trimmed during the optimization process.
-WARNING:Xst:1780 - Signal <ram_rd_done_d> is never used or assigned. This unconnected signal will be trimmed during the optimization process.
 WARNING:Xst:646 - Signal <cvorb_zero_test> is assigned but never used. This unconnected signal will be trimmed during the optimization process.
 WARNING:Xst:646 - Signal <cvorb_strobe_test> is assigned but never used. This unconnected signal will be trimmed during the optimization process.
 WARNING:Xst:646 - Signal <cvorb_one_test> is assigned but never used. This unconnected signal will be trimmed during the optimization process.
@@ -1238,36 +1234,38 @@ WARNING:Xst:646 - Signal <OpFinishedOut> is assigned but never used. This unconn
     Found 16-bit register for signal <dac1_data_o>.
     Found 16-bit register for signal <dac2_data_o>.
     Found 4-bit tristate buffer for signal <ram_data_par_o>.
-    Found 1-bit 32-to-1 multiplexer for signal <$varindex0000> created at line 1170.
-    Found 16-bit 32-to-1 multiplexer for signal <$varindex0001> created at line 1234.
-    Found 8-bit 32-to-1 multiplexer for signal <$varindex0002> created at line 770.
+    Found 1-bit 32-to-1 multiplexer for signal <$varindex0000> created at line 1156.
+    Found 16-bit 32-to-1 multiplexer for signal <$varindex0001> created at line 1225.
+    Found 8-bit 32-to-1 multiplexer for signal <$varindex0002> created at line 734.
     Found 32-bit register for signal <channel_en>.
     Found 5-bit register for signal <channel_select_reg>.
     Found 32-bit register for signal <clock_freq>.
-    Found 6-bit register for signal <clock_strobe_p_d>.
+    Found 1-bit register for signal <clock_freq_valid_d>.
+    Found 1-bit register for signal <clock_freq_wd>.
+    Found 3-bit register for signal <clock_p_d>.
     Found 8-bit register for signal <cvorb_pulse_width_thres>.
     Found 1-bit register for signal <data_acq_en>.
-    Found 16-bit register for signal <fp_data1_cvorb_s>.
-    Found 16-bit register for signal <fp_data1_sci_s>.
-    Found 16-bit register for signal <fp_data2_cvorb_s>.
-    Found 16-bit register for signal <fp_data2_sci_s>.
     Found 1-bit register for signal <input_polarity>.
     Found 16-bit register for signal <inter_acq_time>.
     Found 16-bit register for signal <inter_acq_time_cnt>.
-    Found 16-bit adder for signal <inter_acq_time_cnt$addsub0000> created at line 830.
+    Found 16-bit adder for signal <inter_acq_time_cnt$addsub0000> created at line 808.
     Found 1-bit register for signal <irq_en>.
     Found 8-bit register for signal <irq_vector>.
     Found 4-bit register for signal <mode>.
     Found 1-bit register for signal <module_en>.
+    Found 32-bit register for signal <parallel_data>.
     Found 27-bit up counter for signal <pps_cnt>.
     Found 1-bit register for signal <pps_p>.
     Found 17-bit register for signal <ram_rd_addr>.
     Found 1-bit register for signal <ram_wr>.
     Found 17-bit register for signal <ram_wr_addr_cnt>.
-    Found 17-bit adder for signal <ram_wr_addr_cnt$addsub0000> created at line 1104.
+    Found 17-bit adder for signal <ram_wr_addr_cnt$addsub0000> created at line 1090.
     Found 32-bit register for signal <ram_wr_data>.
     Found 1-bit register for signal <ram_wr_overflow>.
+    Found 32-bit register for signal <rtm_data_d>.
+    Found 32-bit register for signal <rtm_data_d2>.
     Found 4-bit register for signal <start_p_d>.
+    Found 5-bit register for signal <strobe_p_d>.
     Found 1-bit register for signal <sw_reset_p>.
     Found 1-bit register for signal <sw_start_p>.
     Found 1-bit register for signal <sw_stop_p>.
@@ -1275,7 +1273,7 @@ WARNING:Xst:646 - Signal <OpFinishedOut> is assigned but never used. This unconn
     Summary:
 	inferred   1 ROM(s).
 	inferred   1 Counter(s).
-	inferred 296 D-type flip-flop(s).
+	inferred 332 D-type flip-flop(s).
 	inferred   2 Adder/Subtractor(s).
 	inferred  25 Multiplexer(s).
 	inferred   4 Tristate(s).
@@ -1307,23 +1305,22 @@ Macro Statistics
  32-bit updown counter                                 : 1
  5-bit up counter                                      : 35
  6-bit up counter                                      : 1
-# Registers                                            : 1720
- 1-bit register                                        : 1281
+# Registers                                            : 1758
+ 1-bit register                                        : 1283
  10-bit register                                       : 1
  11-bit register                                       : 34
  12-bit register                                       : 1
  15-bit register                                       : 1
- 16-bit register                                       : 142
+ 16-bit register                                       : 138
  17-bit register                                       : 6
  19-bit register                                       : 2
  23-bit register                                       : 1
- 3-bit register                                        : 2
- 32-bit register                                       : 13
+ 3-bit register                                        : 37
+ 32-bit register                                       : 16
  4-bit register                                        : 37
- 5-bit register                                        : 6
- 6-bit register                                        : 1
+ 5-bit register                                        : 7
  7-bit register                                        : 1
- 8-bit register                                        : 157
+ 8-bit register                                        : 159
  9-bit register                                        : 34
 # Comparators                                          : 85
  19-bit comparator greatequal                          : 1
@@ -1407,26 +1404,29 @@ Optimizing FSM <cmp_fp_cvorb_decoder2/state2/FSM> on signal <state2[1:2]> with u
  wait_bit | 01
  output   | 10
 ----------------------
-INFO:Xst:2261 - The FF/Latch <imess<4>_0_0> in Unit <cmp_message> is equivalent to the following 111 FFs/Latches, which will be removed : <imess<4>_0_3> <imess<4>_0_4> <imess<4>_0_5> <imess<4>_0_7> <imess<4>_1_1> <imess<4>_1_2> <imess<4>_1_3> <imess<4>_1_6> <imess<4>_1_7> <imess<4>_13_2> <imess<4>_13_4> <imess<4>_13_5> <imess<4>_13_7> <imess<4>_14_0> <imess<4>_14_1> <imess<4>_14_2> <imess<4>_14_4> <imess<4>_14_7> <imess<4>_15_0> <imess<4>_15_2> <imess<4>_15_7> <imess<1>_1_0> <imess<1>_1_3> <imess<1>_1_5> <imess<1>_1_7> <imess<1>_0_2> <imess<1>_0_3> <imess<1>_0_4> <imess<1>_0_5> <imess<1>_0_7> <imess<5>_2_1> <imess<5>_2_2> <imess<5>_2_3> <imess<5>_2_5> <imess<5>_2_7> <imess<1>_2_4> <imess<1>_2_5> <imess<1>_2_7> <imess<1>_3_0> <imess<1>_3_2> <imess<1>_3_3> <imess<1>_3_5> <imess<1>_3_7> <imess<1>_4_1> <imess<1>_4_2> <imess<1>_4_3> <imess<1>_4_4> <imess<1>_4_5> <imess<1>_4_7> <imess<5>_14_0> <imess<5>_14_1> <imess<5>_14_4> <imess<5>_14_7> <imess<5>_15_2> <imess<5>_15_4> <imess<5>_15_7> <imess<1>_7_1>
-   <imess<1>_7_3> <imess<1>_7_4> <imess<1>_7_7> <imess<1>_8_0> <imess<1>_8_2> <imess<1>_8_3> <imess<1>_8_7> <imess<1>_9_0> <imess<1>_9_2> <imess<1>_9_6> <imess<1>_9_7> <imess<1>_10_0> <imess<1>_10_1> <imess<1>_10_2> <imess<1>_10_3> <imess<1>_10_4> <imess<1>_10_6> <imess<1>_10_7> <imess<2>_2_0> <imess<2>_2_2> <imess<2>_2_3> <imess<2>_2_4> <imess<2>_2_5> <imess<2>_2_7> <imess<1>_11_0> <imess<1>_11_1> <imess<1>_11_2> <imess<1>_11_3> <imess<1>_11_6> <imess<1>_11_7> <imess<1>_12_0> <imess<1>_12_2> <imess<1>_12_3> <imess<1>_12_6> <imess<1>_12_7> <imess<1>_13_0> <imess<1>_13_4> <imess<1>_13_6> <imess<1>_13_7> <imess<2>_7_0> <imess<2>_7_1> <imess<2>_7_2> <imess<2>_7_7> <imess<1>_16_1> <imess<1>_16_4> <imess<1>_16_5> <imess<1>_16_6> <imess<1>_16_7> <imess<1>_17_0> <imess<1>_17_2> <imess<1>_17_4> <imess<1>_17_5> <imess<1>_17_6> <imess<1>_17_7> 
-INFO:Xst:2261 - The FF/Latch <imess<4>_0_1> in Unit <cmp_message> is equivalent to the following 79 FFs/Latches, which will be removed : <imess<4>_0_2> <imess<4>_0_6> <imess<4>_1_0> <imess<4>_1_4> <imess<4>_1_5> <imess<4>_13_0> <imess<4>_13_1> <imess<4>_13_3> <imess<4>_13_6> <imess<4>_14_3> <imess<4>_14_5> <imess<4>_14_6> <imess<4>_15_1> <imess<4>_15_3> <imess<4>_15_4> <imess<4>_15_5> <imess<4>_15_6> <imess<1>_1_1> <imess<1>_1_2> <imess<1>_1_4> <imess<1>_1_6> <imess<1>_0_0> <imess<1>_0_1> <imess<1>_0_6> <imess<5>_2_0> <imess<5>_2_4> <imess<5>_2_6> <imess<1>_2_0> <imess<1>_2_1> <imess<1>_2_2> <imess<1>_2_3> <imess<1>_2_6> <imess<1>_3_1> <imess<1>_3_4> <imess<1>_3_6> <imess<1>_4_0> <imess<1>_4_6> <imess<5>_14_2> <imess<5>_14_3> <imess<5>_14_5> <imess<5>_14_6> <imess<5>_15_0> <imess<5>_15_1> <imess<5>_15_3> <imess<5>_15_5> <imess<5>_15_6> <imess<1>_7_0> <imess<1>_7_2> <imess<1>_7_5> <imess<1>_7_6> <imess<1>_8_1> <imess<1>_8_4> <imess<1>_8_5> <imess<1>_8_6> <imess<1>_9_1> <imess<1>_9_3> <imess<1>_9_4>
-   <imess<1>_9_5> <imess<1>_10_5> <imess<2>_2_1> <imess<2>_2_6> <imess<1>_11_4> <imess<1>_11_5> <imess<1>_12_1> <imess<1>_12_4> <imess<1>_12_5> <imess<1>_13_1> <imess<1>_13_2> <imess<1>_13_3> <imess<1>_13_5> <imess<2>_7_3> <imess<2>_7_4> <imess<2>_7_5> <imess<2>_7_6> <imess<1>_16_0> <imess<1>_16_2> <imess<1>_16_3> <imess<1>_17_1> <imess<1>_17_3> 
-WARNING:Xst:1710 - FF/Latch <imess<4>_8_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<5>_5_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<5>_5_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<5>_5_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<5>_5_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<5>_6_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<5>_6_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<5>_6_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<5>_6_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<5>_7_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<5>_7_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<5>_7_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+INFO:Xst:2261 - The FF/Latch <imess<4>_0_0> in Unit <cmp_message> is equivalent to the following 108 FFs/Latches, which will be removed : <imess<4>_0_3> <imess<4>_0_4> <imess<4>_0_5> <imess<4>_0_7> <imess<4>_1_1> <imess<4>_1_2> <imess<4>_1_3> <imess<4>_1_6> <imess<4>_1_7> <imess<4>_13_2> <imess<4>_13_4> <imess<4>_13_7> <imess<1>_0_2> <imess<1>_0_3> <imess<1>_0_4> <imess<1>_0_5> <imess<1>_0_7> <imess<4>_14_0> <imess<4>_14_1> <imess<4>_14_2> <imess<4>_14_4> <imess<4>_14_5> <imess<4>_14_7> <imess<4>_15_0> <imess<4>_15_2> <imess<4>_15_7> <imess<5>_2_1> <imess<5>_2_2> <imess<5>_2_3> <imess<5>_2_5> <imess<5>_2_7> <imess<1>_1_0> <imess<1>_1_3> <imess<1>_1_5> <imess<1>_1_7> <imess<1>_2_4> <imess<1>_2_5> <imess<1>_2_7> <imess<1>_3_0> <imess<1>_3_2> <imess<1>_3_3> <imess<1>_3_5> <imess<1>_3_7> <imess<1>_4_1> <imess<1>_4_2> <imess<1>_4_3> <imess<1>_4_4> <imess<1>_4_5> <imess<1>_4_7> <imess<5>_14_0> <imess<5>_14_1> <imess<5>_14_4> <imess<5>_14_7> <imess<1>_7_1> <imess<1>_7_3> <imess<1>_7_4> <imess<1>_7_7> <imess<1>_8_0>
+   <imess<1>_8_2> <imess<1>_8_3> <imess<1>_8_7> <imess<2>_2_0> <imess<2>_2_2> <imess<2>_2_3> <imess<2>_2_4> <imess<2>_2_5> <imess<2>_2_7> <imess<1>_9_0> <imess<1>_9_2> <imess<1>_9_6> <imess<1>_9_7> <imess<1>_10_0> <imess<1>_10_1> <imess<1>_10_2> <imess<1>_10_3> <imess<1>_10_4> <imess<1>_10_6> <imess<1>_10_7> <imess<1>_11_0> <imess<1>_11_1> <imess<1>_11_2> <imess<1>_11_3> <imess<1>_11_6> <imess<1>_11_7> <imess<1>_12_0> <imess<1>_12_2> <imess<1>_12_3> <imess<1>_12_6> <imess<1>_12_7> <imess<1>_13_0> <imess<1>_13_4> <imess<1>_13_6> <imess<1>_13_7> <imess<2>_7_0> <imess<2>_7_1> <imess<2>_7_2> <imess<2>_7_7> <imess<1>_16_1> <imess<1>_16_4> <imess<1>_16_5> <imess<1>_16_6> <imess<1>_16_7> <imess<1>_17_0> <imess<1>_17_2> <imess<1>_17_4> <imess<1>_17_5> <imess<1>_17_6> <imess<1>_17_7> 
+INFO:Xst:2261 - The FF/Latch <imess<4>_0_1> in Unit <cmp_message> is equivalent to the following 74 FFs/Latches, which will be removed : <imess<4>_0_2> <imess<4>_0_6> <imess<4>_1_0> <imess<4>_1_4> <imess<4>_1_5> <imess<4>_13_0> <imess<4>_13_1> <imess<4>_13_3> <imess<4>_13_5> <imess<4>_13_6> <imess<1>_0_0> <imess<1>_0_1> <imess<1>_0_6> <imess<4>_14_3> <imess<4>_14_6> <imess<4>_15_1> <imess<4>_15_3> <imess<4>_15_4> <imess<4>_15_5> <imess<4>_15_6> <imess<5>_2_0> <imess<5>_2_4> <imess<5>_2_6> <imess<1>_1_1> <imess<1>_1_2> <imess<1>_1_4> <imess<1>_1_6> <imess<1>_2_0> <imess<1>_2_1> <imess<1>_2_2> <imess<1>_2_3> <imess<1>_2_6> <imess<1>_3_1> <imess<1>_3_4> <imess<1>_3_6> <imess<1>_4_0> <imess<1>_4_6> <imess<5>_14_2> <imess<5>_14_3> <imess<5>_14_5> <imess<5>_14_6> <imess<1>_7_0> <imess<1>_7_2> <imess<1>_7_5> <imess<1>_7_6> <imess<1>_8_1> <imess<1>_8_4> <imess<1>_8_5> <imess<1>_8_6> <imess<2>_2_1> <imess<2>_2_6> <imess<1>_9_1> <imess<1>_9_3> <imess<1>_9_4> <imess<1>_9_5> <imess<1>_10_5> <imess<1>_11_4>
+   <imess<1>_11_5> <imess<1>_12_1> <imess<1>_12_4> <imess<1>_12_5> <imess<1>_13_1> <imess<1>_13_2> <imess<1>_13_3> <imess<1>_13_5> <imess<2>_7_3> <imess<2>_7_4> <imess<2>_7_5> <imess<2>_7_6> <imess<1>_16_0> <imess<1>_16_2> <imess<1>_16_3> <imess<1>_17_1> <imess<1>_17_3> 
 WARNING:Xst:1710 - FF/Latch <imess<5>_7_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<5>_8_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<5>_8_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<5>_8_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<5>_7_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<5>_7_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<5>_7_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<5>_6_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<5>_6_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<5>_6_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<5>_6_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<5>_5_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<5>_5_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<5>_5_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<5>_5_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_8_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_8_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_8_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_8_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_12_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_12_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_12_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <channel_select_reg_0> (without init value) has a constant value of 0 in block <top_cvora>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <imess<2>_9_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <imess<2>_9_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
@@ -1444,28 +1444,28 @@ WARNING:Xst:1710 - FF/Latch <imess<5>_9_6> (without init value) has a constant v
 WARNING:Xst:1710 - FF/Latch <imess<5>_9_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <imess<5>_9_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <imess<5>_8_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_0_0> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_0_1> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_4_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_4_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_4_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_4_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<5>_8_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<5>_8_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<5>_8_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <imess<4>_5_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_5_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_5_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_5_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_10_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_10_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_10_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_10_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_6_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_6_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_8_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_8_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_8_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_12_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_12_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <imess<4>_12_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_4_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_4_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_4_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_4_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<3>_15_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<3>_15_4> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<3>_15_3> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<3>_15_2> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<3>_15_0> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<3>_14_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<3>_14_3> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<3>_14_1> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<3>_14_0> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_0_1> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_0_0> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<3>_13_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<3>_13_3> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<3>_13_2> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <imess<4>_12_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <imess<4>_7_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <imess<4>_7_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
@@ -1477,6 +1477,15 @@ WARNING:Xst:1710 - FF/Latch <imess<4>_11_5> (without init value) has a constant 
 WARNING:Xst:1710 - FF/Latch <imess<4>_11_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <imess<4>_6_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <imess<4>_6_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_6_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_6_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_10_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_10_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_10_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_10_4> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_5_7> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_5_6> (without init value) has a constant value of 0 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<4>_5_5> (without init value) has a constant value of 1 in block <cmp_message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:2677 - Node <VmeIntReqN_1> of sequential type is unconnected in block <cmp_vme_interface>.
 WARNING:Xst:2677 - Node <VmeIntReqN_3> of sequential type is unconnected in block <cmp_vme_interface>.
 WARNING:Xst:2677 - Node <VmeIntReqN_4> of sequential type is unconnected in block <cmp_vme_interface>.
@@ -1523,20 +1532,19 @@ WARNING:Xst:2677 - Node <start_p_d_3> of sequential type is unconnected in block
 WARNING:Xst:2404 -  FFs/Latches <imess<4>_0<7:7>> (without init value) have a constant value of 0 in block <message>.
 WARNING:Xst:2404 -  FFs/Latches <imess<4>_1<7:6>> (without init value) have a constant value of 0 in block <message>.
 WARNING:Xst:2404 -  FFs/Latches <imess<4>_13<7:7>> (without init value) have a constant value of 0 in block <message>.
-WARNING:Xst:2404 -  FFs/Latches <imess<4>_14<7:7>> (without init value) have a constant value of 0 in block <message>.
 WARNING:Xst:2404 -  FFs/Latches <imess<4>_15<7:7>> (without init value) have a constant value of 0 in block <message>.
-WARNING:Xst:2404 -  FFs/Latches <imess<5>_2<7:7>> (without init value) have a constant value of 0 in block <message>.
+WARNING:Xst:2404 -  FFs/Latches <imess<4>_14<7:7>> (without init value) have a constant value of 0 in block <message>.
 WARNING:Xst:2404 -  FFs/Latches <imess<1>_0<7:7>> (without init value) have a constant value of 0 in block <message>.
+WARNING:Xst:2404 -  FFs/Latches <imess<5>_2<7:7>> (without init value) have a constant value of 0 in block <message>.
 WARNING:Xst:2404 -  FFs/Latches <imess<1>_1<7:7>> (without init value) have a constant value of 0 in block <message>.
 WARNING:Xst:2404 -  FFs/Latches <imess<1>_2<7:7>> (without init value) have a constant value of 0 in block <message>.
 WARNING:Xst:2404 -  FFs/Latches <imess<1>_3<7:7>> (without init value) have a constant value of 0 in block <message>.
 WARNING:Xst:2404 -  FFs/Latches <imess<1>_4<7:7>> (without init value) have a constant value of 0 in block <message>.
 WARNING:Xst:2404 -  FFs/Latches <imess<5>_14<7:7>> (without init value) have a constant value of 0 in block <message>.
-WARNING:Xst:2404 -  FFs/Latches <imess<5>_15<7:7>> (without init value) have a constant value of 0 in block <message>.
 WARNING:Xst:2404 -  FFs/Latches <imess<1>_7<7:7>> (without init value) have a constant value of 0 in block <message>.
 WARNING:Xst:2404 -  FFs/Latches <imess<1>_8<7:7>> (without init value) have a constant value of 0 in block <message>.
-WARNING:Xst:2404 -  FFs/Latches <imess<1>_9<7:6>> (without init value) have a constant value of 0 in block <message>.
 WARNING:Xst:2404 -  FFs/Latches <imess<1>_10<7:6>> (without init value) have a constant value of 0 in block <message>.
+WARNING:Xst:2404 -  FFs/Latches <imess<1>_9<7:6>> (without init value) have a constant value of 0 in block <message>.
 WARNING:Xst:2404 -  FFs/Latches <imess<2>_2<7:7>> (without init value) have a constant value of 0 in block <message>.
 WARNING:Xst:2404 -  FFs/Latches <imess<1>_11<7:6>> (without init value) have a constant value of 0 in block <message>.
 WARNING:Xst:2404 -  FFs/Latches <imess<1>_12<7:6>> (without init value) have a constant value of 0 in block <message>.
@@ -1572,8 +1580,8 @@ Macro Statistics
  32-bit updown counter                                 : 1
  5-bit up counter                                      : 35
  6-bit up counter                                      : 1
-# Registers                                            : 6231
- Flip-Flops                                            : 6231
+# Registers                                            : 6386
+ Flip-Flops                                            : 6386
 # Comparators                                          : 85
  19-bit comparator greatequal                          : 1
  4-bit comparator greatequal                           : 13
@@ -1597,37 +1605,32 @@ Macro Statistics
 =========================================================================
 *                         Low Level Synthesis                           *
 =========================================================================
-WARNING:Xst:1710 - FF/Latch <imess<1>_8_1> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_8_2> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_8_3> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_8_4> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <imess<1>_8_4> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_8_5> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_8_6> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_9_0> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_9_1> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_9_2> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_9_3> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_9_4> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_9_5> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_10_0> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_10_1> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_10_2> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_10_3> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_10_4> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_10_5> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_9_0> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_9_1> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_9_2> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_9_3> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_9_4> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_9_5> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<2>_2_0> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<2>_2_1> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<2>_2_2> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_4_6> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_14_0> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_14_1> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_14_2> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_14_3> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_14_4> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_14_5> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_14_6> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_15_0> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_15_1> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_15_2> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_15_3> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_15_4> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_15_5> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_15_6> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_7_0> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_7_1> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_7_2> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
@@ -1636,7 +1639,9 @@ WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_7_4> (with
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_7_5> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_7_6> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_8_0> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_13_2> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_8_1> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_8_2> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_8_3> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_13_3> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_13_4> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_13_5> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
@@ -1655,8 +1660,6 @@ WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_17_0> (wit
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_17_1> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_17_2> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_17_3> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<2>_2_1> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<2>_2_2> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<2>_2_3> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<2>_2_4> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<2>_2_5> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
@@ -1675,13 +1678,8 @@ WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_12_4> (wit
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_12_5> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_13_0> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_13_1> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_14_0> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_14_1> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_14_2> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_14_3> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_14_4> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_14_5> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_14_6> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_13_2> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_13_6> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_15_0> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_15_1> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_15_2> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
@@ -1689,11 +1687,16 @@ WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_15_3> (wit
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_15_4> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_15_5> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_15_6> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_2_0> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_2_1> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_2_2> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_2_3> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_2_4> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_14_0> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_14_1> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_14_2> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_14_3> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_14_4> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_14_5> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_14_6> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_0_0> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_0_1> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_0_2> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_0_0> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_0_1> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_0_2> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
@@ -1712,11 +1715,13 @@ WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_13_1> (wit
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_13_2> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_13_3> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_13_4> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_13_5> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_13_6> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_2_4> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_2_5> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_2_6> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_13_5> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_1_1> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_1_2> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_1_3> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_1_4> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_1_5> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_1_6> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_3_0> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_3_1> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_3_2> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
@@ -1730,34 +1735,32 @@ WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_4_2> (with
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_4_3> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_4_4> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_4_5> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_4_6> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_14_0> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_14_1> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_2_5> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_2_6> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_0_0> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_0_1> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_0_2> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_0_3> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_0_4> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_0_5> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_0_6> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_1_0> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_1_1> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_1_2> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_1_3> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_1_4> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_1_5> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_1_6> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_2_0> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_2_1> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_2_2> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_2_3> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_2_4> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_2_5> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_2_6> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_2_0> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_2_1> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_2_2> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_2_3> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_2_4> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_2_5> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<5>_2_6> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<1>_1_0> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <channel_select_reg_0> (without init value) has a constant value of 0 in block <top_cvora>. This FF/Latch will be trimmed during the optimization process.
-INFO:Xst:2261 - The FF/Latch <imess<4>_4_6> in Unit <message> is equivalent to the following 32 FFs/Latches, which will be removed : <imess<4>_4_7> <imess<4>_5_6> <imess<4>_5_7> <imess<4>_10_6> <imess<4>_10_7> <imess<4>_6_6> <imess<4>_6_7> <imess<4>_11_6> <imess<4>_11_7> <imess<4>_7_6> <imess<4>_7_7> <imess<4>_12_6> <imess<4>_12_7> <imess<4>_8_6> <imess<4>_8_7> <imess<5>_5_6> <imess<5>_5_7> <imess<5>_6_6> <imess<5>_6_7> <imess<5>_7_6> <imess<5>_7_7> <imess<5>_8_6> <imess<5>_8_7> <imess<2>_8_6> <imess<2>_8_7> <imess<5>_9_6> <imess<5>_9_7> <imess<2>_9_0> <imess<2>_9_1> <imess<2>_9_2> <imess<2>_9_6> <imess<2>_9_7> 
-INFO:Xst:2261 - The FF/Latch <imess<4>_4_4> in Unit <message> is equivalent to the following 29 FFs/Latches, which will be removed : <imess<4>_4_5> <imess<4>_5_4> <imess<4>_5_5> <imess<4>_10_4> <imess<4>_10_5> <imess<4>_6_4> <imess<4>_6_5> <imess<4>_11_4> <imess<4>_11_5> <imess<4>_7_4> <imess<4>_7_5> <imess<4>_12_4> <imess<4>_12_5> <imess<4>_8_4> <imess<4>_8_5> <imess<5>_5_4> <imess<5>_5_5> <imess<5>_6_4> <imess<5>_6_5> <imess<5>_7_4> <imess<5>_7_5> <imess<5>_8_4> <imess<5>_8_5> <imess<2>_8_4> <imess<2>_8_5> <imess<5>_9_4> <imess<5>_9_5> <imess<2>_9_4> <imess<2>_9_5> 
-WARNING:Xst:1710 - FF/Latch <imess<4>_4_4> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_4_6> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+INFO:Xst:2261 - The FF/Latch <imess<3>_14_5> in Unit <message> is equivalent to the following 2 FFs/Latches, which will be removed : <imess<3>_13_5> <imess<3>_15_5> 
+INFO:Xst:2261 - The FF/Latch <imess<3>_14_2> in Unit <message> is equivalent to the following 8 FFs/Latches, which will be removed : <imess<3>_14_4> <imess<3>_14_6> <imess<3>_13_0> <imess<3>_13_1> <imess<3>_13_4> <imess<3>_13_6> <imess<3>_15_1> <imess<3>_15_6> 
+INFO:Xst:2261 - The FF/Latch <imess<3>_14_0> in Unit <message> is equivalent to the following 44 FFs/Latches, which will be removed : <imess<3>_14_1> <imess<3>_14_3> <imess<3>_14_7> <imess<3>_13_2> <imess<3>_13_3> <imess<3>_13_7> <imess<3>_15_0> <imess<3>_15_2> <imess<3>_15_3> <imess<3>_15_4> <imess<3>_15_7> <imess<4>_4_6> <imess<4>_4_7> <imess<4>_5_6> <imess<4>_5_7> <imess<4>_10_6> <imess<4>_10_7> <imess<4>_6_6> <imess<4>_6_7> <imess<4>_11_6> <imess<4>_11_7> <imess<4>_7_6> <imess<4>_7_7> <imess<4>_12_6> <imess<4>_12_7> <imess<4>_8_6> <imess<4>_8_7> <imess<5>_5_6> <imess<5>_5_7> <imess<5>_6_6> <imess<5>_6_7> <imess<5>_7_6> <imess<5>_7_7> <imess<5>_9_6> <imess<5>_9_7> <imess<5>_8_6> <imess<5>_8_7> <imess<2>_8_6> <imess<2>_8_7> <imess<2>_9_0> <imess<2>_9_1> <imess<2>_9_2> <imess<2>_9_6> <imess<2>_9_7> 
+INFO:Xst:2261 - The FF/Latch <imess<4>_4_4> in Unit <message> is equivalent to the following 29 FFs/Latches, which will be removed : <imess<4>_4_5> <imess<4>_5_4> <imess<4>_5_5> <imess<4>_10_4> <imess<4>_10_5> <imess<4>_6_4> <imess<4>_6_5> <imess<4>_11_4> <imess<4>_11_5> <imess<4>_7_4> <imess<4>_7_5> <imess<4>_12_4> <imess<4>_12_5> <imess<4>_8_4> <imess<4>_8_5> <imess<5>_5_4> <imess<5>_5_5> <imess<5>_6_4> <imess<5>_6_5> <imess<5>_7_4> <imess<5>_7_5> <imess<5>_9_4> <imess<5>_9_5> <imess<5>_8_4> <imess<5>_8_5> <imess<2>_8_4> <imess<2>_8_5> <imess<2>_9_4> <imess<2>_9_5> 
+WARNING:Xst:1710 - FF/Latch <imess<3>_14_0> (without init value) has a constant value of 0 in block <message>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1895 - Due to other FF/Latch trimming, FF/Latch <imess<4>_4_4> (without init value) has a constant value of 1 in block <message>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <addr_in_0> (without init value) has a constant value of 0 in block <Vme_intfce>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1293 - FF/Latch <current_channel_0> has a constant value of 0 in block <rtm_serial_manager>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:2677 - Node <cmp_vme_interface/VmeIntReqN_7> of sequential type is unconnected in block <top_cvora>.
@@ -1808,8 +1811,8 @@ Optimizing unit <rtm_serial_manager> ...
 WARNING:Xst:1710 - FF/Latch <cmp_message/rs232_Data_7> (without init value) has a constant value of 0 in block <top_cvora>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <cmp_message/imess<3>_4_3> (without init value) has a constant value of 0 in block <top_cvora>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <cmp_message/imess<3>_4_7> (without init value) has a constant value of 0 in block <top_cvora>. This FF/Latch will be trimmed during the optimization process.
-WARNING:Xst:1710 - FF/Latch <cmp_message/imess<3>_5_7> (without init value) has a constant value of 0 in block <top_cvora>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <cmp_message/imess<3>_6_7> (without init value) has a constant value of 0 in block <top_cvora>. This FF/Latch will be trimmed during the optimization process.
+WARNING:Xst:1710 - FF/Latch <cmp_message/imess<3>_5_7> (without init value) has a constant value of 0 in block <top_cvora>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <cmp_message/imess<3>_10_7> (without init value) has a constant value of 0 in block <top_cvora>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <cmp_message/imess<3>_7_3> (without init value) has a constant value of 0 in block <top_cvora>. This FF/Latch will be trimmed during the optimization process.
 WARNING:Xst:1710 - FF/Latch <cmp_message/imess<3>_7_7> (without init value) has a constant value of 0 in block <top_cvora>. This FF/Latch will be trimmed during the optimization process.
@@ -1837,10 +1840,10 @@ WARNING:Xst:2677 - Node <cmp_bup_sync/npulse_o> of sequential type is unconnecte
 WARNING:Xst:2677 - Node <cmp_stop_sync/npulse_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_start_sync/npulse_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_clock_sync/npulse_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_fp_cvorb_decoder2/one_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_fp_cvorb_decoder2/zero_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_fp_cvorb_decoder1/one_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_fp_cvorb_decoder2/one_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_fp_cvorb_decoder1/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_fp_cvorb_decoder1/one_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_clk_freq_slv2bcd/BCD_Ready> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_inter_acq_time/BCD_Ready> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_bus_interface_controller/ContToRegs.Sel_4> of sequential type is unconnected in block <top_cvora>.
@@ -1848,77 +1851,77 @@ WARNING:Xst:2677 - Node <cmp_bus_interface_controller/ContToRegs.Sel_1> of seque
 WARNING:Xst:2677 - Node <cmp_bus_interface_controller/intReadDelayed> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_bus_interface_controller/intAddDelayed_1> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_bus_interface_controller/intAddDelayed_0> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[0].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[0].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[1].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[0].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[1].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[1].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[3].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[3].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[4].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[3].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[4].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[5].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[4].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[5].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[6].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[5].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[6].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[7].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[6].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[7].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[8].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[7].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[8].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[9].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[8].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[9].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[10].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[9].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[10].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[11].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[10].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[11].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[12].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[11].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[12].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[13].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[12].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[13].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[14].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[13].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[14].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[15].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[14].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[15].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[16].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[15].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[16].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[17].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[16].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[17].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[18].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[17].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[18].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[19].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[18].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[19].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[20].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[19].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[20].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[20].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[22].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[22].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[23].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[22].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[23].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[24].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[23].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[24].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[25].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[24].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[25].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[26].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[25].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[26].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[27].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[26].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[27].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[28].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[27].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[28].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[29].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[28].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[29].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[30].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[29].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[30].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
-WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[31].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[30].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[31].cmp_rtm_cvorb_decoder/one_test_o> of sequential type is unconnected in block <top_cvora>.
+WARNING:Xst:2677 - Node <cmp_rtm_serial_manager/l_rtm_cvorb_decoders[31].cmp_rtm_cvorb_decoder/zero_test_o> of sequential type is unconnected in block <top_cvora>.
 
 Mapping all equations...
 Building and optimizing final netlist ...
 INFO:Xst:2261 - The FF/Latch <cmp_message/imess<3>_8_2> in Unit <top_cvora> is equivalent to the following 2 FFs/Latches, which will be removed : <cmp_message/imess<3>_11_3> <cmp_message/imess<3>_7_0> 
 INFO:Xst:2261 - The FF/Latch <cmp_message/imess<3>_12_0> in Unit <top_cvora> is equivalent to the following FF/Latch, which will be removed : <cmp_message/imess<3>_7_2> 
 INFO:Xst:2261 - The FF/Latch <cmp_message/imess<3>_2_0> in Unit <top_cvora> is equivalent to the following 2 FFs/Latches, which will be removed : <cmp_message/imess<3>_0_4> <cmp_message/imess<3>_6_6> 
-INFO:Xst:2261 - The FF/Latch <cmp_message/imess<3>_6_5> in Unit <top_cvora> is equivalent to the following FF/Latch, which will be removed : <cmp_message/imess<3>_5_5> 
+INFO:Xst:2261 - The FF/Latch <cmp_message/imess<3>_5_5> in Unit <top_cvora> is equivalent to the following FF/Latch, which will be removed : <cmp_message/imess<3>_6_5> 
 INFO:Xst:2261 - The FF/Latch <cmp_message/imess<3>_12_4> in Unit <top_cvora> is equivalent to the following FF/Latch, which will be removed : <cmp_message/imess<3>_5_3> 
 INFO:Xst:2261 - The FF/Latch <cmp_message/imess<3>_1_3> in Unit <top_cvora> is equivalent to the following 3 FFs/Latches, which will be removed : <cmp_message/imess<3>_1_1> <cmp_message/imess<3>_0_0> <cmp_message/imess<3>_4_5> 
 INFO:Xst:2261 - The FF/Latch <cmp_message/imess<3>_3_6> in Unit <top_cvora> is equivalent to the following FF/Latch, which will be removed : <cmp_message/imess<3>_3_0> 
@@ -1928,7 +1931,11 @@ INFO:Xst:2261 - The FF/Latch <cmp_message/imess<3>_2_6> in Unit <top_cvora> is e
 INFO:Xst:2261 - The FF/Latch <cmp_message/imess<3>_2_1> in Unit <top_cvora> is equivalent to the following 2 FFs/Latches, which will be removed : <cmp_message/imess<3>_1_0> <cmp_message/imess<3>_12_2> 
 INFO:Xst:2261 - The FF/Latch <cmp_message/imess<3>_12_1> in Unit <top_cvora> is equivalent to the following FF/Latch, which will be removed : <cmp_message/imess<3>_11_4> 
 INFO:Xst:2261 - The FF/Latch <cmp_message/imess<3>_9_6> in Unit <top_cvora> is equivalent to the following 2 FFs/Latches, which will be removed : <cmp_message/imess<3>_10_6> <cmp_message/imess<3>_10_0> 
+INFO:Xst:2261 - The FF/Latch <cmp_clk_freq_slv2bcd/iSB_Ready> in Unit <top_cvora> is equivalent to the following FF/Latch, which will be removed : <cmp_clk_freq_meter/U_Sync_Gate/d_p_d0> 
 Found area constraint ratio of 100 (+ 5) on block top_cvora, actual ratio is 42.
+FlipFlop mode_0 has been replicated 1 time(s)
+FlipFlop mode_1 has been replicated 1 time(s)
+FlipFlop mode_2 has been replicated 1 time(s)
 FlipFlop mode_3 has been replicated 1 time(s)
 
 Final Macro Processing ...
@@ -1976,8 +1983,8 @@ Unit <top_cvora> processed.
 Final Register Report
 
 Macro Statistics
-# Registers                                            : 6282
- Flip-Flops                                            : 6282
+# Registers                                            : 6424
+ Flip-Flops                                            : 6424
 # Shift Registers                                      : 36
  2-bit shift register                                  : 34
  4-bit shift register                                  : 2
@@ -2009,36 +2016,36 @@ Design Statistics
 # IOs                              : 243
 
 Cell Usage :
-# BELS                             : 10738
+# BELS                             : 10721
 #      GND                         : 1
-#      INV                         : 41
+#      INV                         : 34
 #      LUT1                        : 818
-#      LUT2                        : 811
-#      LUT2_D                      : 9
-#      LUT2_L                      : 18
-#      LUT3                        : 1943
-#      LUT3_D                      : 10
-#      LUT3_L                      : 23
-#      LUT4                        : 3816
-#      LUT4_D                      : 589
-#      LUT4_L                      : 201
+#      LUT2                        : 833
+#      LUT2_D                      : 6
+#      LUT2_L                      : 6
+#      LUT3                        : 2003
+#      LUT3_D                      : 12
+#      LUT3_L                      : 15
+#      LUT4                        : 3810
+#      LUT4_D                      : 581
+#      LUT4_L                      : 145
 #      MULT_AND                    : 61
 #      MUXCY                       : 848
-#      MUXF5                       : 669
+#      MUXF5                       : 668
 #      MUXF6                       : 186
 #      MUXF7                       : 93
 #      MUXF8                       : 34
 #      VCC                         : 1
 #      XORCY                       : 566
-# FlipFlops/Latches                : 6323
+# FlipFlops/Latches                : 6465
 #      FD                          : 73
-#      FDC                         : 880
+#      FDC                         : 1080
 #      FDC_1                       : 34
-#      FDCE                        : 4574
+#      FDCE                        : 4513
 #      FDE                         : 436
-#      FDE_1                       : 117
+#      FDE_1                       : 119
 #      FDP                         : 149
-#      FDPE                        : 17
+#      FDPE                        : 18
 #      FDR                         : 34
 #      FDRSE                       : 2
 #      FDS                         : 6
@@ -2061,10 +2068,10 @@ Device utilization summary:
 
 Selected Device : 3s1500fg456-4 
 
- Number of Slices:                     5568  out of  13312    41%  
- Number of Slice Flip Flops:           6323  out of  26624    23%  
- Number of 4 input LUTs:               8315  out of  26624    31%  
-    Number used as logic:              8279
+ Number of Slices:                     5588  out of  13312    41%  
+ Number of Slice Flip Flops:           6465  out of  26624    24%  
+ Number of 4 input LUTs:               8299  out of  26624    31%  
+    Number used as logic:              8263
     Number used as Shift registers:      36
  Number of IOs:                         243
  Number of bonded IOBs:                 236  out of    333    70%  
@@ -2091,7 +2098,7 @@ Clock Information:
 -----------------------------------+------------------------+-------+
 Clock Signal                       | Clock buffer(FF name)  | Load  |
 -----------------------------------+------------------------+-------+
-sys_clk_i                          | IBUFG+BUFG             | 6290  |
+sys_clk_i                          | IBUFG+BUFG             | 6432  |
 cmp_clock_sync/ppulse_o1           | BUFG                   | 69    |
 -----------------------------------+------------------------+-------+
 
@@ -2100,27 +2107,27 @@ Asynchronous Control Signals Information:
 ----------------------------------------------------------------------+---------------------------------------------------------------------------------------------------+-------+
 Control Signal                                                        | Buffer(FF name)                                                                                   | Load  |
 ----------------------------------------------------------------------+---------------------------------------------------------------------------------------------------+-------+
-cmp_up_cnt2/rst_n_i_inv1_INV_0_1(cmp_up_cnt2/rst_n_i_inv1_INV_0_1:O)  | NONE(UserIntReqN)                                                                                 | 473   |
-cmp_up_cnt2/rst_n_i_inv1_INV_0_10(cmp_up_cnt2/rst_n_i_inv1_INV_0_10:O)| NONE(cmp_rtm_serial_manager/data_buffer_19_3)                                                     | 472   |
-cmp_up_cnt2/rst_n_i_inv1_INV_0_2(cmp_up_cnt2/rst_n_i_inv1_INV_0_2:O)  | NONE(cmp_rtm_serial_manager/l_rtm_sci_decoders[26].cmp_rtm_sci_decoder/data_o_2)                  | 472   |
-cmp_up_cnt2/rst_n_i_inv1_INV_0_3(cmp_up_cnt2/rst_n_i_inv1_INV_0_3:O)  | NONE(cmp_rtm_serial_manager/l_rtm_sci_decoders[13].cmp_rtm_sci_decoder/data_o_6)                  | 472   |
-cmp_up_cnt2/rst_n_i_inv1_INV_0_4(cmp_up_cnt2/rst_n_i_inv1_INV_0_4:O)  | NONE(cmp_rtm_serial_manager/l_rtm_cvorb_decoders[6].cmp_rtm_cvorb_decoder/data_pos)               | 472   |
-cmp_up_cnt2/rst_n_i_inv1_INV_0_5(cmp_up_cnt2/rst_n_i_inv1_INV_0_5:O)  | NONE(cmp_rtm_serial_manager/l_rtm_cvorb_decoders[30].cmp_rtm_cvorb_decoder/current_bit_position_3)| 472   |
-cmp_up_cnt2/rst_n_i_inv1_INV_0_6(cmp_up_cnt2/rst_n_i_inv1_INV_0_6:O)  | NONE(cmp_rtm_serial_manager/l_rtm_cvorb_decoders[25].cmp_rtm_cvorb_decoder/pulse_length_counter_3)| 472   |
-cmp_up_cnt2/rst_n_i_inv1_INV_0_7(cmp_up_cnt2/rst_n_i_inv1_INV_0_7:O)  | NONE(cmp_rtm_serial_manager/l_rtm_cvorb_decoders[20].cmp_rtm_cvorb_decoder/data_o_2)              | 472   |
-cmp_up_cnt2/rst_n_i_inv1_INV_0_8(cmp_up_cnt2/rst_n_i_inv1_INV_0_8:O)  | NONE(cmp_rtm_serial_manager/l_rtm_cvorb_decoders[15].cmp_rtm_cvorb_decoder/shift_register_2)      | 472   |
-cmp_up_cnt2/rst_n_i_inv1_INV_0_9(cmp_up_cnt2/rst_n_i_inv1_INV_0_9:O)  | NONE(cmp_rtm_serial_manager/l_rtm_cvorb_decoders[10].cmp_rtm_cvorb_decoder/data_out_cvorb_13)     | 472   |
-cmp_bdown_sync/rst_n_i_inv(cmp_up_cnt2/rst_n_i_inv1_INV_0:O)          | NONE(channel_en_0)                                                                                | 470   |
-cmp_up_cnt2/rst_n_i_inv1_INV_0_11(cmp_up_cnt2/rst_n_i_inv1_INV_0_11:O)| NONE(cmp_fp_cvorb_decoder2/pulse_length_6)                                                        | 463   |
+cmp_up_cnt2/rst_n_i_inv1_INV_0_1(cmp_up_cnt2/rst_n_i_inv1_INV_0_1:O)  | NONE(UserIntReqN)                                                                                 | 484   |
+cmp_up_cnt2/rst_n_i_inv1_INV_0_10(cmp_up_cnt2/rst_n_i_inv1_INV_0_10:O)| NONE(cmp_rtm_serial_manager/data_buffer_1_6)                                                      | 484   |
+cmp_up_cnt2/rst_n_i_inv1_INV_0_4(cmp_up_cnt2/rst_n_i_inv1_INV_0_4:O)  | NONE(cmp_rtm_serial_manager/l_rtm_cvorb_decoders[6].cmp_rtm_cvorb_decoder/pulse_length_5)         | 484   |
+cmp_up_cnt2/rst_n_i_inv1_INV_0_5(cmp_up_cnt2/rst_n_i_inv1_INV_0_5:O)  | NONE(cmp_rtm_serial_manager/l_rtm_cvorb_decoders[30].cmp_rtm_cvorb_decoder/data_o_13)             | 484   |
+cmp_up_cnt2/rst_n_i_inv1_INV_0_6(cmp_up_cnt2/rst_n_i_inv1_INV_0_6:O)  | NONE(cmp_rtm_serial_manager/l_rtm_cvorb_decoders[25].cmp_rtm_cvorb_decoder/shift_register_2)      | 484   |
+cmp_up_cnt2/rst_n_i_inv1_INV_0_7(cmp_up_cnt2/rst_n_i_inv1_INV_0_7:O)  | NONE(cmp_rtm_serial_manager/l_rtm_cvorb_decoders[20].cmp_rtm_cvorb_decoder/data_out_cvorb_5)      | 484   |
+cmp_up_cnt2/rst_n_i_inv1_INV_0_8(cmp_up_cnt2/rst_n_i_inv1_INV_0_8:O)  | NONE(cmp_rtm_serial_manager/l_rtm_cvorb_decoders[16].cmp_rtm_cvorb_decoder/current_bit_position_1)| 484   |
+cmp_up_cnt2/rst_n_i_inv1_INV_0_9(cmp_up_cnt2/rst_n_i_inv1_INV_0_9:O)  | NONE(cmp_rtm_serial_manager/l_rtm_cvorb_decoders[10].cmp_rtm_cvorb_decoder/pulse_length_counter_7)| 484   |
+cmp_up_cnt2/rst_n_i_inv1_INV_0_2(cmp_up_cnt2/rst_n_i_inv1_INV_0_2:O)  | NONE(cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/vCounter_1)     | 483   |
+cmp_up_cnt2/rst_n_i_inv1_INV_0_3(cmp_up_cnt2/rst_n_i_inv1_INV_0_3:O)  | NONE(cmp_rtm_serial_manager/l_rtm_sci_decoders[14].cmp_rtm_sci_decoder/cmp_sci_rx/iSerial)        | 483   |
+cmp_bdown_sync/rst_n_i_inv(cmp_up_cnt2/rst_n_i_inv1_INV_0:O)          | NONE(channel_en_0)                                                                                | 481   |
+cmp_up_cnt2/rst_n_i_inv1_INV_0_11(cmp_up_cnt2/rst_n_i_inv1_INV_0_11:O)| NONE(cmp_fp_cvorb_decoder2/serial_data_0)                                                         | 475   |
 ----------------------------------------------------------------------+---------------------------------------------------------------------------------------------------+-------+
 
 Timing Summary:
 ---------------
 Speed Grade: -4
 
-   Minimum period: 16.134ns (Maximum Frequency: 61.983MHz)
-   Minimum input arrival time before clock: 8.722ns
-   Maximum output required time after clock: 14.978ns
+   Minimum period: 14.716ns (Maximum Frequency: 67.952MHz)
+   Minimum input arrival time before clock: 8.791ns
+   Maximum output required time after clock: 15.291ns
    Maximum combinational path delay: 9.095ns
 
 Timing Detail:
@@ -2129,26 +2136,33 @@ All values displayed in nanoseconds (ns)
 
 =========================================================================
 Timing constraint: Default period analysis for Clock 'sys_clk_i'
-  Clock period: 16.134ns (frequency: 61.983MHz)
-  Total number of paths / destination ports: 118983 / 11358
+  Clock period: 14.716ns (frequency: 67.952MHz)
+  Total number of paths / destination ports: 118007 / 11450
 -------------------------------------------------------------------------
-Delay:               8.067ns (Levels of Logic = 2)
+Delay:               14.716ns (Levels of Logic = 9)
   Source:            mode_2 (FF)
-  Destination:       cmp_rtm_serial_manager/l_rtm_cvorb_decoders[0].cmp_rtm_cvorb_decoder/data_ff_neg_one (FF)
+  Destination:       dac1_data_o_9 (FF)
   Source Clock:      sys_clk_i rising
-  Destination Clock: sys_clk_i falling
+  Destination Clock: sys_clk_i rising
 
-  Data Path: mode_2 to cmp_rtm_serial_manager/l_rtm_cvorb_decoders[0].cmp_rtm_cvorb_decoder/data_ff_neg_one
+  Data Path: mode_2 to dac1_data_o_9
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     FDCE:C->Q           116   0.720   2.673  mode_2 (mode_2)
-     LUT3_D:I0->O        292   0.551   3.368  cmp_rtm_serial_manager/rtm_cvorb_channel_en_cmp_eq000011 (Mrom_mode_rom000027)
-     LUT4:I3->O            2   0.551   0.000  cmp_rtm_serial_manager/l_rtm_cvorb_decoders[9].cmp_rtm_cvorb_decoder/serial_data1 (cmp_rtm_serial_manager/l_rtm_cvorb_decoders[9].cmp_rtm_cvorb_decoder/serial_data)
-     FDC_1:D                   0.203          cmp_rtm_serial_manager/l_rtm_cvorb_decoders[9].cmp_rtm_cvorb_decoder/data_ff_neg_one
+     FDCE:C->Q            95   0.720   2.553  mode_2 (mode_2)
+     LUT3_D:I0->O         31   0.551   1.873  cmp_rtm_serial_manager/rtm_cvorb_channel_en_cmp_eq000011_1 (cmp_rtm_serial_manager/rtm_cvorb_channel_en_cmp_eq000011)
+     LUT4_D:I3->O         17   0.551   1.540  cmp_rtm_serial_manager/Mmux_rtm_data_valid621 (rtm_data_valid<8>)
+     LUT3:I1->O            1   0.551   0.000  Mmux__varindex0000_71 (Mmux__varindex0000_71)
+     MUXF5:I0->O           1   0.360   0.000  Mmux__varindex0000_5_f5_0 (Mmux__varindex0000_5_f51)
+     MUXF6:I1->O           1   0.342   0.000  Mmux__varindex0000_4_f6 (Mmux__varindex0000_4_f6)
+     MUXF7:I0->O          18   0.342   1.612  Mmux__varindex0000_2_f7 (_varindex0000)
+     LUT3:I1->O            1   0.551   0.869  dac1_data_o_mux0000<9>22 (dac1_data_o_mux0000<9>22)
+     LUT4:I2->O            1   0.551   0.996  dac1_data_o_mux0000<9>25 (dac1_data_o_mux0000<9>25)
+     LUT3:I1->O            1   0.551   0.000  dac1_data_o_mux0000<9>39 (dac1_data_o_mux0000<9>)
+     FDCE:D                    0.203          dac1_data_o_9
     ----------------------------------------
-    Total                      8.067ns (2.025ns logic, 6.042ns route)
-                                       (25.1% logic, 74.9% route)
+    Total                     14.716ns (5.273ns logic, 9.443ns route)
+                                       (35.8% logic, 64.2% route)
 
 =========================================================================
 Timing constraint: Default period analysis for Clock 'cmp_clock_sync/ppulse_o1'
@@ -2206,9 +2220,9 @@ Delay:               7.205ns (Levels of Logic = 33)
 
 =========================================================================
 Timing constraint: Default OFFSET IN BEFORE for Clock 'sys_clk_i'
-  Total number of paths / destination ports: 745 / 729
+  Total number of paths / destination ports: 677 / 663
 -------------------------------------------------------------------------
-Offset:              8.722ns (Levels of Logic = 2)
+Offset:              8.791ns (Levels of Logic = 2)
   Source:            sys_rst_n_a_i (PAD)
   Destination:       cmp_ram_manager/currentState_FSM_FFd3 (FF)
   Destination Clock: sys_clk_i rising
@@ -2218,17 +2232,17 @@ Offset:              8.722ns (Levels of Logic = 2)
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
      IBUF:I->O            49   0.821   1.950  sys_rst_n_a_i_IBUF (sys_rst_n_a_i_IBUF)
-     INV:I->O            472   0.551   4.374  cmp_up_cnt2/rst_n_i_inv1_INV_0_11 (cmp_up_cnt2/rst_n_i_inv1_INV_0_11)
+     INV:I->O            484   0.551   4.442  cmp_up_cnt2/rst_n_i_inv1_INV_0_11 (cmp_up_cnt2/rst_n_i_inv1_INV_0_11)
      FDRSE:R                   1.026          cmp_ram_manager/historyPendingWrite
     ----------------------------------------
-    Total                      8.722ns (2.398ns logic, 6.324ns route)
-                                       (27.5% logic, 72.5% route)
+    Total                      8.791ns (2.398ns logic, 6.393ns route)
+                                       (27.3% logic, 72.7% route)
 
 =========================================================================
 Timing constraint: Default OFFSET OUT AFTER for Clock 'sys_clk_i'
-  Total number of paths / destination ports: 246 / 135
+  Total number of paths / destination ports: 250 / 135
 -------------------------------------------------------------------------
-Offset:              14.978ns (Levels of Logic = 9)
+Offset:              15.291ns (Levels of Logic = 9)
   Source:            cmp_vme_interface/addr_in_5 (FF)
   Destination:       fp_led_o<4> (PAD)
   Source Clock:      sys_clk_i rising
@@ -2244,12 +2258,12 @@ Offset:              14.978ns (Levels of Logic = 9)
      MUXCY:CI->O           1   0.064   0.000  cmp_bus_interface_controller/UROMMUX/Mcompar_DataOut_cmp_ge0000_cy<2> (cmp_bus_interface_controller/UROMMUX/Mcompar_DataOut_cmp_ge0000_cy<2>)
      MUXCY:CI->O           1   0.064   0.000  cmp_bus_interface_controller/UROMMUX/Mcompar_DataOut_cmp_ge0000_cy<3> (cmp_bus_interface_controller/UROMMUX/Mcompar_DataOut_cmp_ge0000_cy<3>)
      MUXCY:CI->O          34   0.281   2.060  cmp_bus_interface_controller/UROMMUX/Mcompar_DataOut_cmp_ge0000_cy<4> (cmp_bus_interface_controller/nxSelectedPos<9>)
-     LUT4:I1->O           30   0.551   1.868  cmp_bus_interface_controller/UROMMUX/Done26 (cmp_bus_interface_controller/iOpDone)
-     LUT4:I3->O            1   0.551   0.801  cmp_monoastable_read_led/extended_o1 (fp_led_o_4_OBUF)
+     LUT4:I1->O           30   0.551   2.181  cmp_bus_interface_controller/UROMMUX/Done26 (cmp_bus_interface_controller/iOpDone)
+     LUT4:I0->O            1   0.551   0.801  cmp_monoastable_read_led/extended_o1 (fp_led_o_4_OBUF)
      OBUF:I->O                 5.644          fp_led_o_4_OBUF (fp_led_o<4>)
     ----------------------------------------
-    Total                     14.978ns (8.990ns logic, 5.988ns route)
-                                       (60.0% logic, 40.0% route)
+    Total                     15.291ns (8.990ns logic, 6.301ns route)
+                                       (58.8% logic, 41.2% route)
 
 =========================================================================
 Timing constraint: Default path analysis
@@ -2274,14 +2288,14 @@ Delay:               9.095ns (Levels of Logic = 3)
 
 
 Total REAL time to Xst completion: 64.00 secs
-Total CPU time to Xst completion: 64.37 secs
+Total CPU time to Xst completion: 62.91 secs
  
 --> 
 
 
-Total memory usage is 264320 kilobytes
+Total memory usage is 265076 kilobytes
 
 Number of errors   :    0 (   0 filtered)
-Number of warnings :  587 (   0 filtered)
-Number of infos    :   32 (   0 filtered)
+Number of warnings :  588 (   0 filtered)
+Number of infos    :   35 (   0 filtered)
 

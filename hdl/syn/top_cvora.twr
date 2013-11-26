@@ -34,176 +34,446 @@ INFO:Timing:3389 - This architecture does not support 'Discrete Jitter' and
 ================================================================================
 Timing constraint: TS_sys_clk = PERIOD TIMEGRP "sys_clk" 25 ns HIGH 50%;
 
- 118947 paths analyzed, 21116 endpoints analyzed, 0 failing endpoints
+ 117971 paths analyzed, 21340 endpoints analyzed, 0 failing endpoints
  0 timing errors detected. (0 setup errors, 0 hold errors, 0 component switching limit errors)
- Minimum period is  22.123ns.
+ Minimum period is  23.786ns.
 --------------------------------------------------------------------------------
 
-Paths for end point cmp_message/imess<3>_4_6 (SLICE_X50Y118.G2), 1 path
+Paths for end point cmp_message/imess<3>_10_4 (SLICE_X73Y95.G3), 1 path
 --------------------------------------------------------------------------------
-Slack (setup path):     2.340ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               mode_2 (FF)
-  Destination:          cmp_message/imess<3>_4_6 (FF)
+Slack (setup path):     0.769ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               mode_3 (FF)
+  Destination:          cmp_message/imess<3>_10_4 (FF)
   Requirement:          12.500ns
-  Data Path Delay:      9.863ns (Levels of Logic = 1)
-  Clock Path Skew:      -0.297ns (0.601 - 0.898)
+  Data Path Delay:      11.731ns (Levels of Logic = 1)
+  Clock Path Skew:      0.000ns
   Source Clock:         sys_clk rising at 0.000ns
   Destination Clock:    sys_clk falling at 12.500ns
   Clock Uncertainty:    0.000ns
 
-  Maximum Data Path: mode_2 to cmp_message/imess<3>_4_6
+  Maximum Data Path: mode_3 to cmp_message/imess<3>_10_4
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X40Y67.YQ      Tcko                  0.720   mode<3>
-                                                       mode_2
-    SLICE_X50Y118.G2     net (fanout=116)      8.453   mode<2>
-    SLICE_X50Y118.CLK    Tgck                  0.690   cmp_message/imess<3>_4_6
-                                                       Mrom_mode_rom0000461
-                                                       cmp_message/imess<3>_4_6
+    SLICE_X68Y54.XQ      Tcko                  0.720   mode<3>
+                                                       mode_3
+    SLICE_X73Y95.G3      net (fanout=326)     10.378   mode<3>
+    SLICE_X73Y95.CLK     Tgck                  0.633   cmp_message/imess<3>_10_4
+                                                       Mrom_mode_rom00001001
+                                                       cmp_message/imess<3>_10_4
     -------------------------------------------------  ---------------------------
-    Total                                      9.863ns (1.410ns logic, 8.453ns route)
-                                                       (14.3% logic, 85.7% route)
+    Total                                     11.731ns (1.353ns logic, 10.378ns route)
+                                                       (11.5% logic, 88.5% route)
 
 --------------------------------------------------------------------------------
 
-Paths for end point cmp_message/imess<3>_5_0 (SLICE_X52Y112.G3), 1 path
+Paths for end point dac2_data_o_0 (SLICE_X60Y95.F3), 506 paths
 --------------------------------------------------------------------------------
-Slack (setup path):     2.714ns (requirement - (data path - clock path skew + uncertainty))
+Slack (setup path):     1.214ns (requirement - (data path - clock path skew + uncertainty))
   Source:               mode_2 (FF)
-  Destination:          cmp_message/imess<3>_5_0 (FF)
-  Requirement:          12.500ns
-  Data Path Delay:      9.563ns (Levels of Logic = 1)
-  Clock Path Skew:      -0.223ns (0.815 - 1.038)
+  Destination:          dac2_data_o_0 (FF)
+  Requirement:          25.000ns
+  Data Path Delay:      23.786ns (Levels of Logic = 9)
+  Clock Path Skew:      0.000ns
   Source Clock:         sys_clk rising at 0.000ns
-  Destination Clock:    sys_clk falling at 12.500ns
+  Destination Clock:    sys_clk rising at 25.000ns
   Clock Uncertainty:    0.000ns
 
-  Maximum Data Path: mode_2 to cmp_message/imess<3>_5_0
+  Maximum Data Path: mode_2 to dac2_data_o_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X40Y67.YQ      Tcko                  0.720   mode<3>
+    SLICE_X68Y54.YQ      Tcko                  0.720   mode<3>
                                                        mode_2
-    SLICE_X52Y112.G3     net (fanout=116)      8.153   mode<2>
-    SLICE_X52Y112.CLK    Tgck                  0.690   cmp_message/imess<3>_5_1
-                                                       Mrom_mode_rom0000321
-                                                       cmp_message/imess<3>_5_0
+    SLICE_X85Y51.G1      net (fanout=95)       3.479   mode<2>
+    SLICE_X85Y51.Y       Tilo                  0.551   rtm_data_valid<12>
+                                                       cmp_rtm_serial_manager/rtm_cvorb_channel_en_cmp_eq000011_1
+    SLICE_X20Y93.G2      net (fanout=32)       8.108   cmp_rtm_serial_manager/rtm_cvorb_channel_en_cmp_eq000011
+    SLICE_X20Y93.Y       Tilo                  0.608   cmp_rtm_serial_manager/data_buffer_27_not0001
+                                                       cmp_rtm_serial_manager/Mmux_rtm_data_valid401
+    SLICE_X33Y88.G2      net (fanout=18)       1.723   rtm_data_valid<27>
+    SLICE_X33Y88.COUT    Topcyg                1.039   rtm_data_valid_mux0000_wg_cy<1>
+                                                       rtm_data_valid_mux0000_wg_lut<1>
+                                                       rtm_data_valid_mux0000_wg_cy<1>
+    SLICE_X33Y89.CIN     net (fanout=1)        0.000   rtm_data_valid_mux0000_wg_cy<1>
+    SLICE_X33Y89.COUT    Tbyp                  0.128   rtm_data_valid_mux0000_wg_cy<3>
+                                                       rtm_data_valid_mux0000_wg_cy<2>
+                                                       rtm_data_valid_mux0000_wg_cy<3>
+    SLICE_X33Y90.CIN     net (fanout=1)        0.000   rtm_data_valid_mux0000_wg_cy<3>
+    SLICE_X33Y90.COUT    Tbyp                  0.128   rtm_data_valid_mux0000_wg_cy<5>
+                                                       rtm_data_valid_mux0000_wg_cy<4>
+                                                       rtm_data_valid_mux0000_wg_cy<5>
+    SLICE_X33Y91.CIN     net (fanout=1)        0.000   rtm_data_valid_mux0000_wg_cy<5>
+    SLICE_X33Y91.COUT    Tbyp                  0.128   rtm_data_valid_mux0000
+                                                       rtm_data_valid_mux0000_wg_cy<6>
+                                                       rtm_data_valid_mux0000_wg_cy<7>
+    SLICE_X40Y84.F3      net (fanout=18)       2.924   rtm_data_valid_mux0000
+    SLICE_X40Y84.X       Tilo                  0.608   dac2_data_o_mux0000<16>124
+                                                       dac2_data_o_mux0000<16>124
+    SLICE_X60Y95.G1      net (fanout=1)        2.329   dac2_data_o_mux0000<16>124
+    SLICE_X60Y95.Y       Tilo                  0.608   dac2_data_o_0
+                                                       dac2_data_o_mux0000<16>1361
+    SLICE_X60Y95.F3      net (fanout=1)        0.015   dac2_data_o_mux0000<16>1361/O
+    SLICE_X60Y95.CLK     Tfck                  0.690   dac2_data_o_0
+                                                       dac2_data_o_mux0000<16>157
+                                                       dac2_data_o_0
     -------------------------------------------------  ---------------------------
-    Total                                      9.563ns (1.410ns logic, 8.153ns route)
-                                                       (14.7% logic, 85.3% route)
+    Total                                     23.786ns (5.208ns logic, 18.578ns route)
+                                                       (21.9% logic, 78.1% route)
 
 --------------------------------------------------------------------------------
-
-Paths for end point cmp_message/imess<3>_4_0 (SLICE_X50Y114.G2), 1 path
---------------------------------------------------------------------------------
-Slack (setup path):     2.734ns (requirement - (data path - clock path skew + uncertainty))
-  Source:               mode_2 (FF)
-  Destination:          cmp_message/imess<3>_4_0 (FF)
-  Requirement:          12.500ns
-  Data Path Delay:      9.530ns (Levels of Logic = 1)
-  Clock Path Skew:      -0.236ns (0.662 - 0.898)
+Slack (setup path):     1.409ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               mode_0 (FF)
+  Destination:          dac2_data_o_0 (FF)
+  Requirement:          25.000ns
+  Data Path Delay:      23.591ns (Levels of Logic = 9)
+  Clock Path Skew:      0.000ns
   Source Clock:         sys_clk rising at 0.000ns
-  Destination Clock:    sys_clk falling at 12.500ns
+  Destination Clock:    sys_clk rising at 25.000ns
   Clock Uncertainty:    0.000ns
 
-  Maximum Data Path: mode_2 to cmp_message/imess<3>_4_0
+  Maximum Data Path: mode_0 to dac2_data_o_0
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X40Y67.YQ      Tcko                  0.720   mode<3>
-                                                       mode_2
-    SLICE_X50Y114.G2     net (fanout=116)      8.120   mode<2>
-    SLICE_X50Y114.CLK    Tgck                  0.690   cmp_message/imess<3>_4_1
-                                                       Mrom_mode_rom0000401
-                                                       cmp_message/imess<3>_4_0
+    SLICE_X62Y56.YQ      Tcko                  0.720   mode<1>
+                                                       mode_0
+    SLICE_X85Y51.G2      net (fanout=118)      3.284   mode<0>
+    SLICE_X85Y51.Y       Tilo                  0.551   rtm_data_valid<12>
+                                                       cmp_rtm_serial_manager/rtm_cvorb_channel_en_cmp_eq000011_1
+    SLICE_X20Y93.G2      net (fanout=32)       8.108   cmp_rtm_serial_manager/rtm_cvorb_channel_en_cmp_eq000011
+    SLICE_X20Y93.Y       Tilo                  0.608   cmp_rtm_serial_manager/data_buffer_27_not0001
+                                                       cmp_rtm_serial_manager/Mmux_rtm_data_valid401
+    SLICE_X33Y88.G2      net (fanout=18)       1.723   rtm_data_valid<27>
+    SLICE_X33Y88.COUT    Topcyg                1.039   rtm_data_valid_mux0000_wg_cy<1>
+                                                       rtm_data_valid_mux0000_wg_lut<1>
+                                                       rtm_data_valid_mux0000_wg_cy<1>
+    SLICE_X33Y89.CIN     net (fanout=1)        0.000   rtm_data_valid_mux0000_wg_cy<1>
+    SLICE_X33Y89.COUT    Tbyp                  0.128   rtm_data_valid_mux0000_wg_cy<3>
+                                                       rtm_data_valid_mux0000_wg_cy<2>
+                                                       rtm_data_valid_mux0000_wg_cy<3>
+    SLICE_X33Y90.CIN     net (fanout=1)        0.000   rtm_data_valid_mux0000_wg_cy<3>
+    SLICE_X33Y90.COUT    Tbyp                  0.128   rtm_data_valid_mux0000_wg_cy<5>
+                                                       rtm_data_valid_mux0000_wg_cy<4>
+                                                       rtm_data_valid_mux0000_wg_cy<5>
+    SLICE_X33Y91.CIN     net (fanout=1)        0.000   rtm_data_valid_mux0000_wg_cy<5>
+    SLICE_X33Y91.COUT    Tbyp                  0.128   rtm_data_valid_mux0000
+                                                       rtm_data_valid_mux0000_wg_cy<6>
+                                                       rtm_data_valid_mux0000_wg_cy<7>
+    SLICE_X40Y84.F3      net (fanout=18)       2.924   rtm_data_valid_mux0000
+    SLICE_X40Y84.X       Tilo                  0.608   dac2_data_o_mux0000<16>124
+                                                       dac2_data_o_mux0000<16>124
+    SLICE_X60Y95.G1      net (fanout=1)        2.329   dac2_data_o_mux0000<16>124
+    SLICE_X60Y95.Y       Tilo                  0.608   dac2_data_o_0
+                                                       dac2_data_o_mux0000<16>1361
+    SLICE_X60Y95.F3      net (fanout=1)        0.015   dac2_data_o_mux0000<16>1361/O
+    SLICE_X60Y95.CLK     Tfck                  0.690   dac2_data_o_0
+                                                       dac2_data_o_mux0000<16>157
+                                                       dac2_data_o_0
     -------------------------------------------------  ---------------------------
-    Total                                      9.530ns (1.410ns logic, 8.120ns route)
-                                                       (14.8% logic, 85.2% route)
+    Total                                     23.591ns (5.208ns logic, 18.383ns route)
+                                                       (22.1% logic, 77.9% route)
+
+--------------------------------------------------------------------------------
+Slack (setup path):     1.494ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               mode_2 (FF)
+  Destination:          dac2_data_o_0 (FF)
+  Requirement:          25.000ns
+  Data Path Delay:      23.506ns (Levels of Logic = 9)
+  Clock Path Skew:      0.000ns
+  Source Clock:         sys_clk rising at 0.000ns
+  Destination Clock:    sys_clk rising at 25.000ns
+  Clock Uncertainty:    0.000ns
+
+  Maximum Data Path: mode_2 to dac2_data_o_0
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X68Y54.YQ      Tcko                  0.720   mode<3>
+                                                       mode_2
+    SLICE_X85Y51.G1      net (fanout=95)       3.479   mode<2>
+    SLICE_X85Y51.Y       Tilo                  0.551   rtm_data_valid<12>
+                                                       cmp_rtm_serial_manager/rtm_cvorb_channel_en_cmp_eq000011_1
+    SLICE_X18Y82.G2      net (fanout=32)       8.214   cmp_rtm_serial_manager/rtm_cvorb_channel_en_cmp_eq000011
+    SLICE_X18Y82.Y       Tilo                  0.608   cmp_rtm_serial_manager/data_buffer_25_not0001
+                                                       cmp_rtm_serial_manager/Mmux_rtm_data_valid361
+    SLICE_X33Y88.F3      net (fanout=18)       1.349   rtm_data_valid<25>
+    SLICE_X33Y88.COUT    Topcyf                1.027   rtm_data_valid_mux0000_wg_cy<1>
+                                                       rtm_data_valid_mux0000_wg_lut<0>
+                                                       rtm_data_valid_mux0000_wg_cy<0>
+                                                       rtm_data_valid_mux0000_wg_cy<1>
+    SLICE_X33Y89.CIN     net (fanout=1)        0.000   rtm_data_valid_mux0000_wg_cy<1>
+    SLICE_X33Y89.COUT    Tbyp                  0.128   rtm_data_valid_mux0000_wg_cy<3>
+                                                       rtm_data_valid_mux0000_wg_cy<2>
+                                                       rtm_data_valid_mux0000_wg_cy<3>
+    SLICE_X33Y90.CIN     net (fanout=1)        0.000   rtm_data_valid_mux0000_wg_cy<3>
+    SLICE_X33Y90.COUT    Tbyp                  0.128   rtm_data_valid_mux0000_wg_cy<5>
+                                                       rtm_data_valid_mux0000_wg_cy<4>
+                                                       rtm_data_valid_mux0000_wg_cy<5>
+    SLICE_X33Y91.CIN     net (fanout=1)        0.000   rtm_data_valid_mux0000_wg_cy<5>
+    SLICE_X33Y91.COUT    Tbyp                  0.128   rtm_data_valid_mux0000
+                                                       rtm_data_valid_mux0000_wg_cy<6>
+                                                       rtm_data_valid_mux0000_wg_cy<7>
+    SLICE_X40Y84.F3      net (fanout=18)       2.924   rtm_data_valid_mux0000
+    SLICE_X40Y84.X       Tilo                  0.608   dac2_data_o_mux0000<16>124
+                                                       dac2_data_o_mux0000<16>124
+    SLICE_X60Y95.G1      net (fanout=1)        2.329   dac2_data_o_mux0000<16>124
+    SLICE_X60Y95.Y       Tilo                  0.608   dac2_data_o_0
+                                                       dac2_data_o_mux0000<16>1361
+    SLICE_X60Y95.F3      net (fanout=1)        0.015   dac2_data_o_mux0000<16>1361/O
+    SLICE_X60Y95.CLK     Tfck                  0.690   dac2_data_o_0
+                                                       dac2_data_o_mux0000<16>157
+                                                       dac2_data_o_0
+    -------------------------------------------------  ---------------------------
+    Total                                     23.506ns (5.196ns logic, 18.310ns route)
+                                                       (22.1% logic, 77.9% route)
+
+--------------------------------------------------------------------------------
+
+Paths for end point dac2_data_o_12 (SLICE_X53Y96.F3), 506 paths
+--------------------------------------------------------------------------------
+Slack (setup path):     1.256ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               mode_2 (FF)
+  Destination:          dac2_data_o_12 (FF)
+  Requirement:          25.000ns
+  Data Path Delay:      23.662ns (Levels of Logic = 9)
+  Clock Path Skew:      -0.082ns (0.795 - 0.877)
+  Source Clock:         sys_clk rising at 0.000ns
+  Destination Clock:    sys_clk rising at 25.000ns
+  Clock Uncertainty:    0.000ns
+
+  Maximum Data Path: mode_2 to dac2_data_o_12
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X68Y54.YQ      Tcko                  0.720   mode<3>
+                                                       mode_2
+    SLICE_X85Y51.G1      net (fanout=95)       3.479   mode<2>
+    SLICE_X85Y51.Y       Tilo                  0.551   rtm_data_valid<12>
+                                                       cmp_rtm_serial_manager/rtm_cvorb_channel_en_cmp_eq000011_1
+    SLICE_X20Y93.G2      net (fanout=32)       8.108   cmp_rtm_serial_manager/rtm_cvorb_channel_en_cmp_eq000011
+    SLICE_X20Y93.Y       Tilo                  0.608   cmp_rtm_serial_manager/data_buffer_27_not0001
+                                                       cmp_rtm_serial_manager/Mmux_rtm_data_valid401
+    SLICE_X33Y88.G2      net (fanout=18)       1.723   rtm_data_valid<27>
+    SLICE_X33Y88.COUT    Topcyg                1.039   rtm_data_valid_mux0000_wg_cy<1>
+                                                       rtm_data_valid_mux0000_wg_lut<1>
+                                                       rtm_data_valid_mux0000_wg_cy<1>
+    SLICE_X33Y89.CIN     net (fanout=1)        0.000   rtm_data_valid_mux0000_wg_cy<1>
+    SLICE_X33Y89.COUT    Tbyp                  0.128   rtm_data_valid_mux0000_wg_cy<3>
+                                                       rtm_data_valid_mux0000_wg_cy<2>
+                                                       rtm_data_valid_mux0000_wg_cy<3>
+    SLICE_X33Y90.CIN     net (fanout=1)        0.000   rtm_data_valid_mux0000_wg_cy<3>
+    SLICE_X33Y90.COUT    Tbyp                  0.128   rtm_data_valid_mux0000_wg_cy<5>
+                                                       rtm_data_valid_mux0000_wg_cy<4>
+                                                       rtm_data_valid_mux0000_wg_cy<5>
+    SLICE_X33Y91.CIN     net (fanout=1)        0.000   rtm_data_valid_mux0000_wg_cy<5>
+    SLICE_X33Y91.COUT    Tbyp                  0.128   rtm_data_valid_mux0000
+                                                       rtm_data_valid_mux0000_wg_cy<6>
+                                                       rtm_data_valid_mux0000_wg_cy<7>
+    SLICE_X40Y77.F2      net (fanout=18)       3.056   rtm_data_valid_mux0000
+    SLICE_X40Y77.X       Tilo                  0.608   dac2_data_o_mux0000<28>124
+                                                       dac2_data_o_mux0000<28>124
+    SLICE_X53Y96.G1      net (fanout=1)        2.187   dac2_data_o_mux0000<28>124
+    SLICE_X53Y96.Y       Tilo                  0.551   dac2_data_o_12
+                                                       dac2_data_o_mux0000<28>136
+    SLICE_X53Y96.F3      net (fanout=1)        0.015   dac2_data_o_mux0000<28>136/O
+    SLICE_X53Y96.CLK     Tfck                  0.633   dac2_data_o_12
+                                                       dac2_data_o_mux0000<28>157
+                                                       dac2_data_o_12
+    -------------------------------------------------  ---------------------------
+    Total                                     23.662ns (5.094ns logic, 18.568ns route)
+                                                       (21.5% logic, 78.5% route)
+
+--------------------------------------------------------------------------------
+Slack (setup path):     1.428ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               mode_0 (FF)
+  Destination:          dac2_data_o_12 (FF)
+  Requirement:          25.000ns
+  Data Path Delay:      23.467ns (Levels of Logic = 9)
+  Clock Path Skew:      -0.105ns (0.795 - 0.900)
+  Source Clock:         sys_clk rising at 0.000ns
+  Destination Clock:    sys_clk rising at 25.000ns
+  Clock Uncertainty:    0.000ns
+
+  Maximum Data Path: mode_0 to dac2_data_o_12
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X62Y56.YQ      Tcko                  0.720   mode<1>
+                                                       mode_0
+    SLICE_X85Y51.G2      net (fanout=118)      3.284   mode<0>
+    SLICE_X85Y51.Y       Tilo                  0.551   rtm_data_valid<12>
+                                                       cmp_rtm_serial_manager/rtm_cvorb_channel_en_cmp_eq000011_1
+    SLICE_X20Y93.G2      net (fanout=32)       8.108   cmp_rtm_serial_manager/rtm_cvorb_channel_en_cmp_eq000011
+    SLICE_X20Y93.Y       Tilo                  0.608   cmp_rtm_serial_manager/data_buffer_27_not0001
+                                                       cmp_rtm_serial_manager/Mmux_rtm_data_valid401
+    SLICE_X33Y88.G2      net (fanout=18)       1.723   rtm_data_valid<27>
+    SLICE_X33Y88.COUT    Topcyg                1.039   rtm_data_valid_mux0000_wg_cy<1>
+                                                       rtm_data_valid_mux0000_wg_lut<1>
+                                                       rtm_data_valid_mux0000_wg_cy<1>
+    SLICE_X33Y89.CIN     net (fanout=1)        0.000   rtm_data_valid_mux0000_wg_cy<1>
+    SLICE_X33Y89.COUT    Tbyp                  0.128   rtm_data_valid_mux0000_wg_cy<3>
+                                                       rtm_data_valid_mux0000_wg_cy<2>
+                                                       rtm_data_valid_mux0000_wg_cy<3>
+    SLICE_X33Y90.CIN     net (fanout=1)        0.000   rtm_data_valid_mux0000_wg_cy<3>
+    SLICE_X33Y90.COUT    Tbyp                  0.128   rtm_data_valid_mux0000_wg_cy<5>
+                                                       rtm_data_valid_mux0000_wg_cy<4>
+                                                       rtm_data_valid_mux0000_wg_cy<5>
+    SLICE_X33Y91.CIN     net (fanout=1)        0.000   rtm_data_valid_mux0000_wg_cy<5>
+    SLICE_X33Y91.COUT    Tbyp                  0.128   rtm_data_valid_mux0000
+                                                       rtm_data_valid_mux0000_wg_cy<6>
+                                                       rtm_data_valid_mux0000_wg_cy<7>
+    SLICE_X40Y77.F2      net (fanout=18)       3.056   rtm_data_valid_mux0000
+    SLICE_X40Y77.X       Tilo                  0.608   dac2_data_o_mux0000<28>124
+                                                       dac2_data_o_mux0000<28>124
+    SLICE_X53Y96.G1      net (fanout=1)        2.187   dac2_data_o_mux0000<28>124
+    SLICE_X53Y96.Y       Tilo                  0.551   dac2_data_o_12
+                                                       dac2_data_o_mux0000<28>136
+    SLICE_X53Y96.F3      net (fanout=1)        0.015   dac2_data_o_mux0000<28>136/O
+    SLICE_X53Y96.CLK     Tfck                  0.633   dac2_data_o_12
+                                                       dac2_data_o_mux0000<28>157
+                                                       dac2_data_o_12
+    -------------------------------------------------  ---------------------------
+    Total                                     23.467ns (5.094ns logic, 18.373ns route)
+                                                       (21.7% logic, 78.3% route)
+
+--------------------------------------------------------------------------------
+Slack (setup path):     1.536ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               mode_2 (FF)
+  Destination:          dac2_data_o_12 (FF)
+  Requirement:          25.000ns
+  Data Path Delay:      23.382ns (Levels of Logic = 9)
+  Clock Path Skew:      -0.082ns (0.795 - 0.877)
+  Source Clock:         sys_clk rising at 0.000ns
+  Destination Clock:    sys_clk rising at 25.000ns
+  Clock Uncertainty:    0.000ns
+
+  Maximum Data Path: mode_2 to dac2_data_o_12
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X68Y54.YQ      Tcko                  0.720   mode<3>
+                                                       mode_2
+    SLICE_X85Y51.G1      net (fanout=95)       3.479   mode<2>
+    SLICE_X85Y51.Y       Tilo                  0.551   rtm_data_valid<12>
+                                                       cmp_rtm_serial_manager/rtm_cvorb_channel_en_cmp_eq000011_1
+    SLICE_X18Y82.G2      net (fanout=32)       8.214   cmp_rtm_serial_manager/rtm_cvorb_channel_en_cmp_eq000011
+    SLICE_X18Y82.Y       Tilo                  0.608   cmp_rtm_serial_manager/data_buffer_25_not0001
+                                                       cmp_rtm_serial_manager/Mmux_rtm_data_valid361
+    SLICE_X33Y88.F3      net (fanout=18)       1.349   rtm_data_valid<25>
+    SLICE_X33Y88.COUT    Topcyf                1.027   rtm_data_valid_mux0000_wg_cy<1>
+                                                       rtm_data_valid_mux0000_wg_lut<0>
+                                                       rtm_data_valid_mux0000_wg_cy<0>
+                                                       rtm_data_valid_mux0000_wg_cy<1>
+    SLICE_X33Y89.CIN     net (fanout=1)        0.000   rtm_data_valid_mux0000_wg_cy<1>
+    SLICE_X33Y89.COUT    Tbyp                  0.128   rtm_data_valid_mux0000_wg_cy<3>
+                                                       rtm_data_valid_mux0000_wg_cy<2>
+                                                       rtm_data_valid_mux0000_wg_cy<3>
+    SLICE_X33Y90.CIN     net (fanout=1)        0.000   rtm_data_valid_mux0000_wg_cy<3>
+    SLICE_X33Y90.COUT    Tbyp                  0.128   rtm_data_valid_mux0000_wg_cy<5>
+                                                       rtm_data_valid_mux0000_wg_cy<4>
+                                                       rtm_data_valid_mux0000_wg_cy<5>
+    SLICE_X33Y91.CIN     net (fanout=1)        0.000   rtm_data_valid_mux0000_wg_cy<5>
+    SLICE_X33Y91.COUT    Tbyp                  0.128   rtm_data_valid_mux0000
+                                                       rtm_data_valid_mux0000_wg_cy<6>
+                                                       rtm_data_valid_mux0000_wg_cy<7>
+    SLICE_X40Y77.F2      net (fanout=18)       3.056   rtm_data_valid_mux0000
+    SLICE_X40Y77.X       Tilo                  0.608   dac2_data_o_mux0000<28>124
+                                                       dac2_data_o_mux0000<28>124
+    SLICE_X53Y96.G1      net (fanout=1)        2.187   dac2_data_o_mux0000<28>124
+    SLICE_X53Y96.Y       Tilo                  0.551   dac2_data_o_12
+                                                       dac2_data_o_mux0000<28>136
+    SLICE_X53Y96.F3      net (fanout=1)        0.015   dac2_data_o_mux0000<28>136/O
+    SLICE_X53Y96.CLK     Tfck                  0.633   dac2_data_o_12
+                                                       dac2_data_o_mux0000<28>157
+                                                       dac2_data_o_12
+    -------------------------------------------------  ---------------------------
+    Total                                     23.382ns (5.082ns logic, 18.300ns route)
+                                                       (21.7% logic, 78.3% route)
 
 --------------------------------------------------------------------------------
 
 Hold Paths: TS_sys_clk = PERIOD TIMEGRP "sys_clk" 25 ns HIGH 50%;
 --------------------------------------------------------------------------------
 
-Paths for end point cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o_9 (SLICE_X34Y94.BX), 1 path
+Paths for end point cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_o_3 (SLICE_X87Y32.BX), 1 path
 --------------------------------------------------------------------------------
-Slack (hold path):      0.619ns (requirement - (clock path skew + uncertainty - data path))
-  Source:               cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister_2 (FF)
-  Destination:          cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o_9 (FF)
-  Requirement:          0.000ns
-  Data Path Delay:      0.857ns (Levels of Logic = 0)
-  Clock Path Skew:      0.238ns (0.856 - 0.618)
-  Source Clock:         sys_clk rising at 25.000ns
-  Destination Clock:    sys_clk rising at 25.000ns
-  Clock Uncertainty:    0.000ns
-
-  Minimum Data Path: cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister_2 to cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o_9
-    Location             Delay type         Delay(ns)  Physical Resource
-                                                       Logical Resource(s)
-    -------------------------------------------------  -------------------
-    SLICE_X34Y96.XQ      Tcko                  0.576   cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister<2>
-                                                       cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister_2
-    SLICE_X34Y94.BX      net (fanout=3)        0.564   cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister<2>
-    SLICE_X34Y94.CLK     Tckdi       (-Th)     0.283   cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o<9>
-                                                       cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o_9
-    -------------------------------------------------  ---------------------------
-    Total                                      0.857ns (0.293ns logic, 0.564ns route)
-                                                       (34.2% logic, 65.8% route)
-
---------------------------------------------------------------------------------
-
-Paths for end point cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o_8 (SLICE_X34Y94.BY), 1 path
---------------------------------------------------------------------------------
-Slack (hold path):      0.623ns (requirement - (clock path skew + uncertainty - data path))
-  Source:               cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister_1 (FF)
-  Destination:          cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o_8 (FF)
-  Requirement:          0.000ns
-  Data Path Delay:      0.861ns (Levels of Logic = 0)
-  Clock Path Skew:      0.238ns (0.856 - 0.618)
-  Source Clock:         sys_clk rising at 25.000ns
-  Destination Clock:    sys_clk rising at 25.000ns
-  Clock Uncertainty:    0.000ns
-
-  Minimum Data Path: cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister_1 to cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o_8
-    Location             Delay type         Delay(ns)  Physical Resource
-                                                       Logical Resource(s)
-    -------------------------------------------------  -------------------
-    SLICE_X34Y96.YQ      Tcko                  0.576   cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister<2>
-                                                       cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister_1
-    SLICE_X34Y94.BY      net (fanout=2)        0.522   cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister<1>
-    SLICE_X34Y94.CLK     Tckdi       (-Th)     0.237   cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o<9>
-                                                       cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o_8
-    -------------------------------------------------  ---------------------------
-    Total                                      0.861ns (0.339ns logic, 0.522ns route)
-                                                       (39.4% logic, 60.6% route)
-
---------------------------------------------------------------------------------
-
-Paths for end point cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_o_5 (SLICE_X9Y84.BX), 1 path
---------------------------------------------------------------------------------
-Slack (hold path):      0.723ns (requirement - (clock path skew + uncertainty - data path))
-  Source:               cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_out_cvorb_5 (FF)
-  Destination:          cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_o_5 (FF)
+Slack (hold path):      0.478ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_out_cvorb_3 (FF)
+  Destination:          cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_o_3 (FF)
   Requirement:          0.000ns
   Data Path Delay:      0.780ns (Levels of Logic = 0)
-  Clock Path Skew:      0.057ns (0.140 - 0.083)
+  Clock Path Skew:      0.302ns (0.898 - 0.596)
   Source Clock:         sys_clk rising at 25.000ns
   Destination Clock:    sys_clk rising at 25.000ns
   Clock Uncertainty:    0.000ns
 
-  Minimum Data Path: cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_out_cvorb_5 to cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_o_5
+  Minimum Data Path: cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_out_cvorb_3 to cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_o_3
     Location             Delay type         Delay(ns)  Physical Resource
                                                        Logical Resource(s)
     -------------------------------------------------  -------------------
-    SLICE_X8Y82.XQ       Tcko                  0.576   cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_out_cvorb<5>
-                                                       cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_out_cvorb_5
-    SLICE_X9Y84.BX       net (fanout=1)        0.487   cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_out_cvorb<5>
-    SLICE_X9Y84.CLK      Tckdi       (-Th)     0.283   cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_o<5>
-                                                       cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_o_5
+    SLICE_X86Y30.XQ      Tcko                  0.576   cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_out_cvorb<3>
+                                                       cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_out_cvorb_3
+    SLICE_X87Y32.BX      net (fanout=1)        0.487   cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_out_cvorb<3>
+    SLICE_X87Y32.CLK     Tckdi       (-Th)     0.283   cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_o<3>
+                                                       cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_o_3
     -------------------------------------------------  ---------------------------
     Total                                      0.780ns (0.293ns logic, 0.487ns route)
                                                        (37.6% logic, 62.4% route)
+
+--------------------------------------------------------------------------------
+
+Paths for end point channel_en_27 (SLICE_X39Y33.BX), 1 path
+--------------------------------------------------------------------------------
+Slack (hold path):      0.490ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               cmp_bus_interface_controller/dataFromIntDelayed_27 (FF)
+  Destination:          channel_en_27 (FF)
+  Requirement:          0.000ns
+  Data Path Delay:      0.780ns (Levels of Logic = 0)
+  Clock Path Skew:      0.290ns (0.917 - 0.627)
+  Source Clock:         sys_clk rising at 25.000ns
+  Destination Clock:    sys_clk rising at 25.000ns
+  Clock Uncertainty:    0.000ns
+
+  Minimum Data Path: cmp_bus_interface_controller/dataFromIntDelayed_27 to channel_en_27
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X39Y30.XQ      Tcko                  0.576   cmp_bus_interface_controller/dataFromIntDelayed<27>
+                                                       cmp_bus_interface_controller/dataFromIntDelayed_27
+    SLICE_X39Y33.BX      net (fanout=1)        0.487   cmp_bus_interface_controller/dataFromIntDelayed<27>
+    SLICE_X39Y33.CLK     Tckdi       (-Th)     0.283   channel_en<27>
+                                                       channel_en_27
+    -------------------------------------------------  ---------------------------
+    Total                                      0.780ns (0.293ns logic, 0.487ns route)
+                                                       (37.6% logic, 62.4% route)
+
+--------------------------------------------------------------------------------
+
+Paths for end point cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_o_2 (SLICE_X87Y32.BY), 1 path
+--------------------------------------------------------------------------------
+Slack (hold path):      0.524ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_out_cvorb_2 (FF)
+  Destination:          cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_o_2 (FF)
+  Requirement:          0.000ns
+  Data Path Delay:      0.826ns (Levels of Logic = 0)
+  Clock Path Skew:      0.302ns (0.898 - 0.596)
+  Source Clock:         sys_clk rising at 25.000ns
+  Destination Clock:    sys_clk rising at 25.000ns
+  Clock Uncertainty:    0.000ns
+
+  Minimum Data Path: cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_out_cvorb_2 to cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_o_2
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X86Y30.YQ      Tcko                  0.576   cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_out_cvorb<3>
+                                                       cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_out_cvorb_2
+    SLICE_X87Y32.BY      net (fanout=1)        0.487   cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_out_cvorb<2>
+    SLICE_X87Y32.CLK     Tckdi       (-Th)     0.237   cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_o<3>
+                                                       cmp_rtm_serial_manager/l_rtm_cvorb_decoders[2].cmp_rtm_cvorb_decoder/data_o_2
+    -------------------------------------------------  ---------------------------
+    Total                                      0.826ns (0.339ns logic, 0.487ns route)
+                                                       (41.0% logic, 59.0% route)
 
 --------------------------------------------------------------------------------
 
@@ -215,7 +485,7 @@ Slack: 23.064ns (period - (min low pulse limit / (low pulse / period)))
   Low pulse limit: 0.968ns (Twpl)
   Physical resource: cmp_dac1_load/pulse_d_41/CLK
   Logical resource: cmp_dac1_load/Mshreg_pulse_d_4/SRL16E/WS
-  Location pin: SLICE_X82Y75.CLK
+  Location pin: SLICE_X84Y72.CLK
   Clock network: sys_clk
 --------------------------------------------------------------------------------
 Slack: 23.064ns (period - (min high pulse limit / (high pulse / period)))
@@ -224,7 +494,7 @@ Slack: 23.064ns (period - (min high pulse limit / (high pulse / period)))
   High pulse limit: 0.968ns (Twph)
   Physical resource: cmp_dac1_load/pulse_d_41/CLK
   Logical resource: cmp_dac1_load/Mshreg_pulse_d_4/SRL16E/WS
-  Location pin: SLICE_X82Y75.CLK
+  Location pin: SLICE_X84Y72.CLK
   Clock network: sys_clk
 --------------------------------------------------------------------------------
 Slack: 23.064ns (period - min period limit)
@@ -232,7 +502,7 @@ Slack: 23.064ns (period - min period limit)
   Min period limit: 1.936ns (516.529MHz) (Tcp)
   Physical resource: cmp_dac1_load/pulse_d_41/CLK
   Logical resource: cmp_dac1_load/Mshreg_pulse_d_4/SRL16E/WS
-  Location pin: SLICE_X82Y75.CLK
+  Location pin: SLICE_X84Y72.CLK
   Clock network: sys_clk
 --------------------------------------------------------------------------------
 
@@ -249,7 +519,7 @@ Clock to Setup on destination clock sys_clk_i
                | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
 Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
 ---------------+---------+---------+---------+---------+
-sys_clk_i      |   22.123|    9.257|   10.160|         |
+sys_clk_i      |   23.786|    7.820|   11.731|         |
 ---------------+---------+---------+---------+---------+
 
 
@@ -258,23 +528,23 @@ Timing summary:
 
 Timing errors: 0  Score: 0  (Setup/Max: 0, Hold: 0)
 
-Constraints cover 118947 paths, 0 nets, and 38398 connections
+Constraints cover 117971 paths, 0 nets, and 38552 connections
 
 Design statistics:
-   Minimum period:  22.123ns{1}   (Maximum frequency:  45.202MHz)
+   Minimum period:  23.786ns{1}   (Maximum frequency:  42.042MHz)
 
 
 ------------------------------------Footnotes-----------------------------------
 1)  The minimum period statistic assumes all single cycle delays.
 
-Analysis completed Tue Nov 12 17:14:23 2013 
+Analysis completed Tue Nov 26 16:00:51 2013 
 --------------------------------------------------------------------------------
 
 Trace Settings:
 -------------------------
 Trace Settings 
 
-Peak Memory Usage: 192 MB
+Peak Memory Usage: 194 MB
 
 
 
