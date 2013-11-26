@@ -32,8 +32,10 @@
 -- last changes:
 --   23.10.2013 mcattin  New major version 2.0
 --                       Code clean-up, re-structuring, external inputs sync,
---                       unify sampling for all modes.
---                       Add, 2x 16-bit up counter mode, add CVORB protocol decoding.
+--                       unifying data sampling for all modes.
+--                       Add 2x 16-bit up counter mode.
+--                       Add CVORB protocol decoding.
+--                       Add parallel mode with strobe on 32nd bit.
 ----------------------------------------------------------------------------------
 library ieee;
 use ieee.std_logic_1164.all;
@@ -53,7 +55,7 @@ use UNISIM.VComponents.all;
 entity top_cvora is
   generic(
     g_GATEWARE_VER      : std_logic_vector(15 downto 0) := X"0200";
-    g_LED_PULSE_WIDTH   : natural                       := 8000000;  -- in sys_clk cycles
+    g_LED_PULSE_WIDTH   : natural                       := 8000000;  -- in sys_clk cycles = 320 ms
     g_DEFAULT_INPUT_POL : std_logic                     := '1';      -- 0 = negative logic, 1 = positive logic
     g_DEFAULT_IRQ_VECT  : std_logic_vector(7 downto 0)  := x"86"     -- 134 decimal
     );
@@ -132,7 +134,7 @@ architecture Behavioral of top_cvora is
 
 
   ------------------------------------------------------------------------------
-  -- Clock and reset
+  -- Clock, reset and local pps
   signal sys_clk   : std_logic;
   signal sys_rst_n : std_logic;
   signal pps_cnt   : unsigned(26 downto 0);
@@ -315,7 +317,7 @@ architecture Behavioral of top_cvora is
   signal clock_freq_bcd     : BCD_vector_TYPE(7 downto 0);
 
   ------------------------------------------------------------------------------
-  -- Signal for Data Acquisition
+  -- Signal for data acquisition
   signal data_acq_en    : std_logic;
   signal input_polarity : std_logic;
   signal module_en      : std_logic;
@@ -567,7 +569,7 @@ begin
   ------------------------------------------------------------------------------
 
   -- Control and status register
-  --   [0]     | rw | input pulse polarity
+  --   [0]     | rw | input pulse polarity, 0=negative, 1=positive
   --   [1]     | rw | enable/disable the module
   --   [2]     | rw | enable/disable IRQ
   --   [3]     | wo | soft start (read as 0)
