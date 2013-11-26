@@ -17,4 +17,5 @@ Required material:
 - LEMO 00 to LEMO 0 2-pin adapter
 - BNC to LEMO 00 adapters
 - 34-pin ribbon cable (~2m)
+- special cable to inject strobe to bit 31 (for RTM_PARALLEL_STROBE mode)
 
