@@ -3,12 +3,11 @@
 -- Engineer: Philippe Nouchi
 --
 -- Create Date:    10:30:24 04/25/2006
--- Design Name:    dpramcard
--- Module Name:    topdpram - Behavioral
--- Project Name:   DPRAM Card
+-- Design Name:    cvora
+-- Module Name:    cvora_top - Behavioral
+-- Project Name:   cvora
 -- Target Devices: Spartan 3
--- Tool versions:  ISE 9.1.03
--- Description:    Top level module for the dpram card FPGA
+-- Description:    Top level module for the cvora card FPGA
 --
 -- Dependencies:
 --
@@ -84,6 +83,7 @@
 -- Version 1.52 P.N. le 19-02-2008 In BTRAIN Counter mode the memory is written only when an external clock pulse arise.
 -- Version 1.53 P.N. le 20-02-2008 JMN found a bug in the BTRAIN Mode, works again on this one...
 --                                 The memory was not written in a good timing.
+--         1.54 MC      23.10.2013 Code clean-up, no functionnal changes.
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
@@ -94,8 +94,8 @@ use work.message_package.all;
 use work.auxdef.all;
 use work.vme.all;
 
----- Uncomment the following library declaration if instantiating
----- any Xilinx primitives in this code.
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx primitives in this code.
 library UNISIM;
 use UNISIM.VComponents.all;
 
@@ -107,95 +107,58 @@ entity topdpram is
                                                                           -- '0' is from TG8 (negative logic), '1' if inputs come from new timing modules
     COUNTER_WIDTH         : integer                       := 32;
     DEFAULT_IRQVECTOR     : std_logic_vector(7 downto 0)  := x"86";       -- 134 decimal
-    MASKCHANNEL           : std_logic_vector(31 downto 0) := x"ffffffff"  -- all 32 inputs on rear panel 
+    MASKCHANNEL           : std_logic_vector(31 downto 0) := x"ffffffff"  -- all 32 inputs on rear panel
     );
 
   port (
-    rst                 : in  std_logic;
-    Clk                 : in  std_logic;
-    BTrainUp            : in  std_logic;
-    BTrainDown          : in  std_logic;
-    ExternalClk         : in  std_logic;
-    ExternalReset       : in  std_logic;
-    Strobe              : in  std_logic;
-    Start               : in  std_logic;
-    Stop                : in  std_logic;
-    PDataIn             : in  std_logic_vector (31 downto 0);  -- Parallele Data In from P2 connector
-    ModeSelect          : in  std_logic_vector(2 downto 0);    -- There is 5 modes in the old card
-    RS232In             : in  std_logic;
-    Rs232Out            : out std_logic;
-    Xtest               : out std_logic_vector (3 downto 0);
-    LedOut              : out std_logic_vector (7 downto 0);
-    ParalleleDataOutOne : out std_logic_vector (15 downto 0);  -- Used if AD669 is on the board
-    ParalleleDataOutTwo : out std_logic_vector (15 downto 0);  -- Used if AD669 is on the board
-    ldacOne             : out std_logic;                       -- Used if AD669 is on the board
-    ldacTwo             : out std_logic;                       -- Used if AD669 is on the board
-    SData1InOF          : in  std_logic;                       --optical Fiber first input
-    SData1InCU          : in  std_logic;                       --Copper first input
-    SData2InOF          : in  std_logic;                       --optical Fiber second input
-    SData2InCU          : in  std_logic;                       --Copper second input
-    StrobeOut           : out std_logic;                       --Maybe not used
-    SData1Led           : out std_logic;                       -- a led blink if something valid on the SData1In input
-    SData2Led           : out std_logic;                       -- a led blink if something valid on the SData2In input
---  SDataOut            : out std_logic;                       -- to the DAC AD5541 (if used)
-    XMuxCtrl            : out std_logic;
+    rst                 : in  std_logic;                       -- Power-on reset (from TLC7733)
+    Clk                 : in  std_logic;                       -- 40MHz clock
+    BTrainUp            : in  std_logic;                       -- "BUP" front panel input (pulled-up)
+    BTrainDown          : in  std_logic;                       -- "BDOWN" front panel input (pulled-up)
+    ExternalClk         : in  std_logic;                       -- "CLOCK" front panel input (pulled-up)
+    ExternalReset       : in  std_logic;                       -- "RESET" front panel input (pulled-up)
+    Strobe              : in  std_logic;                       -- "STROBE" front panel input (pulled-up)
+    Start               : in  std_logic;                       -- "START" front panel input (pulled-up)
+    Stop                : in  std_logic;                       -- "STOP" front panel input (pulled-up)
+    PDataIn             : in  std_logic_vector (31 downto 0);  -- Data inputs from VME P2 connector
+    ModeSelect          : in  std_logic_vector(2 downto 0);    -- Jumper for mode selection
+    RS232In             : in  std_logic;                       -- RS232 Rx interface for LCD display
+    Rs232Out            : out std_logic;                       -- RS232 Tx interface for LCD display
+    Xtest               : out std_logic_vector (3 downto 0);   -- Test points
+    LedOut              : out std_logic_vector (7 downto 0);   -- Front panel LEDs
+    ParalleleDataOutOne : out std_logic_vector (15 downto 0);  -- Data to DAC, analog output 1 (AD669)
+    ParalleleDataOutTwo : out std_logic_vector (15 downto 0);  -- Data to DAC, analog output 2 (AD669)
+    ldacOne             : out std_logic;                       -- Load data to DAC, analog output 1 (AD669)
+    ldacTwo             : out std_logic;                       -- Load data to DAC, analog output 1 (AD669)
+    SData1InOF          : in  std_logic;                       -- Front panel optical input 1
+    SData1InCU          : in  std_logic;                       -- Front panel copper input 1
+    SData2InOF          : in  std_logic;                       -- Front panel optical input 2
+    SData2InCU          : in  std_logic;                       -- Front panel optical input 2
+    StrobeOut           : out std_logic;                       -- Not connected on PCB!
+    SData1Led           : out std_logic;                       -- Not connected on PCB!
+    SData2Led           : out std_logic;                       -- Not connected on PCB!
 
-    --External RAM IDT71V35761 (Same as CTRV) (66 pins)
+    -- External RAM IDT71V35761 (Same as CTRV) (66 pins)
     RamAdd     : out   std_logic_vector(16 downto 0);  -- Address Inputs
-    RamData    : inout std_logic_vector(31 downto 0);  -- Synchronous data input/output pins.
+    RamData    : inout std_logic_vector(31 downto 0);  -- Synchronous data input/output pins
     RamDataPar : out   std_logic_vector(3 downto 0);   -- Data parity (not used)
---  RamZZ      : out   std_logic;                      -- Sleep Mode.
-                                                       -- Data Retention is garanteed in Sleep Mode
-
-    RamOEN     : out   std_logic;                      -- Asynchronous output enable. When
-                                                       -- RamOEN is LOW the data output drivers are enabled on the RamData pins if the chip is also selected.
-                                                       -- When RamOEN is HIGH the RamData pins are in high impedance state.
-
+--  RamZZ      : out   std_logic;                      -- Sleep Mode
+    RamOEN     : out   std_logic;                      -- Asynchronous output enable
     RamLBON    : out   std_logic;                      -- Linear Burst Order
-                                                       -- Asynchronous burst order selection input. When  RamLBON is HIGH, the interleaved burst sequence
-                                                       -- is selected. When RamLBON is LOW the Linear burst sequence is selected. RamLBON is a static
-                                                       -- input and must not change state while the device is operating!!!
-
-    RamGWN     : out   std_logic;                      -- Synchronous global write enable.
-                                                       -- This input will write all four 9-bit data bytes when LOW on the rising edge of iVcxo.
-                                                       -- RamGWN supersedes individual byte write enables.
-
-    RamCEN     : out std_logic;                        -- Synchronous chip enable.
-                                                       -- RamCEN is used with RamCS0 and RamCS1N to enable the IDT71V35761/781. RamCEN also gates RamADSPN.
-
---  RamCS0     : out std_logic;                        -- Synchronous active HIGH chip select.
-                                                       -- RamCS0 is used with RamCEN and RamCS1N to enable the chip.
-
---  RamCS1N    : out std_logic;                        -- Synchronous active LOW chip select.
-                                                       -- RamCS1N is used with RamCEN and RamCS0 to enable the chip.
-
-    RamWRN     : out std_logic;                        -- Synchronous byte write enable
-                                                       -- gates the byte write inputs BW1-BW4. If BWE is LOW at the
-                                                       -- rising edge of CLK then BWx inputs are passed to the next stage in the circuit. If BWE is
-                                                       -- HIGH then the byte write inputs are blocked and only GW can initiate a write cycle.
-
-    RamBWN     : out std_logic_vector(4 downto 1);     -- Individual Write Enables
-                                                       -- Synchronous byte write enables. BW1 controls I/O0-7, I/OP1, BW2 controls I/O8-15, I/OP2, etc.
-                                                       -- Any active byte write causes all outputs to be disabled.
-
-    RamADVN    : out std_logic;                        -- Burst Address Advance
-                                                       -- Advance Synchronous Address Advance. RamADVN is an active LOW input that is used to advance the
-                                                       -- internal burst counter, controlling burst access after the initial address is loaded. When the
-                                                       -- input is HIGH the burst counter is not incremented; that is, there is no address advance.
-
-    RamADSPN   : out std_logic;                        -- Address Status       (Processor)
-                                                       -- Synchronous Address Status from Processor. RamADSPN is an active LOW IDT71V35761 input that is used to
-                                                       -- load the address registers with new addresses. RamADSPN is gated by RamCEN.
-
-    RamADSCN   : out std_logic;                        -- Address Status (Cache Controller)
-                                                       -- Synchronous Address Status from Cache Controller. RamADSCN is an active LOW input that is
-                                                       -- used to load the address registers with new addresses.
-
-    XORamClk40 : out std_logic;
+    RamGWN     : out   std_logic;                      -- Synchronous global write enable
+    RamCEN     : out   std_logic;                      -- Synchronous chip enable
+--  RamCS0     : out std_logic;                        -- Synchronous active HIGH chip select
+--  RamCS1N    : out std_logic;                        -- Synchronous active LOW chip select
+    RamWRN     : out   std_logic;                      -- Synchronous byte write enable
+    RamBWN     : out   std_logic_vector(4 downto 1);   -- Individual Write Enables
+    RamADVN    : out   std_logic;                      -- Burst Address Advance
+    RamADSPN   : out   std_logic;                      -- Address Status (Processor)
+    RamADSCN   : out   std_logic;                      -- Address Status (Cache Controller)
+    XORamClk40 : out   std_logic;                      -- RAM clock
 
     -- VME (79 pins)
     VmeReset     : in    std_logic;
-    ModuleAddr   : in    std_logic_vector (5 downto 0);  -- --> space of 80000Hex by card 5 bit used
+    ModuleAddr   : in    std_logic_vector (5 downto 0);  -- VME board address from switch (bits[23:18]), address range =  0x80000 per card
     VmeAddrA     : in    std_logic_vector (23 downto 1);
     VmeAmA       : in    std_logic_vector (5 downto 0);
     VmeAsNA      : in    std_logic;
@@ -210,138 +173,133 @@ entity topdpram is
     VmeIackOutNA : out   std_logic;
     VmeLwordNA   : in    std_logic;
     VmeWriteNA   : in    std_logic;
-    VmeIntReqN2  : out   std_logic                       -- only Interrupt level 2 is used in DPRAM
+    VmeIntReqN2  : out   std_logic;                      -- only Interrupt level 2 is used in DPRAM
+    XMuxCtrl     : out   std_logic                       -- Interrupt daisy chain mux (connects iackin to iackout when interrupts are disabled)
     );
 end topdpram;
 
+
 architecture Behavioral of topdpram is
 
+
 ----------------------------------------------
--- vme ----------------------------------------
+-- VME
 ----------------------------------------------
---signal AddRd : MemIntRdAddrType;
-  signal VmeDataUnAlign              : std_logic_vector(7 downto 0);
-  signal moduleAM                    : std_logic_vector(4 downto 0);
-  signal iModuleAddr                 : std_logic_vector(4 downto 0);
---signal IRQLevelReg : std_logic_vector(2 downto 0);
-  signal IRQStatusIDReg              : std_logic_vector(31 downto 0);
-  signal IrqVector                   : std_logic_vector(7 downto 0)                      := DEFAULT_IRQVECTOR;
-  signal IntProcessed, UserIntReqN   : std_logic;
-  signal VmeIntReqN                  : std_logic_vector (7 downto 1);
-  signal EnableInt                   : std_logic                                         := '0';
-  signal OpFinishedOut               : std_logic;
+  signal VmeDataUnAlign            : std_logic_vector(7 downto 0);
+  signal moduleAM                  : std_logic_vector(4 downto 0);
+  signal iModuleAddr               : std_logic_vector(4 downto 0);
+  signal IRQStatusIDReg            : std_logic_vector(31 downto 0);
+  signal IrqVector                 : std_logic_vector(7 downto 0) := DEFAULT_IRQVECTOR;
+  signal IntProcessed, UserIntReqN : std_logic;
+  signal VmeIntReqN                : std_logic_vector (7 downto 1);
+  signal EnableInt                 : std_logic                    := '0';
+  signal OpFinishedOut             : std_logic;
+
 ----------------------------------------------
--- Bus Interface Signals ---------------------
+-- Bus Interface Signals
 ----------------------------------------------
-  signal intRead                     : std_logic;      -- Interface Read Signal
-  signal intWrite                    : std_logic;      -- Interface Write Signal
-  signal dataFromInt                 : IntDataType;    -- Data From interface
-  signal intAdd                      : IntAddrOutType;                                                        -- Address From interface 
-  signal opDone                      : std_logic;      -- Operation Done, Read or Write Finished
-  signal dataToInt                   : IntDataType;    -- Data going from Control to the Interface
+  signal intRead          : std_logic;       -- Interface Read Signal
+  signal intWrite         : std_logic;       -- Interface Write Signal
+  signal dataFromInt      : IntDataType;     -- Data From interface
+  signal intAdd           : IntAddrOutType;  -- Address From interface
+  signal opDone           : std_logic;       -- Operation Done, Read or Write Finished
+  signal dataToInt        : IntDataType;     -- Data going from Control to the Interface
   -- Registers  Signals
-  signal contToRegs                  : contToRegsType;                                                        -- Data going from Control to the Registers
-                                                                                                              -- This consists of Data + Write Enable Siganal
-  signal regsToCont                  : RegsToContType;                                                        -- Data Array From the Registers to the Control
+  signal contToRegs       : contToRegsType;  -- Data going from Control to the Registers
+                                             -- This consists of Data + Write Enable Siganal
+  signal regsToCont       : RegsToContType;  -- Data Array From the Registers to the Control
   -- Memory Signals
-  signal contToMem                   : ContToMemType;  -- Data going from Control to the Registers
-                                                       -- This consists of Data + Enable + Read + Write
-  signal memToCont                   : MemToContType;  -- Data Array  From the Registers to the Control
-                                                       -- Data + Done
+  signal contToMem        : ContToMemType;   -- Data going from Control to the Registers
+                                             -- This consists of Data + Enable + Read + Write
+  signal memToCont        : MemToContType;   -- Data Array  From the Registers to the Control
+                                             -- Data + Done
 ----------------------------------------------
--- Btrain Up/Down counter Signals ------------
+-- Btrain Up/Down counter Signals
 ----------------------------------------------
-  signal iUDEnable                   : std_logic;
-  signal LoadValue                   : std_logic_vector(COUNTER_WIDTH - 1 downto 0);
-  signal UDInstantValue              : std_logic_vector(COUNTER_WIDTH - 1 downto 0);
-  signal UDTerminalCount             : std_logic;
-  signal UDTerminalCountB            : std_logic                                         := '0';
-  signal rstA, rstRE                 : std_logic                                         := '0';
-  signal CounterOverflow             : std_logic;
+  signal iUDEnable        : std_logic;
+  signal LoadValue        : std_logic_vector(COUNTER_WIDTH - 1 downto 0);
+  signal UDInstantValue   : std_logic_vector(COUNTER_WIDTH - 1 downto 0);
+  signal UDTerminalCount  : std_logic;
+  signal UDTerminalCountB : std_logic := '0';
+  signal rstA, rstRE      : std_logic := '0';
+  signal CounterOverflow  : std_logic;
+
 ----------------------------------------------
---------Signal for the display part-----------
+-- Signal for the display part
 ----------------------------------------------
   signal message_to_send             : message_array;
   signal localPPS                    : std_logic;
   signal igap_counter_value          : std_logic_vector(31 downto 0);
   signal en1M                        : std_logic;
---signal BinSin1, BinSin2 : Array16by8;
   signal iledout                     : std_logic_vector(7 downto 0);
-  signal AcqCounter, AcquisitionTime : std_logic_vector(15 downto 0)                     := (others => '0');
+  signal AcqCounter, AcquisitionTime : std_logic_vector(15 downto 0) := (others => '0');
   signal BCD_acq_vec                 : BCD_vector_TYPE (4 downto 0);
   signal StartSBAcq                  : std_logic;
-----------------------------------------------
---------Signal for the DPRam part-----------
-----------------------------------------------
---signal WriteDPRam : std_logic;
---signal current_record, data_read_from_dp : std_logic_vector(31 downto 0);
---signal dpWrAdd, dpRdAdd : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0) := (others => '0');
---signal rdDel : std_logic_vector(1 downto 0) := (others => '0'); -- Delay to read the internal dpram
---signal Readdpram : std_logic;
-----------------------------------------------
---------Signal for the External Ram-----------
-----------------------------------------------
---signal iXORamClk40 : std_logic;
-  signal ExtWriteAdd                 : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0) := MEMEMPTY;
-  signal ExtAddRd                    : std_logic_vector(18 downto 0);
-  signal DataFromHistoryWritten      : std_logic;
-  signal DataToContValidRM           : std_logic;
-  signal ReadExtRam, WriteExtRam     : std_logic                                         := '0';
-  signal ExtRdAdd                    : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0);
-  signal DataToContRM                : std_logic_vector(31 downto 0);
-  signal CurrentRecordForRam         : std_logic_vector(31 downto 0)                     := (others => '0');
-  signal ExtRamAddOverflow           : std_logic;
-  signal ExtrdDel                    : std_logic_vector(1 downto 0)                      := (others => '0');  -- Delay to read the External Ram
-  signal PdataInValid                : std_logic;
-  signal StrobeB, StrobeC            : std_logic                                         := '0';
-  signal StrobeRE                    : std_logic;
-  signal StrobeReg                   : std_logic_vector(5 downto 0)                      := (others => '0');
---signal iRamDataPar : std_logic_vector(3 downto 0);    -- Data parity (not used)
 
 ----------------------------------------------
---------Signal for the Monostables -----------
+-- Signal for the External Ram
+----------------------------------------------
+  signal ExtWriteAdd             : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0) := MEMEMPTY;
+  signal ExtAddRd                : std_logic_vector(18 downto 0);
+  signal DataFromHistoryWritten  : std_logic;
+  signal DataToContValidRM       : std_logic;
+  signal ReadExtRam, WriteExtRam : std_logic                                         := '0';
+  signal ExtRdAdd                : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0);
+  signal DataToContRM            : std_logic_vector(31 downto 0);
+  signal CurrentRecordForRam     : std_logic_vector(31 downto 0)                     := (others => '0');
+  signal ExtRamAddOverflow       : std_logic;
+  signal ExtrdDel                : std_logic_vector(1 downto 0)                      := (others => '0');  -- Delay to read the External Ram
+  signal PdataInValid            : std_logic;
+  signal StrobeB, StrobeC        : std_logic                                         := '0';
+  signal StrobeRE                : std_logic;
+  signal StrobeReg               : std_logic_vector(5 downto 0)                      := (others => '0');
+
+----------------------------------------------
+-- Signal for the Monostables
 ----------------------------------------------
   signal iStart, iStop, iExternalReset, iExternalClk : std_logic;
-  signal StartB, StopB, StartC, StopC, StartD, StopD : std_logic                     := '0';
+  signal StartB, StopB, StartC, StopC, StartD, StopD : std_logic := '0';
   signal StartPulse, StopPulse                       : std_logic;
   signal iLoadDAC1                                   : std_logic;
   signal iLoadDAC2                                   : std_logic;
-----------------------------------------------
---------Signal for Data Acquisition ----------
-----------------------------------------------
-  signal AcqEnable                                   : std_logic                     := '0';
-  signal PulsePolarity                               : std_logic                     := DEFAULT_PULSEPOLARITY;
-  signal SourceWrEn, ModeWrEn                        : std_logic;
-  signal SourceWrEnB                                 : std_logic                     := '0';
-  signal EnableAccess                                : std_logic                     := '1';  -- the module is enable by default
-  signal mode, UsedMode                              : std_logic_vector(2 downto 0)  := P2SERIALMODE;
-  signal ModeValidFromVME                            : std_logic                     := '0';
-  signal ExternalClkB, ExternalClkC, ExternalClkD    : std_logic                     := '0';
-  signal iSDataIn1, iSDataIn2                        : std_logic;
-  signal PDataFromSerialIn                           : std_logic_vector (31 downto 0);
-  signal DataReadyFromSerial, DataReadyFromSerialB   : std_logic;
-  signal ChannelReady1, ChannelReady2                : std_logic;
-  signal SerialMode                                  : std_logic;
-  signal iParalleleDataOutOne, iParalleleDataOutTwo  : std_logic_vector(15 downto 0) := (others => '0');
-  signal SerialDataReg                               : std_logic_vector(31 downto 0) := (others => '0');
-  signal SoftStart, SoftStop, SoftArm                : std_logic                     := '0';
-----------------------------------------------
---------  Signals for P2 serial inputs -------
-----------------------------------------------
-  signal ChannelReg                                  : std_logic_vector(31 downto 0) := (others => '0');
-  signal DacReg, iDacReg                             : std_logic_vector(31 downto 0) := (0      => '1', others => '0');
-  signal ChannelWr                                   : std_logic;
-  signal DacWr                                       : std_logic;
-  signal P2WriteRam                                  : std_logic;
-  signal P2WriteAdd                                  : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0);
-  signal P2DatatoRAM                                 : std_logic_vector(31 downto 0);
-  signal P2RamAddOverflow                            : std_logic;
-  signal P2DataInClk                                 : std_logic;
-  signal P2ClearMem                                  : std_logic;
-  signal FirstBitatOne                               : natural range 0 to 31;
 
 ----------------------------------------------
---------Signal for the Frequency Counter------
+-- Signal for Data Acquisition
+----------------------------------------------
+  signal AcqEnable                                  : std_logic                     := '0';
+  signal PulsePolarity                              : std_logic                     := DEFAULT_PULSEPOLARITY;
+  signal SourceWrEn, ModeWrEn                       : std_logic;
+  signal SourceWrEnB                                : std_logic                     := '0';
+  signal EnableAccess                               : std_logic                     := '1';  -- the module is enable by default
+  signal mode, UsedMode                             : std_logic_vector(2 downto 0)  := P2SERIALMODE;
+  signal ModeValidFromVME                           : std_logic                     := '0';
+  signal ExternalClkB, ExternalClkC, ExternalClkD   : std_logic                     := '0';
+  signal iSDataIn1, iSDataIn2                       : std_logic;
+  signal PDataFromSerialIn                          : std_logic_vector (31 downto 0);
+  signal DataReadyFromSerial, DataReadyFromSerialB  : std_logic;
+  signal ChannelReady1, ChannelReady2               : std_logic;
+  signal SerialMode                                 : std_logic;
+  signal iParalleleDataOutOne, iParalleleDataOutTwo : std_logic_vector(15 downto 0) := (others => '0');
+  signal SerialDataReg                              : std_logic_vector(31 downto 0) := (others => '0');
+  signal SoftStart, SoftStop, SoftArm               : std_logic                     := '0';
+
+----------------------------------------------
+-- Signals for P2 serial inputs
+----------------------------------------------
+  signal ChannelReg       : std_logic_vector(31 downto 0) := (others => '0');
+  signal DacReg, iDacReg  : std_logic_vector(31 downto 0) := (0      => '1', others => '0');
+  signal ChannelWr        : std_logic;
+  signal DacWr            : std_logic;
+  signal P2WriteRam       : std_logic;
+  signal P2WriteAdd       : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0);
+  signal P2DatatoRAM      : std_logic_vector(31 downto 0);
+  signal P2RamAddOverflow : std_logic;
+  signal P2DataInClk      : std_logic;
+  signal P2ClearMem       : std_logic;
+  signal FirstBitatOne    : natural range 0 to 31;
+
+----------------------------------------------
+-- Signal for the Frequency Counter
 ----------------------------------------------
   signal FrequencyCounter1 : std_logic_vector(31 downto 0);
   signal BCD_fq1_vec       : BCD_vector_TYPE (7 downto 0);
@@ -349,7 +307,9 @@ architecture Behavioral of topdpram is
   signal FreqCounterReady  : std_logic;
   signal iFCounter         : std_logic_vector(31 downto 0);
 
+
 begin
+
 
 -- Polarity of the inputs
   iStart <= start when DEFAULT_PULSEPOLARITY = '1' else                  -- there is a pullup on the start input
@@ -416,13 +376,14 @@ begin
   IRQStatusIDReg <= x"000000" & irqVector;
 
   ModeWrEn <= contToRegs.Sel(MODEREGP) and contToRegs.Wr;
--- bit 2-0 are the mode :       mode 000 --> parallele inputs
---      of the Mode Register :  mode 001 --> Opticals inputs 16 bits - SDataIn2 is ignored
---                                                                      mode 101 --> Opticals inputs 32 bits
---                                                                      mode 010 --> Copper Inputs 16 bits
---                                                                      mode 110 --> Copper Inputs 32 bits
---                                                                      mode 011 --> Btrain counter
---                                                                      mode 111 --> P2 Serial Inputs
+-- bit 2-0 are the mode of the Mode Register :
+-- mode 000 --> parallele inputs
+-- mode 001 --> Opticals inputs 16 bits - SDataIn2 is ignored
+-- mode 101 --> Opticals inputs 32 bits
+-- mode 010 --> Copper Inputs 16 bits
+-- mode 110 --> Copper Inputs 32 bits
+-- mode 011 --> Btrain counter
+-- mode 111 --> P2 Serial Inputs
   process(rst, clk, ModeWrEn)
   begin
     if falling_edge(clk) then
@@ -447,6 +408,7 @@ begin
   regsToCont(SOURCEREGP) <= HARDVERSION & IrqVector
                             & ExtRamAddOverflow & CounterOverflow & AcqEnable & "00" & EnableInt & EnableAccess & PulsePolarity;
   regsToCont(MODEREGP) <= x"43564f" & "00000" & UsedMode;  -- 3 lettres ascii CVO + mode
+
 --*******************************
 --*        VME Interface        *
 --*******************************
@@ -472,7 +434,6 @@ begin
       -- Memory
       ContToMem => contToMem,           -- Data going from Control to the Registers
       -- This consists of Data + Enable + Read + Write
-
       MemToCont => memToCont            -- Data Array  From the Registers to the Control
                                         -- Data + Done
       );
@@ -570,6 +531,7 @@ begin
               InstantValue    => UDInstantValue,
               TerminalCount   => UDTerminalCount
               );
+
 -- *******************************
 -- * Serial Data Inputs
 -- *******************************
@@ -619,7 +581,7 @@ begin
     end if;
   end process;
 
-  SerialMode <= UsedMode(2);            -- if 0 => mode 16 bits (iSDataIn2 ignored) else mode 32 bits 
+  SerialMode <= UsedMode(2);            -- if 0 => mode 16 bits (iSDataIn2 ignored) else mode 32 bits
 
   Serial_Receiver1 : Serial_Receiver
     port map (rst           => rst,
@@ -632,6 +594,7 @@ begin
               ChannelReady1 => ChannelReady1,
               ChannelReady2 => ChannelReady2
               );
+
 --*******************************
 --*****  Channel Register  ******
 --*******************************
@@ -646,10 +609,11 @@ begin
     end if;
   end process;
   regsToCont(CHANNELREGP) <= ChannelReg;
+
 --*******************************
 --*****  DAC Register  **********
 --*******************************
-  DacWr                   <= contToRegs.Sel(DACREGP) and contToRegs.Wr;
+  DacWr <= contToRegs.Sel(DACREGP) and contToRegs.Wr;
 
   process(clk, DacWr)
   begin
@@ -660,10 +624,10 @@ begin
     end if;
   end process;
   regsToCont(DACREGP) <= DacReg;
+
 --******************************
 -- Frequency Counter
 --******************************
-
   FREQCOUNTER1 : SimpleFrequencyMeter
     generic map(QUARTZFREQ => 40,
                 ACQTIME    => 1000
@@ -681,15 +645,17 @@ begin
     port map (Clock      => clk,
               Reset      => rst,
               SB_Ready   => FreqCounterReady,
-              SB_Number  => iFCounter,    --FrequencyCounter1,
+              SB_Number  => iFCounter,  --FrequencyCounter1,
               BCD_Vector => BCD_fq1_vec,
               BCD_Ready  => open
               );
+
 --*************************************
 --*****  Frequency Meter Register *****
 --*************************************
   regsToCont(FREQREGP) <= iFCounter;
 --regsToCont(SPAREREGP) <= x"ffff" & iFCounter(15 downto 0);
+
 --******************************
 -- Counter between a stop and a start
 --******************************
@@ -715,13 +681,12 @@ begin
               SB_Number  => AcquisitionTime,  --FrequencyCounter1,
               BCD_Vector => BCD_acq_vec,
               BCD_Ready  => open
-              );                    
---******************************
+              );
 
 -- *******************************
 -- * RS232 Display
 -- *******************************
--- first make a pulse per seconde to refresh the display 
+-- first make a pulse per seconde to refresh the display
 -- need a 1 MHZ Clock enable
   clk1Mhz : process(rst, clk)
     variable divider40 : natural range 0 to 39;
@@ -805,7 +770,7 @@ begin
     Carriage_Return, Line_feed);
 --
 --
---message_to_send(6) <= ( 
+--message_to_send(6) <= (
 --                                        BinSin2(15), BinSin2(14), BinSin2(13), BinSin2(12), BinSin2(11), BinSin2(10), BinSin2(9), BinSin2(8),
 --                                        BinSin2(7), BinSin2(6), BinSin2(5), BinSin2(4), BinSin2(3), BinSin2(2), BinSin2(1), BinSin2(0),
 --                 Carriage_Return, Line_feed);
@@ -821,6 +786,7 @@ begin
       message_env => open,
       rs232out    => rs232out
       );
+
 --*******************************
 --*****   External RAM     ******
 --*******************************
@@ -920,7 +886,7 @@ begin
   begin
     if rising_edge (clk) then
       if ReadExtRam = '1' then
-        ExtRdAdd <= ExtAddRd(18 downto 2);  -- all memory used 
+        ExtRdAdd <= ExtAddRd(18 downto 2);  -- all memory used
       end if;
       MemToCont(EXTRAMP).Data <= DataToContRM;
 
@@ -952,7 +918,7 @@ begin
              RAMGWN                 => RAMGWN,
              RAMADSCN               => RAMADSCN,
 
-             -- Other IDT 71V35761 that we don't really use 
+             -- Other IDT 71V35761 that we don't really use
              RAMCEN   => RAMCEN,
              RAMCS0   => open,
              RAMCS1N  => open,
@@ -965,6 +931,7 @@ begin
              RAMADSPN => RAMADSPN);
 
   XORamClk40 <= not clk;
+
 --*******************************
 --*****Monostables for leds******
 --*******************************
@@ -1035,7 +1002,7 @@ begin
       if UDTerminalCount = '1' and UsedMode = BTRAINMODE then                -- Btrain Counter
         iParalleleDataOutOne <= UDInstantValue(15 downto 0);
         iParalleleDataOutTwo <= UDInstantValue(15 downto 0);                 -- same as analog out1 for the moment to test the outputs
-      elsif StrobeReg(2) = '1' and UsedMode(1 downto 0) = PARAMODE2BIT then  -- mode parallele 
+      elsif StrobeReg(2) = '1' and UsedMode(1 downto 0) = PARAMODE2BIT then  -- mode parallele
         iParalleleDataOutOne <= PdataIn(15 downto 0);
         iParalleleDataOutTwo <= PdataIn(31 downto 16);
       else
@@ -1060,11 +1027,13 @@ begin
   StrobeOut           <= Strobe;
   XMuxCtrl            <= not EnableInt;
 
-  Xtest(3)   <= iLoadDAC1;
-  Xtest(2)   <= DataFromHistoryWritten;
-  Xtest(0)   <= UDTerminalCount;
-  Xtest(1)   <= RS232In or VmeamA(2) or vmeReset or ModuleAddr(5);
---iRamDataPar <= (others => 'Z');
+  Xtest(3) <= iLoadDAC1;
+  Xtest(2) <= DataFromHistoryWritten;
+  Xtest(0) <= UDTerminalCount;
+  Xtest(1) <= RS232In or VmeamA(2) or vmeReset or ModuleAddr(5);
+
   RamDataPar <= (others => 'Z');
+
+
 end Behavioral;
 
