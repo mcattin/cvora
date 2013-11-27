@@ -21,8 +21,7 @@
 --------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
-use IEEE.STD_LOGIC_ARITH.all;
-use IEEE.STD_LOGIC_UNSIGNED.all;
+use IEEE.NUMERIC_STD.all;
 
 
 entity up_down_counter is
@@ -44,14 +43,9 @@ end up_down_counter;
 architecture Behavioral of up_down_counter is
 
 
-  constant EXTRESET_ACTIVE : std_logic                                    := '0';
-  constant VALUEZERO       : std_logic_vector(COUNTER_WIDTH - 1 downto 0) := (others => '0');
-  constant VALUEONE        : std_logic_vector(COUNTER_WIDTH - 1 downto 0) := (0      => '1', others => '0');  --x"000001";
-  constant UP              : std_logic                                    := '1';
-  constant DOWN            : std_logic                                    := '0';
-  constant OVERFLOW        : std_logic_vector(COUNTER_WIDTH - 1 downto 0) := (others => '1');
+  constant OVERFLOW        : unsigned(COUNTER_WIDTH - 1 downto 0) := (others => '1');
 
-  signal iInstantValue : std_logic_vector(COUNTER_WIDTH - 1 downto 0) := (others => '0');
+  signal iInstantValue : unsigned(COUNTER_WIDTH - 1 downto 0) := (others => '0');
 
   signal tc             : std_logic := '0';
   signal clk1A          : std_logic;
@@ -83,12 +77,12 @@ begin
   begin
     if rising_edge(clk) then
       if rst = '1' then
-        iInstantValue <= LoadValue;
+        iInstantValue <= unsigned(LoadValue);
       elsif UDCounterValid = '1' then
         if clk1RE = '1' and clk2RE = '0' then
-          iInstantValue <= iInstantValue + VALUEONE;
+          iInstantValue <= iInstantValue + 1;
         elsif clk2RE = '1' and clk1RE = '0' then
-          iInstantValue <= iInstantValue - VALUEONE;
+          iInstantValue <= iInstantValue - 1;
         end if;
       end if;
     end if;
@@ -116,6 +110,6 @@ begin
     end if;
   end process;
 
-  InstantValue <= iInstantValue;
+  InstantValue <= std_logic_vector(iInstantValue);
 
 end Behavioral;

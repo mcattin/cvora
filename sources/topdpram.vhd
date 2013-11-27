@@ -87,8 +87,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
-use IEEE.STD_LOGIC_ARITH.all;
-use IEEE.STD_LOGIC_UNSIGNED.all;
+use IEEE.NUMERIC_STD.all;
 use work.IntContPackage.all;
 use work.message_package.all;
 use work.auxdef.all;
@@ -101,7 +100,7 @@ use UNISIM.VComponents.all;
 
 entity topdpram is
   generic(
-    HARDVERSION           : std_logic_vector(15 downto 0) := X"0153";
+    HARDVERSION           : std_logic_vector(15 downto 0) := X"0154";
     MONOSTABLE_DURATION   : natural                       := 8000000;     -- multiply by clk period - only for leds
     DEFAULT_PULSEPOLARITY : std_logic                     := '0';         -- Determine polarity of the inputs
                                                                           -- '0' is from TG8 (negative logic), '1' if inputs come from new timing modules
@@ -227,19 +226,21 @@ architecture Behavioral of topdpram is
 ----------------------------------------------
 -- Signal for the display part
 ----------------------------------------------
-  signal message_to_send             : message_array;
-  signal localPPS                    : std_logic;
-  signal igap_counter_value          : std_logic_vector(31 downto 0);
-  signal en1M                        : std_logic;
-  signal iledout                     : std_logic_vector(7 downto 0);
-  signal AcqCounter, AcquisitionTime : std_logic_vector(15 downto 0) := (others => '0');
-  signal BCD_acq_vec                 : BCD_vector_TYPE (4 downto 0);
-  signal StartSBAcq                  : std_logic;
+  signal message_to_send    : message_array;
+  signal localPPS           : std_logic;
+  signal igap_counter_value : unsigned(31 downto 0);
+  signal en1M               : std_logic;
+  signal iledout            : std_logic_vector(7 downto 0);
+  signal AcqCounter         : unsigned(15 downto 0)         := (others => '0');
+  signal AcquisitionTime    : std_logic_vector(15 downto 0) := (others => '0');
+  signal BCD_acq_vec        : BCD_vector_TYPE (4 downto 0);
+  signal StartSBAcq         : std_logic;
 
 ----------------------------------------------
 -- Signal for the External Ram
 ----------------------------------------------
-  signal ExtWriteAdd             : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0) := MEMEMPTY;
+  signal ExtWriteAdd             : unsigned(MEM_ADDRESS_LENGTH - 1 downto 0)         := MEMEMPTY;
+  signal iExtWriteAdd            : std_logic_vector(MEM_ADDRESS_LENGTH - 1 downto 0) := std_logic_vector(MEMEMPTY);
   signal ExtAddRd                : std_logic_vector(18 downto 0);
   signal DataFromHistoryWritten  : std_logic;
   signal DataToContValidRM       : std_logic;
@@ -442,13 +443,13 @@ begin
   iModuleAddr <= not(ModuleAddr(4 downto 0));
 
   UVmeInt : Vme_intfce
-    generic map(AddrWidth        => 24,
-                BaseAddrWidth    => 5,
-                DataWidth        => 32,
-                DirSamePolarity  => '0',
-                UnalignDataWidth => 8,
-                InterruptEn      => '1'
-                )
+    generic map(
+      AddrWidth        => 24,
+      BaseAddrWidth    => 5,
+      DataWidth        => 32,
+      DirSamePolarity  => '0',
+      UnalignDataWidth => 8,
+      InterruptEn      => '1')
     port map(
       clk              => clk,
       ResetNA          => Rst,
@@ -482,8 +483,7 @@ begin
       OpFinishedOut    => OpFinishedOut,
       IRQLevelReg      => "010",        --IRQLevelReg, Only level2 is cabled on this card
       IRQStatusIDReg   => IRQStatusIDReg,
-      VmeState         => open
-      );
+      VmeState         => open);
 
 
   VmeIntReqN2 <= VmeIntReqN(2);
@@ -519,18 +519,19 @@ begin
   iUDEnable <= AcqEnable when UsedMode = BTRAINMODE else '0';
   loadValue <= (others => '0');
 
-  Btrain_UD1 : up_down_counter               -- provisoire the component must be changed
-    generic map(COUNTER_WIDTH => COUNTER_WIDTH)
-    port map (rst             => rstRE,
-              clk             => Clk,
-              clk1            => BTrainUp,
-              clk2            => BTrainDown,
-              CounterEnable   => iUDEnable,
-              loadValue       => loadValue,  -- must be defined
-              CounterOverflow => CounterOverflow,
-              InstantValue    => UDInstantValue,
-              TerminalCount   => UDTerminalCount
-              );
+  Btrain_UD1 : up_down_counter          -- provisoire the component must be changed
+    generic map(
+      COUNTER_WIDTH => COUNTER_WIDTH)
+    port map (
+      rst             => rstRE,
+      clk             => Clk,
+      clk1            => BTrainUp,
+      clk2            => BTrainDown,
+      CounterEnable   => iUDEnable,
+      loadValue       => loadValue,     -- must be defined
+      CounterOverflow => CounterOverflow,
+      InstantValue    => UDInstantValue,
+      TerminalCount   => UDTerminalCount);
 
 -- *******************************
 -- * Serial Data Inputs
@@ -557,7 +558,8 @@ begin
       if DacWr = '1' then
         if DacReg(4 downto 0) = "00000" then
           intdacvalue := 1;
-        else intdacvalue := CONV_INTEGER(DacReg(4 downto 0));
+        else
+          intdacvalue := to_integer(unsigned(DacReg(4 downto 0)));
         end if;
       end if;
     end if;
@@ -584,16 +586,17 @@ begin
   SerialMode <= UsedMode(2);            -- if 0 => mode 16 bits (iSDataIn2 ignored) else mode 32 bits
 
   Serial_Receiver1 : Serial_Receiver
-    port map (rst           => rst,
-              clk           => clk,
-              mode          => SerialMode,
-              SDataIn1      => iSDataIn1,
-              SDataIn2      => iSDataIn2,
-              DataOut       => PDataFromSerialIn,
-              DataReady     => DataReadyFromSerial,
-              ChannelReady1 => ChannelReady1,
-              ChannelReady2 => ChannelReady2
-              );
+    port map(
+      rst           => rst,
+      clk           => clk,
+      mode          => SerialMode,
+      SDataIn1      => iSDataIn1,
+      SDataIn2      => iSDataIn2,
+      DataOut       => PDataFromSerialIn,
+      DataReady     => DataReadyFromSerial,
+      ChannelReady1 => ChannelReady1,
+      ChannelReady2 => ChannelReady2
+      );
 
 --*******************************
 --*****  Channel Register  ******
@@ -629,26 +632,27 @@ begin
 -- Frequency Counter
 --******************************
   FREQCOUNTER1 : SimpleFrequencyMeter
-    generic map(QUARTZFREQ => 40,
-                ACQTIME    => 1000
-                )
+    generic map(
+      QUARTZFREQ => 40,
+      ACQTIME    => 1000)
     port map(
       rst                 => rst,
       clk                 => clk,
       inclk               => ExtClkRE,
       FreqCounterReady    => FreqCounterReady,
-      FrequencyCounterReg => FrequencyCounter1
-      );
+      FrequencyCounterReg => FrequencyCounter1);
   iFCounter <= FrequencyCounter1;
 
-  convertor_for_FreqCounter1 : SB_to_BCD generic map (32, 8)
-    port map (Clock      => clk,
-              Reset      => rst,
-              SB_Ready   => FreqCounterReady,
-              SB_Number  => iFCounter,  --FrequencyCounter1,
-              BCD_Vector => BCD_fq1_vec,
-              BCD_Ready  => open
-              );
+  convertor_for_FreqCounter1 : SB_to_BCD
+    generic map(32, 8)
+    port map(
+      Clock      => clk,
+      Reset      => rst,
+      SB_Ready   => FreqCounterReady,
+      SB_Number  => iFCounter,          --FrequencyCounter1,
+      BCD_Vector => BCD_fq1_vec,
+      BCD_Ready  => open
+      );
 
 --*************************************
 --*****  Frequency Meter Register *****
@@ -662,26 +666,28 @@ begin
   process(clk, ExtClkRE, AcqEnable)
   begin
     if rising_edge(clk) then
-      if AcqEnable = '0' then             -- count External clock pulses between a stop and a start
+      if AcqEnable = '0' then                               -- count External clock pulses between a stop and a start
         if ExtClkRE = '1' then
-          AcqCounter <= AcqCounter + x"0001";
+          AcqCounter <= AcqCounter + 1;
         else
-          AcquisitionTime <= AcqCounter;  -- store value between incrment
+          AcquisitionTime <= std_logic_vector(AcqCounter);  -- store value between incrment
         end if;
       else
-        AcqCounter <= (others => '0');    -- clear the counter
+        AcqCounter <= (others => '0');                      -- clear the counter
       end if;
     end if;
   end process;
 
-  convertor_for_AcqTime : SB_to_BCD generic map (16, 5)
-    port map (Clock      => clk,
-              Reset      => rst,
-              SB_Ready   => StartSBAcq,
-              SB_Number  => AcquisitionTime,  --FrequencyCounter1,
-              BCD_Vector => BCD_acq_vec,
-              BCD_Ready  => open
-              );
+  convertor_for_AcqTime : SB_to_BCD
+    generic map(16, 5)
+    port map(
+      Clock      => clk,
+      Reset      => rst,
+      SB_Ready   => StartSBAcq,
+      SB_Number  => AcquisitionTime,    --FrequencyCounter1,
+      BCD_Vector => BCD_acq_vec,
+      BCD_Ready  => open
+      );
 
 -- *******************************
 -- * RS232 Display
@@ -833,22 +839,23 @@ begin
 
   P2DataInClk <= PdataInValid and AcqEnable;
 -- the startpulse don't clear the memory
-  P2ClearMem  <= RstRE when AcqEnable = '0' else '0';     -- the memory can't be cleared during acquisition
+  P2ClearMem  <= RstRE when AcqEnable = '0' else '0';  -- the memory can't be cleared during acquisition
 -- Write the memory depending the UsedMode
   P2SerialManager : P2SerialManagerSTM
-    port map(rst              => rst,
-             clk              => clk,
-             Mode             => UsedMode,
-             DataIn           => PDataIn,
-             DataInClk        => P2DataInClk,
-             ChannelReg       => ChannelReg,
-             DataWritten      => DataFromHistoryWritten,  -- the Ram is ready to accept another write
-             ClearMem         => P2ClearMem,
-             WriteRam         => P2WriteRam,
-             WriteAdd         => P2WriteAdd,
-             P2RamAddOverflow => P2RamAddOverflow,
-             DatatoRAM        => P2DatatoRAM
-             );
+    port map(
+      rst              => rst,
+      clk              => clk,
+      Mode             => UsedMode,
+      DataIn           => PDataIn,
+      DataInClk        => P2DataInClk,
+      ChannelReg       => ChannelReg,
+      DataWritten      => DataFromHistoryWritten,      -- the Ram is ready to accept another write
+      ClearMem         => P2ClearMem,
+      WriteRam         => P2WriteRam,
+      WriteAdd         => P2WriteAdd,
+      P2RamAddOverflow => P2RamAddOverflow,
+      DatatoRAM        => P2DatatoRAM
+      );
 
   process(rst, clk, PDataIn, mode, UsedMode, StartPulse, AcqEnable, rstRE, StrobeReg)
     variable counter : integer := 0;
@@ -857,27 +864,27 @@ begin
     if rising_edge(clk) then
       if UsedMode = P2SERIALMODE then
         CurrentRecordForRam <= P2DatatoRAM;
-        ExtWriteAdd         <= P2WriteAdd;
+        ExtWriteAdd         <= unsigned(P2WriteAdd);
         ExtRamAddOverflow   <= P2RamAddOverflow;
-      elsif AcqEnable = '1' then                                  -- a startpulse has no action during acquisition
+      elsif AcqEnable = '1' then                                                   -- a startpulse has no action during acquisition
         if ExtWriteAdd = EXTRAMFULL then
-          ExtRamAddOverflow <= '1';                               -- The ram is full
+          ExtRamAddOverflow <= '1';                                                -- The ram is full
         elsif ExtClkRE = '1' and UsedMode = BTRAINMODE then
           CurrentRecordForRam <= UDInstantValue;
         elsif StrobeReg(2) = '1' and UsedMode(1 downto 0) = PARAMODE2BIT then
           CurrentRecordForRam <= PDataIn;
-        elsif StrobeReg(2) = '1' and UsedMode /= BTRAINMODE then  -- an external clock has occured
+        elsif StrobeReg(2) = '1' and UsedMode /= BTRAINMODE then                   -- an external clock has occured
           CurrentRecordForRam <= SerialDataReg;
         elsif StrobeReg(StrobeReg'left) = '1' then
           ExtWriteAdd <= ExtWriteAdd + EXTRAM_BUF_ONE;
         end if;
-      elsif StartPulse = '1' or rstRE = '1' then                  -- reset the address counter
+      elsif StartPulse = '1' or rstRE = '1' then                                   -- reset the address counter
         ExtWriteAdd       <= MEMEMPTY;
         ExtRamAddOverflow <= '0';
       end if;
     end if;
   end process;
-  regsToCont(READADDREGP) <= x"000" & "0" & ExtWriteAdd & "00";   --Read the address counter register in byte
+  regsToCont(READADDREGP) <= x"000" & "0" & std_logic_vector(ExtWriteAdd) & "00";  --Read the address counter register in byte
 -- read the External RAM from VME
   ReadExtRam              <= ContToMem.Rd and ContToMem.SelectedPos(EXTRAMP);
   ExtAddRd                <= ContToMem.Add;  --(ContToMem.Add'left downto 0); -- NO OFFSET in DPRam card
@@ -898,75 +905,77 @@ begin
 
 
   URAMManager : RAMManager
-    port map(RstN => rst,
-             Clk  => clk,
+    port map(
+      RstN => rst,
+      Clk  => clk,
 
-             -- Interface with History block
-             DataFromHistory        => CurrentRecordForRam,
-             AddrFromHistory        => ExtWriteAdd,
-             WriteFromHistory       => WriteExtRam,
-             DataFromHistoryWritten => DataFromHistoryWritten,
-             -- Interface with Bus Control block
-             AddrFromCont           => ExtRdAdd,
-             ReadFromCont           => Readextram,
-             DataToCont             => DataToContRM,
-             DataToContValid        => DataToContValidRM,
-             -- Interface with IDT 71V35761 RAM chip
-             RAMAddr                => RAMAdd,
-             RAMData                => RAMData,
-             RAMOEN                 => RAMOEN,
-             RAMGWN                 => RAMGWN,
-             RAMADSCN               => RAMADSCN,
+      -- Interface with History block
+      DataFromHistory        => CurrentRecordForRam,
+      AddrFromHistory        => iExtWriteAdd,
+      WriteFromHistory       => WriteExtRam,
+      DataFromHistoryWritten => DataFromHistoryWritten,
+      -- Interface with Bus Control block
+      AddrFromCont           => ExtRdAdd,
+      ReadFromCont           => Readextram,
+      DataToCont             => DataToContRM,
+      DataToContValid        => DataToContValidRM,
+      -- Interface with IDT 71V35761 RAM chip
+      RAMAddr                => RAMAdd,
+      RAMData                => RAMData,
+      RAMOEN                 => RAMOEN,
+      RAMGWN                 => RAMGWN,
+      RAMADSCN               => RAMADSCN,
 
-             -- Other IDT 71V35761 that we don't really use
-             RAMCEN   => RAMCEN,
-             RAMCS0   => open,
-             RAMCS1N  => open,
-             RAMBWEN  => RAMWRN,
-             RAMBWN   => RAMBWN,
-             RAMADVN  => RAMADVN,
-             --         RAMPar => iRamDataPar,   -- to be left floating
-             RAMLBON  => RAMLBON,
-             RAMZZ    => open,
-             RAMADSPN => RAMADSPN);
+      -- Other IDT 71V35761 that we don't really use
+      RAMCEN   => RAMCEN,
+      RAMCS0   => open,
+      RAMCS1N  => open,
+      RAMBWEN  => RAMWRN,
+      RAMBWN   => RAMBWN,
+      RAMADVN  => RAMADVN,
+      --         RAMPar => iRamDataPar,   -- to be left floating
+      RAMLBON  => RAMLBON,
+      RAMZZ    => open,
+      RAMADSPN => RAMADSPN);
 
-  XORamClk40 <= not clk;
+  XORamClk40   <= not clk;
+  iExtWriteAdd <= std_logic_vector(ExtWriteAdd);
 
 --*******************************
 --*****Monostables for leds******
 --*******************************
-  MONOSTABLE1 : Monostable               -- led stop
-    generic map(DURATION              => MONOSTABLE_DURATION,
-                DEFAULT_PULSEPOLARITY => DEFAULT_PULSEPOLARITY
-                )
-    port map(clk        => clk,
-             inputpulse => StopPulse,    -- A clock wide pulse
-             output     => iledout(2)
-             );
-  MONOSTABLE2 : Monostable               -- led start
-    generic map(DURATION              => MONOSTABLE_DURATION,
-                DEFAULT_PULSEPOLARITY => DEFAULT_PULSEPOLARITY
-                )
-    port map(clk        => clk,
-             inputpulse => StartPulse,   -- A clock wide pulse
-             output     => iledout(3)
-             );
-  MONOSTABLE3 : Monostable               -- led read
-    generic map(DURATION              => MONOSTABLE_DURATION,
-                DEFAULT_PULSEPOLARITY => DEFAULT_PULSEPOLARITY
-                )
-    port map(clk        => clk,
-             inputpulse => ReadExtRam,   -- A clock wide pulse
-             output     => iledout(4)
-             );
-  MONOSTABLE4 : Monostable               -- led write
-    generic map(DURATION              => MONOSTABLE_DURATION,
-                DEFAULT_PULSEPOLARITY => DEFAULT_PULSEPOLARITY
-                )
-    port map(clk        => clk,
-             inputpulse => WriteExtRam,  -- A clock wide pulse
-             output     => iledout(5)
-             );
+  MONOSTABLE1 : Monostable              -- led stop
+    generic map(
+      DURATION              => MONOSTABLE_DURATION,
+      DEFAULT_PULSEPOLARITY => DEFAULT_PULSEPOLARITY)
+    port map(
+      clk        => clk,
+      inputpulse => StopPulse,          -- A clock wide pulse
+      output     => iledout(2));
+  MONOSTABLE2 : Monostable              -- led start
+    generic map(
+      DURATION              => MONOSTABLE_DURATION,
+      DEFAULT_PULSEPOLARITY => DEFAULT_PULSEPOLARITY)
+    port map(
+      clk        => clk,
+      inputpulse => StartPulse,         -- A clock wide pulse
+      output     => iledout(3));
+  MONOSTABLE3 : Monostable              -- led read
+    generic map(
+      DURATION              => MONOSTABLE_DURATION,
+      DEFAULT_PULSEPOLARITY => DEFAULT_PULSEPOLARITY)
+    port map(
+      clk        => clk,
+      inputpulse => ReadExtRam,         -- A clock wide pulse
+      output     => iledout(4));
+  MONOSTABLE4 : Monostable              -- led write
+    generic map(
+      DURATION              => MONOSTABLE_DURATION,
+      DEFAULT_PULSEPOLARITY => DEFAULT_PULSEPOLARITY)
+    port map(
+      clk        => clk,
+      inputpulse => WriteExtRam,        -- A clock wide pulse
+      output     => iledout(5));
 
 --*******************************
 --*****  Load of the DACs  ******
@@ -978,10 +987,10 @@ begin
                '0';
 
   LoadDAC1 : LoadDacDelay
-    port map(clk        => clk,
-             inputpulse => iLoadDAC1,   -- A clock wide pulse
-             output     => ldacOne
-             );
+    port map(
+      clk        => clk,
+      inputpulse => iLoadDAC1,          -- A clock wide pulse
+      output     => ldacOne);
 
   iLoadDAC2 <= ChannelReady2 when UsedMode(1 downto 0) = "01" or UsedMode = "10" or UsedMode = P2SERIALMODE else
                UDTerminalCount when UsedMode = BTRAINMODE               else
@@ -989,10 +998,10 @@ begin
                '0';
 
   LoadDAC2 : LoadDacDelay
-    port map(clk        => clk,
-             inputpulse => iLoadDAC2,   -- A clock wide pulse
-             output     => ldacTwo
-             );
+    port map(
+      clk        => clk,
+      inputpulse => iLoadDAC2,          -- A clock wide pulse
+      output     => ldacTwo);
 
 --pipeline outputs
   process (clk, PDataFromSerialIn, UsedMode, PdataIn, ChannelReady1, ChannelReady2, UDTerminalCount,
