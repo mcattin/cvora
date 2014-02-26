@@ -1,0 +1,21 @@
+#! /bin/sh
+
+echo Installing VMEIO driver...
+echo 8 > /proc/sys/kernel/printk
+
+/sbin/insmod \
+vmeio.3.2.43-rt63.ko dname="vmeio" luns=0,1 \
+vme1=0x300000,0x400000 win1=0x300000,0x400000 amd1=0x39,0x39 dwd1=4,4 \
+vme2=0x300000,0x400000 win2=0x300000,0x400000 amd2=0x39,0x39 dwd2=4,4 \
+vecs=0x86,0x87 lvls=2,2 isrc=0x0,0x0 iwin=2,2
+
+MAJOR=`cat /proc/devices | awk '{if ($2 == "vmeio") printf $1}'`
+echo Making nodes for ${MODULE} major device vmeio ${MAJOR}
+if [ -z "$MAJOR" ]; then
+     echo "driver VMEIO not installed !"
+     exit 2
+fi
+
+rm -f /dev/vmeio.*
+/bin/mknod  -m 0666 /dev/vmeio.0 c ${MAJOR} 0
+/bin/mknod  -m 0666 /dev/vmeio.1 c ${MAJOR} 1
