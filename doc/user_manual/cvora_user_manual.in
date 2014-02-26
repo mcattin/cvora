@@ -256,6 +256,7 @@ In "dual inputs" modes (FP_*32_*), the lower 16 bits of the 32-bit data word wri
 
 In RTM input modes (RTM_*), data are coming from Rear Transition Modules (RTM) via the VME P2 connector.
 The CVORA P2 connector contains 32 differential input channels, that can be used in three RTM modes: one parallel (RTM_PARALLEL) and two serial (RTM_SCI and RTM_CVORB).
+The differential inputs are terminated with 120ohms. If an input is unconnected, the default value is 0.
 In RTM input modes dedicated rear transition modules have to be used (See @ref{Rear Transition Modules}).
 
 @table @b
@@ -641,6 +642,14 @@ TODO -> any?
 @end multitable
 @caption{Front panel connectors description.}
 @end float
+
+@sp 1
+
+@quotation Note
+The TTL inputs are @b{not} 50ohms terminated.
+Therefore the signal can be chained to several inputs.
+If the source is a 50ohms driver, a termination must be place at the end of the chain.
+@end quotation
 
 The analogue outputs reflects the state of the selected input @b{before sampling}.
 It means that the DAC refresh rate is equal to the input data rate.
