@@ -1,0 +1,280 @@
+--------------------------------------------------------------------------------
+Release 13.3 Trace  (lin)
+Copyright (c) 1995-2011 Xilinx, Inc.  All rights reserved.
+
+/opt/Xilinx/13.3/ISE_DS/ISE/bin/lin/unwrapped/trce -intstyle ise -v 3 -s 4 -n 3
+-fastpaths -xml top_cvora.twx top_cvora.ncd -o top_cvora.twr top_cvora.pcf
+
+Design file:              top_cvora.ncd
+Physical constraint file: top_cvora.pcf
+Device,package,speed:     xc3s1500,fg456,-4 (PRODUCTION 1.39 2011-10-03)
+Report level:             verbose report
+
+Environment Variable      Effect 
+--------------------      ------ 
+NONE                      No environment variables were set
+--------------------------------------------------------------------------------
+
+INFO:Timing:2752 - To get complete path coverage, use the unconstrained paths 
+   option. All paths that are not constrained will be reported in the 
+   unconstrained paths section(s) of the report.
+INFO:Timing:3339 - The clock-to-out numbers in this timing report are based on 
+   a 50 Ohm transmission line loading model.  For the details of this model, 
+   and for more information on accounting for different loading conditions, 
+   please see the device datasheet.
+INFO:Timing:3390 - This architecture does not support a default System Jitter 
+   value, please add SYSTEM_JITTER constraint to the UCF to modify the Clock 
+   Uncertainty calculation.
+INFO:Timing:3389 - This architecture does not support 'Discrete Jitter' and 
+   'Phase Error' calculations, these terms will be zero in the Clock 
+   Uncertainty calculation.  Please make appropriate modification to 
+   SYSTEM_JITTER to account for the unsupported Discrete Jitter and Phase 
+   Error.
+
+================================================================================
+Timing constraint: TS_sys_clk = PERIOD TIMEGRP "sys_clk" 25 ns HIGH 50%;
+
+ 118947 paths analyzed, 21116 endpoints analyzed, 0 failing endpoints
+ 0 timing errors detected. (0 setup errors, 0 hold errors, 0 component switching limit errors)
+ Minimum period is  22.123ns.
+--------------------------------------------------------------------------------
+
+Paths for end point cmp_message/imess<3>_4_6 (SLICE_X50Y118.G2), 1 path
+--------------------------------------------------------------------------------
+Slack (setup path):     2.340ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               mode_2 (FF)
+  Destination:          cmp_message/imess<3>_4_6 (FF)
+  Requirement:          12.500ns
+  Data Path Delay:      9.863ns (Levels of Logic = 1)
+  Clock Path Skew:      -0.297ns (0.601 - 0.898)
+  Source Clock:         sys_clk rising at 0.000ns
+  Destination Clock:    sys_clk falling at 12.500ns
+  Clock Uncertainty:    0.000ns
+
+  Maximum Data Path: mode_2 to cmp_message/imess<3>_4_6
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X40Y67.YQ      Tcko                  0.720   mode<3>
+                                                       mode_2
+    SLICE_X50Y118.G2     net (fanout=116)      8.453   mode<2>
+    SLICE_X50Y118.CLK    Tgck                  0.690   cmp_message/imess<3>_4_6
+                                                       Mrom_mode_rom0000461
+                                                       cmp_message/imess<3>_4_6
+    -------------------------------------------------  ---------------------------
+    Total                                      9.863ns (1.410ns logic, 8.453ns route)
+                                                       (14.3% logic, 85.7% route)
+
+--------------------------------------------------------------------------------
+
+Paths for end point cmp_message/imess<3>_5_0 (SLICE_X52Y112.G3), 1 path
+--------------------------------------------------------------------------------
+Slack (setup path):     2.714ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               mode_2 (FF)
+  Destination:          cmp_message/imess<3>_5_0 (FF)
+  Requirement:          12.500ns
+  Data Path Delay:      9.563ns (Levels of Logic = 1)
+  Clock Path Skew:      -0.223ns (0.815 - 1.038)
+  Source Clock:         sys_clk rising at 0.000ns
+  Destination Clock:    sys_clk falling at 12.500ns
+  Clock Uncertainty:    0.000ns
+
+  Maximum Data Path: mode_2 to cmp_message/imess<3>_5_0
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X40Y67.YQ      Tcko                  0.720   mode<3>
+                                                       mode_2
+    SLICE_X52Y112.G3     net (fanout=116)      8.153   mode<2>
+    SLICE_X52Y112.CLK    Tgck                  0.690   cmp_message/imess<3>_5_1
+                                                       Mrom_mode_rom0000321
+                                                       cmp_message/imess<3>_5_0
+    -------------------------------------------------  ---------------------------
+    Total                                      9.563ns (1.410ns logic, 8.153ns route)
+                                                       (14.7% logic, 85.3% route)
+
+--------------------------------------------------------------------------------
+
+Paths for end point cmp_message/imess<3>_4_0 (SLICE_X50Y114.G2), 1 path
+--------------------------------------------------------------------------------
+Slack (setup path):     2.734ns (requirement - (data path - clock path skew + uncertainty))
+  Source:               mode_2 (FF)
+  Destination:          cmp_message/imess<3>_4_0 (FF)
+  Requirement:          12.500ns
+  Data Path Delay:      9.530ns (Levels of Logic = 1)
+  Clock Path Skew:      -0.236ns (0.662 - 0.898)
+  Source Clock:         sys_clk rising at 0.000ns
+  Destination Clock:    sys_clk falling at 12.500ns
+  Clock Uncertainty:    0.000ns
+
+  Maximum Data Path: mode_2 to cmp_message/imess<3>_4_0
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X40Y67.YQ      Tcko                  0.720   mode<3>
+                                                       mode_2
+    SLICE_X50Y114.G2     net (fanout=116)      8.120   mode<2>
+    SLICE_X50Y114.CLK    Tgck                  0.690   cmp_message/imess<3>_4_1
+                                                       Mrom_mode_rom0000401
+                                                       cmp_message/imess<3>_4_0
+    -------------------------------------------------  ---------------------------
+    Total                                      9.530ns (1.410ns logic, 8.120ns route)
+                                                       (14.8% logic, 85.2% route)
+
+--------------------------------------------------------------------------------
+
+Hold Paths: TS_sys_clk = PERIOD TIMEGRP "sys_clk" 25 ns HIGH 50%;
+--------------------------------------------------------------------------------
+
+Paths for end point cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o_9 (SLICE_X34Y94.BX), 1 path
+--------------------------------------------------------------------------------
+Slack (hold path):      0.619ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister_2 (FF)
+  Destination:          cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o_9 (FF)
+  Requirement:          0.000ns
+  Data Path Delay:      0.857ns (Levels of Logic = 0)
+  Clock Path Skew:      0.238ns (0.856 - 0.618)
+  Source Clock:         sys_clk rising at 25.000ns
+  Destination Clock:    sys_clk rising at 25.000ns
+  Clock Uncertainty:    0.000ns
+
+  Minimum Data Path: cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister_2 to cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o_9
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X34Y96.XQ      Tcko                  0.576   cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister<2>
+                                                       cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister_2
+    SLICE_X34Y94.BX      net (fanout=3)        0.564   cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister<2>
+    SLICE_X34Y94.CLK     Tckdi       (-Th)     0.283   cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o<9>
+                                                       cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o_9
+    -------------------------------------------------  ---------------------------
+    Total                                      0.857ns (0.293ns logic, 0.564ns route)
+                                                       (34.2% logic, 65.8% route)
+
+--------------------------------------------------------------------------------
+
+Paths for end point cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o_8 (SLICE_X34Y94.BY), 1 path
+--------------------------------------------------------------------------------
+Slack (hold path):      0.623ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister_1 (FF)
+  Destination:          cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o_8 (FF)
+  Requirement:          0.000ns
+  Data Path Delay:      0.861ns (Levels of Logic = 0)
+  Clock Path Skew:      0.238ns (0.856 - 0.618)
+  Source Clock:         sys_clk rising at 25.000ns
+  Destination Clock:    sys_clk rising at 25.000ns
+  Clock Uncertainty:    0.000ns
+
+  Minimum Data Path: cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister_1 to cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o_8
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X34Y96.YQ      Tcko                  0.576   cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister<2>
+                                                       cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister_1
+    SLICE_X34Y94.BY      net (fanout=2)        0.522   cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/cmp_sci_rx/iRegister<1>
+    SLICE_X34Y94.CLK     Tckdi       (-Th)     0.237   cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o<9>
+                                                       cmp_rtm_serial_manager/l_rtm_sci_decoders[27].cmp_rtm_sci_decoder/data_o_8
+    -------------------------------------------------  ---------------------------
+    Total                                      0.861ns (0.339ns logic, 0.522ns route)
+                                                       (39.4% logic, 60.6% route)
+
+--------------------------------------------------------------------------------
+
+Paths for end point cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_o_5 (SLICE_X9Y84.BX), 1 path
+--------------------------------------------------------------------------------
+Slack (hold path):      0.723ns (requirement - (clock path skew + uncertainty - data path))
+  Source:               cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_out_cvorb_5 (FF)
+  Destination:          cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_o_5 (FF)
+  Requirement:          0.000ns
+  Data Path Delay:      0.780ns (Levels of Logic = 0)
+  Clock Path Skew:      0.057ns (0.140 - 0.083)
+  Source Clock:         sys_clk rising at 25.000ns
+  Destination Clock:    sys_clk rising at 25.000ns
+  Clock Uncertainty:    0.000ns
+
+  Minimum Data Path: cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_out_cvorb_5 to cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_o_5
+    Location             Delay type         Delay(ns)  Physical Resource
+                                                       Logical Resource(s)
+    -------------------------------------------------  -------------------
+    SLICE_X8Y82.XQ       Tcko                  0.576   cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_out_cvorb<5>
+                                                       cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_out_cvorb_5
+    SLICE_X9Y84.BX       net (fanout=1)        0.487   cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_out_cvorb<5>
+    SLICE_X9Y84.CLK      Tckdi       (-Th)     0.283   cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_o<5>
+                                                       cmp_rtm_serial_manager/l_rtm_cvorb_decoders[21].cmp_rtm_cvorb_decoder/data_o_5
+    -------------------------------------------------  ---------------------------
+    Total                                      0.780ns (0.293ns logic, 0.487ns route)
+                                                       (37.6% logic, 62.4% route)
+
+--------------------------------------------------------------------------------
+
+Component Switching Limit Checks: TS_sys_clk = PERIOD TIMEGRP "sys_clk" 25 ns HIGH 50%;
+--------------------------------------------------------------------------------
+Slack: 23.064ns (period - (min low pulse limit / (low pulse / period)))
+  Period: 25.000ns
+  Low pulse: 12.500ns
+  Low pulse limit: 0.968ns (Twpl)
+  Physical resource: cmp_dac1_load/pulse_d_41/CLK
+  Logical resource: cmp_dac1_load/Mshreg_pulse_d_4/SRL16E/WS
+  Location pin: SLICE_X82Y75.CLK
+  Clock network: sys_clk
+--------------------------------------------------------------------------------
+Slack: 23.064ns (period - (min high pulse limit / (high pulse / period)))
+  Period: 25.000ns
+  High pulse: 12.500ns
+  High pulse limit: 0.968ns (Twph)
+  Physical resource: cmp_dac1_load/pulse_d_41/CLK
+  Logical resource: cmp_dac1_load/Mshreg_pulse_d_4/SRL16E/WS
+  Location pin: SLICE_X82Y75.CLK
+  Clock network: sys_clk
+--------------------------------------------------------------------------------
+Slack: 23.064ns (period - min period limit)
+  Period: 25.000ns
+  Min period limit: 1.936ns (516.529MHz) (Tcp)
+  Physical resource: cmp_dac1_load/pulse_d_41/CLK
+  Logical resource: cmp_dac1_load/Mshreg_pulse_d_4/SRL16E/WS
+  Location pin: SLICE_X82Y75.CLK
+  Clock network: sys_clk
+--------------------------------------------------------------------------------
+
+
+All constraints were met.
+
+
+Data Sheet report:
+-----------------
+All values displayed in nanoseconds (ns)
+
+Clock to Setup on destination clock sys_clk_i
+---------------+---------+---------+---------+---------+
+               | Src:Rise| Src:Fall| Src:Rise| Src:Fall|
+Source Clock   |Dest:Rise|Dest:Rise|Dest:Fall|Dest:Fall|
+---------------+---------+---------+---------+---------+
+sys_clk_i      |   22.123|    9.257|   10.160|         |
+---------------+---------+---------+---------+---------+
+
+
+Timing summary:
+---------------
+
+Timing errors: 0  Score: 0  (Setup/Max: 0, Hold: 0)
+
+Constraints cover 118947 paths, 0 nets, and 38398 connections
+
+Design statistics:
+   Minimum period:  22.123ns{1}   (Maximum frequency:  45.202MHz)
+
+
+------------------------------------Footnotes-----------------------------------
+1)  The minimum period statistic assumes all single cycle delays.
+
+Analysis completed Tue Nov 12 17:14:23 2013 
+--------------------------------------------------------------------------------
+
+Trace Settings:
+-------------------------
+Trace Settings 
+
+Peak Memory Usage: 192 MB
+
+
+
