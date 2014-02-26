@@ -18,7 +18,7 @@
 --------------------------------------------------------------------------------
 -- Version 1.0 P. Nouchi le 03-04-2007 Add CounterOverflow output
 -- Version 1.1 P. Nouchi le 14-02-2008 Add a one clock wide delay to deliver the terminal count signal
---         2.0  M.Cattin  25.10.2013 make 
+--         2.0 M.Cattin  25.10.2013    Clean-up and simplification
 --------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;

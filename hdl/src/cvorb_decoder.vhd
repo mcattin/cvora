@@ -40,7 +40,7 @@ end cvorb_decoder;
 architecture rtl of cvorb_decoder is
 
 
-  signal serial_data : std_logic;
+  signal serial_data : std_logic_vector(2 downto 0);
 
 -- DOUBLE FLIP FLOP
   signal data_ff_pos_one : std_logic;
@@ -73,8 +73,15 @@ architecture rtl of cvorb_decoder is
 
 begin
 
-  serial_data <= data_i and enable_i;
-
+  -- Synchronise input data to clock domain
+  p_serial_data_sync: process (clk_i, rst_n_i)
+  begin
+    if rst_n_i = '0' then
+      serial_data <= (others => '0');
+    elsif rising_edge(clk_i) then
+      serial_data <= serial_data(serial_data'left-1 downto 0) & (data_i and enable_i);
+    end if;
+  end process p_serial_data_sync;
 
 -- DOUBLE FLIP FLOP
 -- IN: data_i, clk_i, rst_n_i
@@ -85,7 +92,7 @@ begin
     if rst_n_i = '0' then
       data_ff_pos_one <= '0';
     elsif (rising_edge(clk_i)) then
-      data_ff_pos_one <= serial_data;
+      data_ff_pos_one <= serial_data(serial_data'left);
     end if;
   end process;
   process(clk_i, rst_n_i)
@@ -93,7 +100,7 @@ begin
     if rst_n_i = '0' then
       data_ff_neg_one <= '0';
     elsif (falling_edge(clk_i)) then
-      data_ff_neg_one <= serial_data;
+      data_ff_neg_one <= serial_data(serial_data'left);
     end if;
   end process;
 
