@@ -111,8 +111,8 @@ begin
     end if;
   end process;
 
-  DataOut       <= FourthByte & ThirdByte & SecondByte & FirstByte;
-  DataReady     <= odReady1 when mode = '0' else odReady2;
+  DataOut   <= FourthByte & ThirdByte & SecondByte & FirstByte;
+  DataReady <= odReady1 when mode = '0' else odReady2;
   ChannelReady1 <= odReady1;
   ChannelReady2 <= odReady2;
 

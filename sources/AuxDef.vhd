@@ -333,6 +333,30 @@ package AuxDef is
       RAMADSPN               : out   std_logic);
   end component RAMManager;
 
+  component cvorb_decoder
+    port (
+      rst_n_i             : in  std_logic;
+      clk_i               : in  std_logic;
+      data_valid_o        : out std_logic;
+      zero_test_o         : out std_logic;
+      one_test_o          : out std_logic;
+      pulse_width_thres_i : in  std_logic_vector (7 downto 0);
+      pulse_width_o       : out std_logic_vector (7 downto 0);
+      data_o              : out std_logic_vector (15 downto 0);
+      data_i              : in  std_logic);
+  end component sci_decoder;
+
+  component sci_decoder
+    port (
+      rst_n_i      : in  std_logic;
+      clk_i        : in  std_logic;
+      enable_i     : in  std_logic;
+      data_i       : in  std_logic;
+      data_o       : out std_logic_vector (15 downto 0);
+      data_valid_o : out std_logic
+      );
+  end component sci_decoder;
+
 
 end AuxDef;
 
