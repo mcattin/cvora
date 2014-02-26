@@ -32,23 +32,27 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 use IEEE.NUMERIC_STD.all;
-use work.auxdef.all;
+use work.cvora_pkg.all;
 
 
 entity rtm_serial_manager is
   port (
-    rst_n_i            : in  std_logic;
-    clk_i              : in  std_logic;
-    rtm_data_i         : in  std_logic_vector(31 downto 0);
-    mode_i             : in  std_logic;
-    channel_en_i       : in  std_logic_vector(31 downto 0);
-    data_clk_i         : in  std_logic;
-    ram_data_o         : out std_logic_vector(31 downto 0);
-    ram_data_valid_o   : out std_logic;
-    ram_addr_o         : out std_logic_vector(RAM_ADDR_LENGTH-1 downto 0);
-    ram_overflow_o     : out std_logic;
-    ram_data_written_i : in  std_logic;
-    reset_ram_addr_i   : in  std_logic
+    rst_n_i                   : in  std_logic;
+    clk_i                     : in  std_logic;
+    rtm_data_i                : in  std_logic_vector(31 downto 0);
+    rtm_data_o                : out rtm_data_array_t;
+    rtm_data_valid_o          : out std_logic_vector(31 downto 0);
+    mode_i                    : in  std_logic_vector(3 downto 0);
+    channel_en_i              : in  std_logic_vector(31 downto 0);
+    data_clk_i                : in  std_logic;
+    cvorb_pulse_width_thres_i : in  std_logic_vector(7 downto 0);
+    cvorb_meas_pulse_width_o  : out cvorb_pulse_width_array_t;
+    ram_data_o                : out std_logic_vector(31 downto 0);
+    ram_data_valid_o          : out std_logic;
+    ram_addr_o                : out std_logic_vector(RAM_ADDR_LENGTH-1 downto 0);
+    ram_overflow_o            : out std_logic;
+    ram_data_written_i        : in  std_logic;
+    reset_ram_addr_i          : in  std_logic
     );
 end rtm_serial_manager;
 
@@ -56,12 +60,12 @@ end rtm_serial_manager;
 architecture rtl of rtm_serial_manager is
 
 
-  signal rtm_sci_channel_en   : std_logic_vector(NB_RTM_CHANNELS-1 downto 0);
+  signal rtm_sci_channel_en   : std_logic_vector(c_NB_RTM_CHAN-1 downto 0);
   signal rtm_data_sci         : rtm_data_array_t;
-  signal rtm_data_sci_valid   : std_logic_vector(NB_RTM_CHANNELS-1 downto 0);
-  signal rtm_cvorb_channel_en : std_logic_vector(NB_RTM_CHANNELS-1 downto 0);
+  signal rtm_data_sci_valid   : std_logic_vector(c_NB_RTM_CHAN-1 downto 0);
+  signal rtm_cvorb_channel_en : std_logic_vector(c_NB_RTM_CHAN-1 downto 0);
   signal rtm_data_cvorb       : rtm_data_array_t;
-  signal rtm_data_cvorb_valid : std_logic_vector(NB_RTM_CHANNELS-1 downto 0);
+  signal rtm_data_cvorb_valid : std_logic_vector(c_NB_RTM_CHAN-1 downto 0);
   signal rtm_data             : rtm_data_array_t;
   signal rtm_data_valid       : std_logic_vector(31 downto 0);
   signal rtm_channel_en       : std_logic_vector(31 downto 0);
@@ -73,20 +77,20 @@ architecture rtl of rtm_serial_manager is
                        s_DONE, s_RAM_FULL, s_RESET_RAM_ADDR);
   signal fsm_state       : fsm_state_t;
   signal fsm_next_state  : fsm_state_t;
-  signal current_channel : natural range 0 to NB_RTM_CHANNELS-1;
+  signal current_channel : natural range 0 to c_NB_RTM_CHAN-1;
   signal ram_addr        : unsigned(RAM_ADDR_LENGTH-1 downto 0);
 
 
 begin
 
   -- SCI protocol
-  rtm_sci_channel_en <= channel_en_i when mode_i = RTM_SCI_M else (others => '0');
+  rtm_sci_channel_en <= channel_en_i when mode_i = c_RTM_SCI_M else (others => '0');
 
-  l_rtm_sci_decoders : for I in 0 to NB_RTM_CHANNELS - 1 generate
+  l_rtm_sci_decoders : for I in 0 to c_NB_RTM_CHAN-1 generate
     cmp_rtm_sci_decoder : sci_decoder
       port map(
-        rst_n_i      => sys_rst_n,
-        clk_i        => sys_clk_i,
+        rst_n_i      => rst_n_i,
+        clk_i        => clk_i,
         enable_i     => rtm_sci_channel_en(I),
         data_i       => rtm_data_i(I),
         data_o       => rtm_data_sci(I),
@@ -94,47 +98,51 @@ begin
   end generate l_rtm_sci_decoders;
 
   -- CVORB protocol
-  rtm_cvorb_channel_en <= channel_en_i when mode_i = RTM_CVORB_M else (others => '0');
+  rtm_cvorb_channel_en <= channel_en_i when mode_i = c_RTM_CVORB_M else (others => '0');
 
-  l_rtm_cvorb_decoders : for I in 0 to NB_RTM_CHANNELS - 1 generate
+  l_rtm_cvorb_decoders : for I in 0 to c_NB_RTM_CHAN-1 generate
     cmp_rtm_cvorb_decoder : cvorb_decoder
       port map(
-        rst_n_i             => sys_rst_n,
-        clk_i               => sys_clk_i,
+        rst_n_i             => rst_n_i,
+        clk_i               => clk_i,
         enable_i            => rtm_cvorb_channel_en(I),
         data_i              => rtm_data_i(I),
         zero_test_o         => open,
         one_test_o          => open,
-        pulse_width_thres_i => cvorb_pulse_width_thres,
-        pulse_width_o       => rtm_cvorb_meas_pulse_width(I),
+        strobe_test_o       => open,
+        pulse_width_thres_i => cvorb_pulse_width_thres_i,
+        pulse_width_o       => cvorb_meas_pulse_width_o(I),
         data_o              => rtm_data_cvorb(I),
         data_valid_o        => rtm_data_cvorb_valid(I));
   end generate l_rtm_cvorb_decoders;
 
   -- Select protocol (sci or cvorb)
-  rtm_data <= rtm_data_sci when mode_i = RTM_SCI_M else
-              rtm_data_cvorb when mode_i = RTM_CVORB_M else
-              (others => '0');
+  rtm_data <= rtm_data_sci when mode_i = c_RTM_SCI_M else
+              rtm_data_cvorb when mode_i = c_RTM_CVORB_M else
+              (others => (others => '0'));
 
-  rtm_data_valid <= rtm_data_sci_valid when mode_i = RTM_SCI_M else
-                    rtm_data_cvorb_valid when mode_i = RTM_CVORB_M else
+  rtm_data_valid <= rtm_data_sci_valid when mode_i = c_RTM_SCI_M else
+                    rtm_data_cvorb_valid when mode_i = c_RTM_CVORB_M else
                     (others => '0');
 
-  rtm_channel_en <= rtm_sci_channel_en when mode_i = RTM_SCI_M else
-                    rtm_cvorb_channel_en when mode_i = RTM_CVORB_M else
+  rtm_channel_en <= rtm_sci_channel_en when mode_i = c_RTM_SCI_M else
+                    rtm_cvorb_channel_en when mode_i = c_RTM_CVORB_M else
                     (others => '0');
+
+  rtm_data_o       <= rtm_data;
+  rtm_data_valid_o <= rtm_data_valid;
 
   -- Data buffering
-  l_data_buffer : for I in 0 to NB_RTM_CHANNELS-1 generate
+  l_data_buffer : for I in 0 to c_NB_RTM_CHAN-1 generate
     p_data_buffer : process (rst_n_i, clk_i)
     begin
-      if rst_n_i = RESET_ACTIVE then
+      if rst_n_i = '0' then
         data_buffer(I) <= (others => '0');
       elsif rising_edge(clk_i) then
         if rtm_data_valid(I) = '1' and rtm_channel_en(I) = '1' then
-          data_buffer <= rtm_data(I);
+          data_buffer(I) <= rtm_data(I);
         elsif rtm_channel_en(I) = '0' then
-          data_buffer <= (others => '0');
+          data_buffer(I) <= (others => '0');
         end if;
       end if;
     end process p_data_buffer;
@@ -143,10 +151,10 @@ begin
   -- RAM managment FSM
   p_fsm_clk : process (rst_n_i, clk_i)
   begin
-    if rst_n_i = RESET_ACTIVE then
+    if rst_n_i = '0' then
       fsm_state <= s_IDLE;
     elsif rising_edge(clk_i) then
-      if (mode_i = RTM_SCI_M) or (mode_i = RTM_CVORB_M) then
+      if (mode_i = c_RTM_SCI_M) or (mode_i = c_RTM_CVORB_M) then
         fsm_state <= fsm_next_state;
       else
         fsm_state <= s_IDLE;
@@ -155,13 +163,13 @@ begin
   end process;
 
 
-  p_fsm_next_state : process (fsm_state, reset_addr_i, data_clk_i, ram_addr, rtm_channel_en
-                              current_channel, ram_data_written_i)
+  p_fsm_next_state : process (fsm_state, reset_ram_addr_i, data_clk_i, ram_addr,
+                              rtm_channel_en, current_channel, ram_data_written_i)
   begin
     fsm_next_state <= fsm_state;        --default is to stay in current state
-    case state is
+    case fsm_state is
       when s_IDLE =>
-        if reset_addr_i = '1' then
+        if reset_ram_addr_i = '1' then
           fsm_next_state <= s_RESET_RAM_ADDR;
         elsif data_clk_i = '1' then
           fsm_next_state <= s_WRITE_CHANNEL;
@@ -193,7 +201,7 @@ begin
         fsm_next_state <= s_WAIT_RAM;
 
       when s_WAIT_RAM =>                -- wait until the RAMManager has finished
-        if reset_addr_i = '1' then
+        if reset_ram_addr_i = '1' then
           fsm_next_state <= s_RESET_RAM_ADDR;
         elsif ram_data_written_i = '1' then
           fsm_next_state <= s_INCR_ADDR;
@@ -207,14 +215,14 @@ begin
         end if;
 
       when s_INCR_CHANNEL =>
-        if current_channel = NB_RTM_CHANNELS-2 then
+        if current_channel = c_NB_RTM_CHAN-2 then
           fsm_next_state <= s_DONE;
         else
           fsm_next_state <= s_WRITE_CHANNEL;
         end if;
 
       when s_RAM_FULL =>                -- stay here until memory is cleared by external Reset
-        if reset_addr_i = '1' then
+        if reset_ram_addr_i = '1' then
           fsm_next_state <= s_RESET_RAM_ADDR;
         end if;
 
@@ -232,7 +240,7 @@ begin
   p_fsm_outputs : process(clk_i)
   begin
     if rising_edge(clk_i) then
-      case state is
+      case fsm_state is
         when s_IDLE =>
           ram_overflow_o   <= '0';
           ram_data_valid_o <= '0';

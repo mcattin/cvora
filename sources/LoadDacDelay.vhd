@@ -20,9 +20,8 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
-use IEEE.STD_LOGIC_ARITH.all;
-use IEEE.STD_LOGIC_UNSIGNED.all;
-use work.auxdef.all;
+use IEEE.NUMERIC_STD.all;
+use work.cvora_pkg.all;
 
 
 entity LoadDacDelay is

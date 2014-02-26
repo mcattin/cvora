@@ -36,11 +36,9 @@
 --==============================================================
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
-
-
 use IEEE.std_logic_unsigned.Conv_Integer;
 use work.IntContPackage.all;
-use work.vme.all;
+use work.vme_pkg.all;
 
 
 entity ROMMUX is

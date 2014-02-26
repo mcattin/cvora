@@ -39,7 +39,7 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 use IEEE.NUMERIC_STD.all;
-use work.auxdef.all;
+use work.cvora_pkg.all;
 
 
 entity sci_decoder is
@@ -89,16 +89,16 @@ begin
 
   p_frame : process(clk_i, rst_n_i)
   begin
-    if rst_n_i = RESET_ACTIVE then
+    if rst_n_i = '0' then
       data_o <= (others => '0');
       data_valid_o <= '0';
     elsif rising_edge(clk_i) then
       if tmp_data_valid = '1' and enable_i = '1' then
         if tmp_data(8) = '0' then          -- if bit 8 = 1 means MSB else LSB
-          data_o <= tmp_data(7 downto 0);
+          data_o(7 downto 0) <= tmp_data(7 downto 0);
           data_valid_o   <= '1';
         else
-          data_o <= tmp_data(15 downto 8);
+          data_o(15 downto 8) <= tmp_data(7 downto 0);
         end if;
       else
         data_valid_o <= '0';
