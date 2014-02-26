@@ -6,13 +6,13 @@
 -- Version 1.0
 -- Version 1.1 PN 12/03/2004 Could be used with any clock (set it in RS232_Tx)
 --
-library IEEE;
-use IEEE.STD_LOGIC_1164.all;
-use IEEE.STD_LOGIC_ARITH.all;
-use IEEE.STD_LOGIC_UNSIGNED.all;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
 
 use work.cvora_pkg.all;
-use work.message_package.all;
+use work.message_pkg.all;
 
 
 entity message is

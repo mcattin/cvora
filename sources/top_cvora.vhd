@@ -101,7 +101,7 @@ use work.gencores_pkg.all;
 library UNISIM;
 use UNISIM.VComponents.all;
 
-entity topdpram is
+entity top_cvora is
   generic(
     g_GATEWARE_VER      : std_logic_vector(15 downto 0) := X"0200";
     g_LED_PULSE_WIDTH   : natural                       := 8000000;  -- in sys_clk cycles
@@ -138,47 +138,48 @@ entity topdpram is
 --  SData2Led        : out std_logic;                       -- Not connected on PCB!
 
     -- External RAM IDT71V35761 (Same as CTRV) (66 pins)
-    RamAdd     : out   std_logic_vector(16 downto 0);  -- Address Inputs
-    RamData    : inout std_logic_vector(31 downto 0);  -- Synchronous data input/output pins
-    RamDataPar : out   std_logic_vector(3 downto 0);   -- Data parity (not used)
+    ram_add_o      : out   std_logic_vector(16 downto 0);  -- Address Inputs
+    ram_data_b     : inout std_logic_vector(31 downto 0);  -- Synchronous data input/output pins
+    ram_data_par_o : out   std_logic_vector(3 downto 0);   -- Data parity (not used)
 --  RamZZ      : out   std_logic;                      -- Sleep Mode
-    RamOEN     : out   std_logic;                      -- Asynchronous output enable
-    RamLBON    : out   std_logic;                      -- Linear Burst Order
-    RamGWN     : out   std_logic;                      -- Synchronous global write enable
-    RamCEN     : out   std_logic;                      -- Synchronous chip enable
+    ram_oe_n_o     : out   std_logic;                      -- Asynchronous output enable
+    ram_lbo_n_o    : out   std_logic;                      -- Linear Burst Order
+    ram_gw_n_o     : out   std_logic;                      -- Synchronous global write enable
+    ram_ce_n_o     : out   std_logic;                      -- Synchronous chip enable
 --  RamCS0     : out std_logic;                        -- Synchronous active HIGH chip select
 --  RamCS1N    : out std_logic;                        -- Synchronous active LOW chip select
-    RamWRN     : out   std_logic;                      -- Synchronous byte write enable
-    RamBWN     : out   std_logic_vector(4 downto 1);   -- Individual Write Enables
-    RamADVN    : out   std_logic;                      -- Burst Address Advance
-    RamADSPN   : out   std_logic;                      -- Address Status (Processor)
-    RamADSCN   : out   std_logic;                      -- Address Status (Cache Controller)
-    XORamClk40 : out   std_logic;                      -- RAM clock
+    ram_wr_n_o     : out   std_logic;                      -- Synchronous byte write enable
+    ram_bw_n_o     : out   std_logic_vector(4 downto 1);   -- Individual Write Enables
+    ram_adv_n_o    : out   std_logic;                      -- Burst Address Advance
+    ram_adsp_n_o   : out   std_logic;                      -- Address Status (Processor)
+    ram_adsc_n_o   : out   std_logic;                      -- Address Status (Cache Controller)
+    ram_clk_o      : out   std_logic;                      -- RAM clock
 
     -- VME (79 pins)
-    VmeReset     : in    std_logic;
-    ModuleAddr   : in    std_logic_vector (5 downto 0);  -- VME board address from switch (bits[23:18]), address range = 0x80000 per card
-    VmeAddrA     : in    std_logic_vector (23 downto 1);
-    VmeAmA       : in    std_logic_vector (5 downto 0);
-    VmeAsNA      : in    std_logic;
-    VmeBufOeN    : out   std_logic;
-    VmeData      : inout std_logic_vector (31 downto 0);
-    VmeDir       : out   std_logic;
-    VmeDs0NA     : in    std_logic;
-    VmeDs1NA     : in    std_logic;
-    VmeDtackN    : out   std_logic;
-    VmeIackNA    : in    std_logic;
-    VmeIackInNA  : in    std_logic;
-    VmeIackOutNA : out   std_logic;
-    VmeLwordNA   : in    std_logic;
-    VmeWriteNA   : in    std_logic;
-    VmeIntReqN2  : out   std_logic;                      -- only Interrupt level 2 is used in DPRAM
-    XMuxCtrl     : out   std_logic                       -- Interrupt daisy chain mux (connects iackin to iackout when interrupts are disabled)
+    module_addr_i : in std_logic_vector (5 downto 0);  -- VME board address from switch (bits[23:18]), address range = 0x80000 per card
+
+    vme_rst_i       : in    std_logic;
+    vme_addr_i      : in    std_logic_vector (23 downto 1);
+    vme_am_i        : in    std_logic_vector (5 downto 0);
+    vme_as_n_i      : in    std_logic;
+    vme_buf_oe_n_o  : out   std_logic;
+    vme_data_b      : inout std_logic_vector (31 downto 0);
+    vme_dir_o       : out   std_logic;
+    vme_ds0_n_i     : in    std_logic;
+    vme_ds1_n_i     : in    std_logic;
+    vme_dtack_n_o   : out   std_logic;
+    vme_iack_n_i    : in    std_logic;
+    vme_iackin_n_i  : in    std_logic;
+    vme_iackout_n_o : out   std_logic;
+    vme_lword_n_i   : in    std_logic;
+    vme_write_n_i   : in    std_logic;
+    vme_intreq2_n_o : out   std_logic;  -- only Interrupt level 2 is used in DPRAM
+    vme_iack_mux    : out   std_logic   -- Interrupt daisy chain mux (connects iackin to iackout when interrupts are disabled)
     );
-end topdpram;
+end top_cvora;
 
 
-architecture Behavioral of topdpram is
+architecture Behavioral of top_cvora is
 
 
   ------------------------------------------------------------------------------
@@ -190,13 +191,12 @@ architecture Behavioral of topdpram is
 
   ------------------------------------------------------------------------------
   -- VME
-  signal VmeDataUnAlign            : std_logic_vector(7 downto 0);
-  signal moduleAM                  : std_logic_vector(4 downto 0);
-  signal iModuleAddr               : std_logic_vector(4 downto 0);
+  signal module_am                 : std_logic_vector(4 downto 0);
+  signal module_addr               : std_logic_vector(4 downto 0);
   signal IRQStatusIDReg            : std_logic_vector(31 downto 0);
   signal irq_vector                : std_logic_vector(7 downto 0) := g_DEFAULT_IRQ_VECT;
   signal IntProcessed, UserIntReqN : std_logic;
-  signal VmeIntReqN                : std_logic_vector (7 downto 1);
+  signal vme_intreq_n              : std_logic_vector (7 downto 1);
   signal irq_en                    : std_logic                    := '0';
   signal OpFinishedOut             : std_logic;
 
@@ -519,25 +519,25 @@ begin
     port map(
       clk              => sys_clk,
       ResetNA          => sys_rst_n,
-      VmeAddrA         => VmeAddrA,
-      VmeAsNA          => VmeAsNA ,
-      VmeDs1NA         => VmeDs1NA,
-      VmeDs0NA         => VmeDs0NA ,
-      VmeData          => VmeData,
-      VmeDataUnAlign   => VmeDataUnAlign,
-      VmeDir           => VmeDir,
+      VmeAddrA         => vme_addr_i,
+      VmeAsNA          => vme_as_n_i ,
+      VmeDs1NA         => vme_ds1_n_i,
+      VmeDs0NA         => vme_ds0_n_i,
+      VmeData          => vme_data_b,
+      VmeDataUnAlign   => open,
+      VmeDir           => vme_dir_o,
       VmeDirFloat      => open,
-      VmeBufOeN        => VmeBufOeN,
-      VmeWriteNA       => VmeWriteNA,
-      VmeLwordNA       => VmeLwordNA,
-      VmeIackNA        => VmeIackNA,
-      IackOutNA        => VmeIackOutNA,
-      IackInNA         => VmeIackInNA,
-      VmeIntReqN       => VmeIntReqN,
-      VmeDtackN        => VmeDtackN ,
-      ModuleAddr       => iModuleAddr,
+      VmeBufOeN        => vme_buf_oe_n_o,
+      VmeWriteNA       => vme_write_n_i,
+      VmeLwordNA       => vme_lword_n_i,
+      VmeIackNA        => vme_iack_n_i,
+      IackOutNA        => vme_iackout_n_o,
+      IackInNA         => vme_iackin_n_i,
+      VmeIntReqN       => vme_intreq_n,
+      VmeDtackN        => vme_dtack_n_o,
+      ModuleAddr       => module_addr,
       AddrMem          => IntAdd,
-      VmeAmA           => moduleAM,
+      VmeAmA           => module_am,
       ReadMem          => IntRead,
       WriteMem         => IntWrite,
       DataFromMemValid => opDone,
@@ -552,9 +552,9 @@ begin
       VmeState         => open);
 
 
-  moduleAM    <= VmeAmA(5 downto 3) & VmeAmA(1 downto 0);
-  iModuleAddr <= not(ModuleAddr(4 downto 0));
-  VmeIntReqN2 <= VmeIntReqN(2);
+  module_am       <= vme_am_i(5 downto 3) & vme_am_i(1 downto 0);
+  module_addr     <= not(module_addr_i(4 downto 0));
+  vme_intreq2_n_o <= vme_intreq_n(2);
 
   cmp_bus_interface_controller : BusIntControl
     port map(
@@ -599,7 +599,7 @@ begin
     end if;
   end process p_irq;
 
-  XMuxCtrl <= not irq_en;
+  vme_iack_mux <= not irq_en;
 
 
   ------------------------------------------------------------------------------
@@ -648,7 +648,7 @@ begin
   end process p_csr_reg;
   IRQStatusIDReg <= x"000000" & irq_vector;
 
-  regsToCont(CSR_REG_P) <= g_GATEWARE_VER &      -- [31:16]
+  regsToCont(CSR_REG_P) <= g_GATEWARE_VER &   -- [31:16]
                            irq_vector &       -- [15:8]
                            ram_wr_overflow &  -- [7]
                            ud_cnt_overflow &  -- [6]
@@ -822,16 +822,19 @@ begin
   begin
     if sys_rst_n = '0' then
       inter_acq_time_cnt <= (others => '0');
+      inter_acq_time     <= (others => '0');
     elsif rising_edge(sys_clk) then
-      if (data_acq_en = '0') and (fp_clock_p = '1') then
-        inter_acq_time_cnt <= inter_acq_time_cnt + 1;
+      if (data_acq_en = '0') then
+        if (fp_clock_p = '1') then
+          inter_acq_time_cnt <= inter_acq_time_cnt + 1;
+        else
+          inter_acq_time <= std_logic_vector(inter_acq_time_cnt);
+        end if;
       else
         inter_acq_time_cnt <= (others => '0');
       end if;
     end if;
   end process p_inter_acq_time;
-
-  inter_acq_time <= std_logic_vector(inter_acq_time_cnt);
 
   ------------------------------------------------------------------------------
   -- 32-bit up/down counter mode (b-train)
@@ -1141,31 +1144,31 @@ begin
       DataToCont      => ram_rd_data,
       DataToContValid => ram_rd_data_valid,
 
-      RAMAddr  => RAMAdd,
-      RAMData  => RAMData,
-      RAMOEN   => RAMOEN,
-      RAMGWN   => RAMGWN,
-      RAMADSCN => RAMADSCN,
-      RAMCEN   => RAMCEN,
+      RAMAddr  => ram_add_o,
+      RAMData  => ram_data_b,
+      RAMOEN   => ram_oe_n_o,
+      RAMGWN   => ram_gw_n_o,
+      RAMADSCN => ram_adsc_n_o,
+      RAMCEN   => ram_ce_n_o,
       RAMCS0   => open,
       RAMCS1N  => open,
-      RAMBWEN  => RAMWRN,
-      RAMBWN   => RAMBWN,
-      RAMADVN  => RAMADVN,
-      RAMLBON  => RAMLBON,
+      RAMBWEN  => ram_wr_n_o,
+      RAMBWN   => ram_bw_n_o,
+      RAMADVN  => ram_adv_n_o,
+      RAMLBON  => ram_lbo_n_o,
       RAMZZ    => open,
-      RAMADSPN => RAMADSPN);
+      RAMADSPN => ram_adsp_n_o);
 
-  XORamClk40 <= not sys_clk;
-  RamDataPar <= (others => 'Z');
+  ram_clk_o      <= not sys_clk;
+  ram_data_par_o <= (others => 'Z');
 
 
   ------------------------------------------------------------------------------
   -- DAC managment
   ------------------------------------------------------------------------------
   dac1_load_p <= clock_strobe_p_d(4) when mode = c_RTM_PARALLEL_M else
-                 ud_cnt_valid                   when mode = c_CNT32_M                           else
-                 up_cnt1_valid                  when mode = c_CNT2X16_M                         else
+                 ud_cnt_valid                   when mode = c_CNT32_M                             else
+                 up_cnt1_valid                  when mode = c_CNT2X16_M                           else
                  rtm_data_valid(channel_select) when (mode = c_RTM_SCI_M or mode = c_RTM_CVORB_M) else
                  fp_data1_sci_valid when (mode = c_FP_OP16_SCI_M or
                                           mode = c_FP_CU16_SCI_M or
@@ -1177,15 +1180,16 @@ begin
                                             mode = c_FP_CU32_CVORB_M) else
                  '0';
 
-  cmp_dac1_load : LoadDacDelay
+  cmp_dac1_load : dac_load_delay
     port map(
-      clk        => sys_clk,
-      inputpulse => dac1_load_p,
-      output     => dac1_load_o);
+      rst_n_i   => sys_rst_n,
+      clk_i     => sys_clk,
+      pulse_i   => dac1_load_p,
+      d_pulse_o => dac1_load_o);
 
   dac2_load_p <= clock_strobe_p_d(4) when mode = c_RTM_PARALLEL_M else
-                 ud_cnt_valid                     when mode = c_CNT32_M                           else
-                 up_cnt2_valid                    when mode = c_CNT2X16_M                         else
+                 ud_cnt_valid                     when mode = c_CNT32_M                             else
+                 up_cnt2_valid                    when mode = c_CNT2X16_M                           else
                  rtm_data_valid(channel_select+1) when (mode = c_RTM_SCI_M or mode = c_RTM_CVORB_M) else
                  fp_data2_sci_valid when (mode = c_FP_OP16_SCI_M or
                                           mode = c_FP_CU16_SCI_M or
@@ -1197,11 +1201,12 @@ begin
                                             mode = c_FP_CU32_CVORB_M) else
                  '0';
 
-  cmp_dac2_load : LoadDacDelay
+  cmp_dac2_load : dac_load_delay
     port map(
-      clk        => sys_clk,
-      inputpulse => dac2_load_p,
-      output     => dac2_load_o);
+      rst_n_i   => sys_rst_n,
+      clk_i     => sys_clk,
+      pulse_i   => dac2_load_p,
+      d_pulse_o => dac2_load_o);
 
   -- DAC data selection mux
   p_dac_data_select : process (sys_rst_n, sys_clk)
@@ -1348,7 +1353,7 @@ begin
   message_to_send(2) <= (
     space, space,
     LETTER_B, LETTER_A, semicolon, space, LETTER_0, LETTER_xmin,  -- BASE Address BA: 0x
-    "0011" & iModuleAddr(4 downto 1), "0011" & iModuleAddr(0) & "000",
+    "0011" & module_addr(4 downto 1), "0011" & module_addr(0) & "000",
     LETTER_0, LETTER_0, LETTER_0, LETTER_0, space, space,
     Carriage_Return, Line_feed);
 
@@ -1401,10 +1406,10 @@ begin
   ------------------------------------------------------------------------------
   -- Test outputs
   ------------------------------------------------------------------------------
-  test_o(3) <= cvorb_zero_test;         -- TP7
-  test_o(2) <= cvorb_one_test;          -- TP8
-  test_o(0) <= fp_data1_cvorb_serial;   -- TP9
-  test_o(1) <= cvorb_strobe_test;       -- TP10
+  test_o(3) <= start_p_d(2);            -- TP7
+  test_o(2) <= data_acq_en;             -- TP8
+  test_o(0) <= fp_clock_p;              -- TP9
+  test_o(1) <= stop_p;                  -- TP10
 
 
 
