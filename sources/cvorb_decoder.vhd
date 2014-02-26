@@ -30,9 +30,9 @@ entity cvorb_decoder is
     data_i              : in  std_logic;
     zero_test_o         : out std_logic;
     one_test_o          : out std_logic;
-    pulse_width_thres_i : in  std_logic_vector (7 downto 0);
-    pulse_width_o       : out std_logic_vector (7 downto 0);
-    data_o              : out std_logic_vector (15 downto 0);
+    pulse_width_thres_i : in  std_logic_vector(7 downto 0);
+    pulse_width_o       : out std_logic_vector(7 downto 0);
+    data_o              : out std_logic_vector(15 downto 0);
     data_valid_o        : out std_logic);
 end cvorb_decoder;
 
