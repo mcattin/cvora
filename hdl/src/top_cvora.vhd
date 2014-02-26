@@ -641,7 +641,7 @@ begin
   --                 0x9 = front panel optical input 1 only (16-bit serial, CVORB protocol)
   --                 0xA = front panel copper input 1 only (16-bit serial, CVORB protocol)
   --                 0xB = 2x 16-bit up counter
-  --                 0xC = reserved
+  --                 0xC = parallel rtm input (31-bit) with strobe on 32nd bit
   --                 0xD = front panel optical input 1 and 2 (2x 16-bit serial, CVORB protocol)
   --                 0xE = front panel copper input 1 and 2 (2x 16-bit serial, CVORB protocol)
   --                 0xF = rtm copper inputs (32x 16-bit serial, CVORB protocol)
@@ -827,9 +827,15 @@ begin
       rtm_data_d  <= rtm_data_i;
       rtm_data_d2 <= rtm_data_d;
 
-      -- Samples parallel data input 50ns after STROBE rising edge
-      if strobe_p_d(2) = '1' then
-        parallel_data <= rtm_data_d2;
+      if mode = c_RTM_PARALLEL_M then
+        -- Samples parallel data input 50ns after STROBE rising edge
+        if strobe_p_d(2) = '1' then
+          parallel_data <= rtm_data_d2;
+        end if;
+      elsif mode = c_RTM_PARALLEL_STROBE_M then
+        if rtm_data_d2(31) = '1' then
+          parallel_data <= '0' & rtm_data_d2(30 downto 0);
+        end if;
       end if;
     end if;
   end process p_parallel_sampling;
@@ -1048,7 +1054,7 @@ begin
           ram_wr_data <= ud_cnt_value;
         elsif mode = c_CNT2X16_M then
           ram_wr_data <= up_cnt2_value & up_cnt1_value;
-        elsif mode = c_RTM_PARALLEL_M then
+        elsif (mode = c_RTM_PARALLEL_M or mode = c_RTM_PARALLEL_STROBE_M) then
           ram_wr_data <= parallel_data;
         elsif (mode = c_FP_OP16_SCI_M or mode = c_FP_CU16_SCI_M) then
           ram_wr_data <= x"0000" & fp_data1_sci;
@@ -1146,6 +1152,7 @@ begin
   -- DAC managment
   ------------------------------------------------------------------------------
   dac1_load_p <= strobe_p_d(4) when mode = c_RTM_PARALLEL_M else
+                 rtm_data_d2(31)                when mode = c_RTM_PARALLEL_STROBE_M               else
                  ud_cnt_valid                   when mode = c_CNT32_M                             else
                  up_cnt1_valid                  when mode = c_CNT2X16_M                           else
                  rtm_data_valid(channel_select) when (mode = c_RTM_SCI_M or mode = c_RTM_CVORB_M) else
@@ -1167,6 +1174,7 @@ begin
       d_pulse_o => dac1_load_o);
 
   dac2_load_p <= strobe_p_d(4) when mode = c_RTM_PARALLEL_M else
+                 rtm_data_d2(31)                  when mode = c_RTM_PARALLEL_STROBE_M               else
                  ud_cnt_valid                     when mode = c_CNT32_M                             else
                  up_cnt2_valid                    when mode = c_CNT2X16_M                           else
                  rtm_data_valid(channel_select+1) when (mode = c_RTM_SCI_M or mode = c_RTM_CVORB_M) else
@@ -1205,6 +1213,9 @@ begin
           dac2_data_o <= up_cnt2_value(15 downto 0);
         end if;
       elsif (strobe_p_d(3) = '1') and (mode = c_RTM_PARALLEL_M) then
+        dac1_data_o <= parallel_data(15 downto 0);
+        dac2_data_o <= parallel_data(31 downto 16);
+      elsif mode = c_RTM_PARALLEL_STROBE_M then
         dac1_data_o <= parallel_data(15 downto 0);
         dac2_data_o <= parallel_data(31 downto 16);
       elsif (mode = c_RTM_SCI_M or mode = c_RTM_CVORB_M) then
@@ -1338,19 +1349,20 @@ begin
 
   -- ""
   message_to_send(3) <=
-    c_FP_OP16_SCI_LINE   when mode = c_FP_OP16_SCI_M   else
-    c_FP_CU16_SCI_LINE   when mode = c_FP_CU16_SCI_M   else
-    c_CNT32_LINE         when mode = c_CNT32_M         else
-    c_RTM_PARALLEL_LINE  when mode = c_RTM_PARALLEL_M  else
-    c_FP_OP32_SCI_LINE   when mode = c_FP_OP32_SCI_M   else
-    c_FP_CU32_SCI_LINE   when mode = c_FP_CU32_SCI_M   else
-    c_RTM_SCI_LINE       when mode = c_RTM_SCI_M       else
-    c_FP_OP16_CVORB_LINE when mode = c_FP_OP16_CVORB_M else
-    c_FP_CU16_CVORB_LINE when mode = c_FP_CU16_CVORB_M else
-    c_CNT2X16_LINE       when mode = c_CNT2X16_M       else
-    c_FP_OP32_CVORB_LINE when mode = c_FP_OP32_CVORB_M else
-    c_FP_CU32_CVORB_LINE when mode = c_FP_CU32_CVORB_M else
-    c_RTM_CVORB_LINE     when mode = c_RTM_CVORB_M     else
+    c_FP_OP16_SCI_LINE         when mode = c_FP_OP16_SCI_M         else
+    c_FP_CU16_SCI_LINE         when mode = c_FP_CU16_SCI_M         else
+    c_CNT32_LINE               when mode = c_CNT32_M               else
+    c_RTM_PARALLEL_LINE        when mode = c_RTM_PARALLEL_M        else
+    c_FP_OP32_SCI_LINE         when mode = c_FP_OP32_SCI_M         else
+    c_FP_CU32_SCI_LINE         when mode = c_FP_CU32_SCI_M         else
+    c_RTM_SCI_LINE             when mode = c_RTM_SCI_M             else
+    c_FP_OP16_CVORB_LINE       when mode = c_FP_OP16_CVORB_M       else
+    c_FP_CU16_CVORB_LINE       when mode = c_FP_CU16_CVORB_M       else
+    c_CNT2X16_LINE             when mode = c_CNT2X16_M             else
+    c_RTM_PARALLEL_STROBE_LINE when mode = c_RTM_PARALLEL_STROBE_M else
+    c_FP_OP32_CVORB_LINE       when mode = c_FP_OP32_CVORB_M       else
+    c_FP_CU32_CVORB_LINE       when mode = c_FP_CU32_CVORB_M       else
+    c_RTM_CVORB_LINE           when mode = c_RTM_CVORB_M           else
     c_RESERVED_LINE;
 
   -- "F1: nnnnn.nnnkHz"
