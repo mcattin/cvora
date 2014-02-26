@@ -233,6 +233,11 @@ architecture Behavioral of top_cvora is
   signal cvorb_pulse_width_thres : std_logic_vector(7 downto 0);
   signal cvorb_meas_pulse_width1 : std_logic_vector(7 downto 0);
   signal cvorb_meas_pulse_width2 : std_logic_vector(7 downto 0);
+  signal cnt_overflow            : std_logic;
+
+  ------------------------------------------------------------------------------
+  -- parallel mode
+  signal parallel_data : std_logic_vector(31 downto 0);
 
   ------------------------------------------------------------------------------
   -- 32-bit up/down counter (b-train)
@@ -257,21 +262,17 @@ architecture Behavioral of top_cvora is
   signal fp_data1_sci_serial : std_logic;
   signal fp_data1_sci        : std_logic_vector(15 downto 0);
   signal fp_data1_sci_valid  : std_logic;
-  signal fp_data1_sci_s      : std_logic_vector(15 downto 0);
   signal fp_data2_sci_serial : std_logic;
   signal fp_data2_sci        : std_logic_vector(15 downto 0);
   signal fp_data2_sci_valid  : std_logic;
-  signal fp_data2_sci_s      : std_logic_vector(15 downto 0);
 
   signal fp_cvorb_en           : std_logic;
   signal fp_data1_cvorb_serial : std_logic;
   signal fp_data1_cvorb        : std_logic_vector(15 downto 0);
   signal fp_data1_cvorb_valid  : std_logic;
-  signal fp_data1_cvorb_s      : std_logic_vector(15 downto 0);
   signal fp_data2_cvorb_serial : std_logic;
   signal fp_data2_cvorb        : std_logic_vector(15 downto 0);
   signal fp_data2_cvorb_valid  : std_logic;
-  signal fp_data2_cvorb_s      : std_logic_vector(15 downto 0);
   signal cvorb_zero_test       : std_logic;
   signal cvorb_one_test        : std_logic;
   signal cvorb_strobe_test     : std_logic;
@@ -330,8 +331,8 @@ architecture Behavioral of top_cvora is
   signal stop_p           : std_logic;
   signal reset_p          : std_logic;
   signal start_p_d        : std_logic_vector(3 downto 0);
-  signal clock_strobe_p   : std_logic;
-  signal clock_strobe_p_d : std_logic_vector(5 downto 0);
+  signal clock_p_d        : std_logic_vector(2 downto 0);
+  signal strobe_p_d       : std_logic_vector(4 downto 0);
 
   ------------------------------------------------------------------------------
   -- DAC
@@ -482,9 +483,6 @@ begin
   stop_p  <= fp_stop_p or sw_stop_p;
   reset_p <= fp_reset_p or sw_reset_p;
 
-  -- Combining strobe and clock inputs
-  clock_strobe_p <= fp_clock_p or fp_strobe_p;
-
   -- Pulses delay
   p_start_delay : process (sys_clk, sys_rst_n)
   begin
@@ -495,14 +493,23 @@ begin
     end if;
   end process p_start_delay;
 
-  p_clock_strobe_delay : process (sys_clk, sys_rst_n)
+  p_strobe_delay : process (sys_clk, sys_rst_n)
   begin
     if sys_rst_n = '0' then
-      clock_strobe_p_d <= (others => '0');
+      strobe_p_d <= (others => '0');
     elsif rising_edge(sys_clk) then
-      clock_strobe_p_d <= clock_strobe_p_d(clock_strobe_p_d'left-1 downto 0) & clock_strobe_p;
+      strobe_p_d <= strobe_p_d(strobe_p_d'left-1 downto 0) & fp_strobe_p;
     end if;
-  end process p_clock_strobe_delay;
+  end process p_strobe_delay;
+
+  p_clock_delay : process (sys_clk, sys_rst_n)
+  begin
+    if sys_rst_n = '0' then
+      clock_p_d <= (others => '0');
+    elsif rising_edge(sys_clk) then
+      clock_p_d <= clock_p_d(clock_p_d'left-1 downto 0) & fp_clock_p;
+    end if;
+  end process p_clock_delay;
 
 
   ------------------------------------------------------------------------------
@@ -613,7 +620,7 @@ begin
   --   [3]     | wo | soft start (read as 0)
   --   [4]     | wo | soft stop (read as 0)
   --   [5]     | rw | wr = soft reset, rd = acquisition in progress (between a start and a stop input)
-  --   [6]     | ro | counter overflow (btrain mode)
+  --   [6]     | ro | counter overflow
   --   [7]     | ro | RAM overflow
   --   [15:8]  | rw | irq vector (delfaut 0x86)
   --   [31:16] | rw | gateware version number (4 digits BCD, e.g. 0x0142=v1.42)
@@ -651,7 +658,7 @@ begin
   regsToCont(CSR_REG_P) <= g_GATEWARE_VER &   -- [31:16]
                            irq_vector &       -- [15:8]
                            ram_wr_overflow &  -- [7]
-                           ud_cnt_overflow &  -- [6]
+                           cnt_overflow &     -- [6]
                            data_acq_en &      -- [5]
                            "00" &             -- [4:3]
                            irq_en &           -- [2]
@@ -787,6 +794,7 @@ begin
     end if;
   end process;
 
+
   ------------------------------------------------------------------------------
   -- Acquisition clock frequency meter
   -- !! Stays at last value if no clock is present !!
@@ -815,6 +823,7 @@ begin
     end if;
   end process p_clk_freq_reg;
 
+
   ------------------------------------------------------------------------------
   -- Inter-acquisition time measurement
   --   counts input clock pulses between a stop pulse and a start pulse
@@ -836,6 +845,23 @@ begin
       end if;
     end if;
   end process p_inter_acq_time;
+
+
+  ------------------------------------------------------------------------------
+  -- Parallel mode
+  ------------------------------------------------------------------------------
+  p_parallel_sampling: process (sys_rst_n, sys_clk)
+  begin
+    if sys_rst_n = '0' then
+      parallel_data <= (others => '0');
+    elsif rising_edge(sys_clk) then
+      -- Samples parallel data input 50ns after STROBE rising edge
+      if strobe_p_d(2) = '1' then
+        parallel_data <= rtm_data_i;
+      end if;
+    end if;
+  end process p_parallel_sampling;
+
 
   ------------------------------------------------------------------------------
   -- 32-bit up/down counter mode (b-train)
@@ -874,7 +900,7 @@ begin
       up_i       => fp_bup_p,
       down_i     => '0',
       enable_i   => up_cnt_en,
-      overflow_o => up_cnt1_overflow,   -- ### never used
+      overflow_o => up_cnt1_overflow,
       value_o    => up_cnt1_value,
       valid_o    => up_cnt1_valid);
 
@@ -888,9 +914,13 @@ begin
       up_i       => fp_bdown_p,
       down_i     => '0',
       enable_i   => up_cnt_en,
-      overflow_o => up_cnt2_overflow,   -- ### never used
+      overflow_o => up_cnt2_overflow,
       value_o    => up_cnt2_value,
       valid_o    => up_cnt2_valid);
+
+  cnt_overflow <= ud_cnt_overflow when mode = c_CNT32_M else
+                  (up_cnt1_overflow or up_cnt2_overflow) when mode = c_CNT2X16_M else
+                  '0';
 
 
   ------------------------------------------------------------------------------
@@ -898,6 +928,8 @@ begin
   ------------------------------------------------------------------------------
 
   rtm_data_clk_p     <= fp_clock_p and data_acq_en;
+
+  -- RESET ignored during acquisition
   rtm_reset_ram_addr <= reset_p when data_acq_en = '0' else '0';
 
   cmp_rtm_serial_manager : rtm_serial_manager
@@ -957,20 +989,6 @@ begin
       data_o       => fp_data2_sci,
       data_valid_o => fp_data2_sci_valid);
 
-  -- Sampling data on input clock
-  p_sci_data_sampling : process (sys_rst_n, sys_clk)
-  begin
-    if sys_rst_n = '0' then
-      fp_data1_sci_s <= (others => '0');
-      fp_data2_sci_s <= (others => '0');
-    elsif rising_edge(sys_clk) then
-      if fp_clock_p = '1' then
-        fp_data1_sci_s <= fp_data1_sci;
-        fp_data2_sci_s <= fp_data2_sci;
-      end if;
-    end if;
-  end process p_sci_data_sampling;
-
 
   ------------------------------------------------------------------------------
   -- Front panel serial decoders, CVORB protocol
@@ -1019,20 +1037,6 @@ begin
       data_o              => fp_data2_cvorb,
       data_valid_o        => fp_data2_cvorb_valid);
 
-  -- Sampling data on input clock
-  p_cvorb_data_sampling : process (sys_rst_n, sys_clk)
-  begin
-    if sys_rst_n = '0' then
-      fp_data1_cvorb_s <= (others => '0');
-      fp_data2_cvorb_s <= (others => '0');
-    elsif rising_edge(sys_clk) then
-      if fp_clock_p = '1' then
-        fp_data1_cvorb_s <= fp_data1_cvorb;
-        fp_data2_cvorb_s <= fp_data2_cvorb;
-      end if;
-    end if;
-  end process p_cvorb_data_sampling;
-
 
   ------------------------------------------------------------------------------
   -- Dual port RAM manager
@@ -1060,12 +1064,13 @@ begin
   MemToCont(EXT_RAM_P).RdDone <= ram_rd_data_valid;  -- ### ram_rd_done_d(1);
   MemToCont(EXT_RAM_P).Data   <= ram_rd_data;
 
-  -- RAM write from data sources
+  -- Sample data from sources and write to RAM
   p_ram_write_data : process (sys_rst_n, sys_clk)
   begin
     if sys_rst_n = '0' then
       ram_wr_data <= (others => '0');
     elsif rising_edge(sys_clk) then
+      -- priority on data_acq_en as the rtm_serial_manager might still be writing data to RAM after the STOP
       if (mode = c_RTM_SCI_M) or (mode = c_RTM_CVORB_M) then
         ram_wr_data <= rtm_ram_data;
       elsif data_acq_en = '1' then
@@ -1073,16 +1078,16 @@ begin
           ram_wr_data <= ud_cnt_value;
         elsif (fp_clock_p = '1') and (mode = c_CNT2X16_M) then
           ram_wr_data <= up_cnt2_value & up_cnt1_value;
-        elsif (clock_strobe_p_d(2) = '1') and (mode = c_RTM_PARALLEL_M) then
+        elsif (fp_clock_p = '1') and (mode = c_RTM_PARALLEL_M) then
           ram_wr_data <= rtm_data_i;
-        elsif (clock_strobe_p_d(2) = '1') and (mode = c_FP_OP16_SCI_M or mode = c_FP_CU16_SCI_M) then
-          ram_wr_data <= x"0000" & fp_data1_sci_s;
-        elsif (clock_strobe_p_d(2) = '1') and (mode = c_FP_OP16_CVORB_M or mode = c_FP_CU16_CVORB_M) then
-          ram_wr_data <= x"0000" & fp_data1_cvorb_s;
-        elsif (clock_strobe_p_d(2) = '1') and (mode = c_FP_OP32_SCI_M or mode = c_FP_CU32_SCI_M) then
-          ram_wr_data <= fp_data2_sci_s & fp_data1_sci_s;
-        elsif (clock_strobe_p_d(2) = '1') and (mode = c_FP_OP32_CVORB_M or mode = c_FP_CU32_CVORB_M) then
-          ram_wr_data <= fp_data2_cvorb_s & fp_data1_cvorb_s;
+        elsif (fp_clock_p = '1') and (mode = c_FP_OP16_SCI_M or mode = c_FP_CU16_SCI_M) then
+          ram_wr_data <= x"0000" & fp_data1_sci;
+        elsif (fp_clock_p = '1') and (mode = c_FP_OP16_CVORB_M or mode = c_FP_CU16_CVORB_M) then
+          ram_wr_data <= x"0000" & fp_data1_cvorb;
+        elsif (fp_clock_p = '1') and (mode = c_FP_OP32_SCI_M or mode = c_FP_CU32_SCI_M) then
+          ram_wr_data <= fp_data2_sci & fp_data1_sci;
+        elsif (fp_clock_p = '1') and (mode = c_FP_OP32_CVORB_M or mode = c_FP_CU32_CVORB_M) then
+          ram_wr_data <= fp_data2_cvorb & fp_data1_cvorb;
         end if;
       end if;
     end if;
@@ -1100,7 +1105,7 @@ begin
       elsif data_acq_en = '1' then
         if ram_wr_addr_cnt = EXTRAMFULL then
           ram_wr_overflow <= '1';
-        elsif clock_strobe_p_d(5) = '1' then
+        elsif clock_p_d(2) = '1' then
           ram_wr_addr_cnt <= ram_wr_addr_cnt + EXTRAM_BUF_ONE;
         end if;
       elsif (start_p = '1') or (reset_p = '1') then
@@ -1121,7 +1126,7 @@ begin
         if (mode = c_RTM_SCI_M) or (mode = c_RTM_CVORB_M) then
           ram_wr <= rtm_ram_data_valid;
         else
-          ram_wr <= clock_strobe_p_d(4);
+          ram_wr <= clock_p_d(1);
         end if;
       else
         ram_wr <= '0';
@@ -1167,7 +1172,7 @@ begin
   ------------------------------------------------------------------------------
   -- DAC managment
   ------------------------------------------------------------------------------
-  dac1_load_p <= clock_strobe_p_d(4) when mode = c_RTM_PARALLEL_M else
+  dac1_load_p <= strobe_p_d(4) when mode = c_RTM_PARALLEL_M else
                  ud_cnt_valid                   when mode = c_CNT32_M                             else
                  up_cnt1_valid                  when mode = c_CNT2X16_M                           else
                  rtm_data_valid(channel_select) when (mode = c_RTM_SCI_M or mode = c_RTM_CVORB_M) else
@@ -1188,7 +1193,7 @@ begin
       pulse_i   => dac1_load_p,
       d_pulse_o => dac1_load_o);
 
-  dac2_load_p <= clock_strobe_p_d(4) when mode = c_RTM_PARALLEL_M else
+  dac2_load_p <= strobe_p_d(4) when mode = c_RTM_PARALLEL_M else
                  ud_cnt_valid                     when mode = c_CNT32_M                             else
                  up_cnt2_valid                    when mode = c_CNT2X16_M                           else
                  rtm_data_valid(channel_select+1) when (mode = c_RTM_SCI_M or mode = c_RTM_CVORB_M) else
@@ -1226,9 +1231,9 @@ begin
         if up_cnt2_valid = '1' then
           dac2_data_o <= up_cnt2_value(15 downto 0);
         end if;
-      elsif (clock_strobe_p_d(2) = '1') and (mode = c_RTM_PARALLEL_M) then
-        dac1_data_o <= rtm_data_i(15 downto 0);
-        dac2_data_o <= rtm_data_i(31 downto 16);
+      elsif (strobe_p_d(3) = '1') and (mode = c_RTM_PARALLEL_M) then
+        dac1_data_o <= parallel_data(15 downto 0);
+        dac2_data_o <= parallel_data(31 downto 16);
       elsif (mode = c_RTM_SCI_M or mode = c_RTM_CVORB_M) then
         if rtm_data_valid(channel_select) = '1' then
           dac1_data_o <= rtm_data(channel_select);
@@ -1264,7 +1269,7 @@ begin
   fp_led_o <= fp_led;
 
   -- SPARE
-  fp_led(0) <= ram_wr_overflow or ud_cnt_overflow;
+  fp_led(0) <= ram_wr_overflow or cnt_overflow;
 
   -- INT ENABLE
   fp_led(1) <= irq_en;
