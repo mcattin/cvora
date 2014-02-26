@@ -26,17 +26,22 @@ entity cvorb_decoder is
   port (
     rst_n_i             : in  std_logic;
     clk_i               : in  std_logic;
-    data_valid_o        : out std_logic;
+    enable_i            : in  std_logic;
+    data_i              : in  std_logic;
     zero_test_o         : out std_logic;
     one_test_o          : out std_logic;
     pulse_width_thres_i : in  std_logic_vector (7 downto 0);
     pulse_width_o       : out std_logic_vector (7 downto 0);
     data_o              : out std_logic_vector (15 downto 0);
-    data_i              : in  std_logic);
+    data_valid_o        : out std_logic);
 end cvorb_decoder;
 
 
 architecture rtl of cvorb_decoder is
+
+
+  signal serial_data : std_logic;
+
 -- DOUBLE FLIP FLOP
   signal data_ff_pos_one : std_logic;
   signal data_ff_neg_one : std_logic;
@@ -67,6 +72,9 @@ architecture rtl of cvorb_decoder is
 
 begin
 
+  serial_data <= data_i & enable_i;
+
+
 -- DOUBLE FLIP FLOP
 -- IN: data_i, clk_i, rst_n_i
 -- OUT: data_pos_out,data_neg_out
@@ -76,7 +84,7 @@ begin
     if rst_n_i = '1' then
       data_ff_pos_one <= '0';
     elsif (rising_edge(clk_i)) then
-      data_ff_pos_one <= data_i;
+      data_ff_pos_one <= serial_data;
     end if;
   end process;
   process(clk_i, rst_n_i)
@@ -84,7 +92,7 @@ begin
     if rst_n_i = '1' then
       data_ff_neg_one <= '0';
     elsif (falling_edge(clk_i)) then
-      data_ff_neg_one <= data_i;
+      data_ff_neg_one <= serial_data;
     end if;
   end process;
 
@@ -115,7 +123,7 @@ begin
       strobe               <= '0';
       state1               <= idle;
     elsif (rising_edge(clk_i)) then
-      if (state1 = idle and data_pos = '0' and data_neg = '0') then
+      if (state1 = idle and data_pos = '0' and data_neg = '0' and enable_i = '0') then
         pulse_length_counter <= X"00";
         strobe               <= '0';
         state1               <= idle;
@@ -155,7 +163,7 @@ begin
       one_test_o           <= '0';
       state2               <= idle;
     elsif (rising_edge(clk_i)) then
-      if (state2 = idle and strobe = '0') then
+      if (state2 = idle and strobe = '0' and enable_i = '0') then
         shift_register       <= X"0000";
         current_bit_position <= "00000";
         timeout_delay        <= X"00";
