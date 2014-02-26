@@ -1,0 +1,332 @@
+\input texinfo    @c -*-texinfo-*-
+%
+% fmcadc100m14b4cha_firmware_manual.in - main file for the documentation
+%
+%%%%
+
+%------------------------------------------------------------------------------
+%
+%                         NOTE FOR THE UNAWARE USER
+%                         =========================
+%
+%    This file is a texinfo source. It isn't the binary file of some strange
+%    editor of mine. If you want ASCII, you should "make fmcadc100m14b4cha_firmware_manual.txt".
+%
+%------------------------------------------------------------------------------
+
+%
+% This is not a conventional info file...
+% I use three extra features:
+%   - The '%' as a comment marker, if at beginning of line ("\%" -> "%")
+%   - leading blanks are allowed (this is something I can't live without)
+%   - braces are automatically escaped when they appear in example blocks
+%
+
+@comment %**start of header
+@documentlanguage en
+@documentencoding UTF-8
+@setfilename cvora_user_manual.info
+@settitle cvora_user_manual
+@iftex
+@afourpaper
+@end iftex
+@c @paragraphindent 0
+@comment %**end of header
+
+@setchapternewpage off
+
+@set update-month November 2013
+
+@finalout
+
+@titlepage
+@title CVORA user manual
+@subtitle @value{update-month} - Release 1.0
+@subtitle For gateware version 2.0 or higher
+@sp 10
+@center @image{figures/cern_logo,3cm,,,pdf}
+@author Matthieu Cattin (CERN)
+@end titlepage
+@headings single
+
+@iftex
+@contents
+@end iftex
+
+@c ##########################################################################
+@node Top
+@top Introduction
+
+
+@c ##########################################################################
+@node Repositories and Releases
+@chapter Repositories and Releases
+
+The following wiki page gathers link to all the information about the board (schematics, layout, test procedures, software support, etc...):
+@uref{https://wikis/display/HT/CVORA+-+Dual+port+RAM+for+digital+aquisition}
+
+The hdl and documentation sources are hosted on the CERN git repository at the following link:
+@uref{https://git.cern.ch/web/cvora.git}
+
+On the git repository the official releases have a tag named
+@code{cvora-v#maj.#min} where @code{#maj} represent the major release
+version of the firmware and @code{#min} the minor one (e.g @code{cvora-v1.2}).
+The released FPGA binary files follow the same naming convention.
+
+@b{Note:} If you got this from the repository (as opposed to a named
+@i{tar.gz} or @i{pdf} file) it may happen that you are looking at a later commit
+than the release this manual claims to document.
+It is a fact of life that developers forget to re-read and fix documentation
+while updating the code. In that case, please run ``@code{git describe HEAD}''
+to ensure where you are.
+
+@c --------------------------------------------------------------------------
+@section Software Support
+
+As a general rule, a new minor version of the firmware, for a given major version, should be backward compatible.
+If the interface with the driver changes, the major version should be incremented.
+It means that driver versions 1.x should work with any firmware version 1.x.
+But the driver version 2.0 might not work with the firmware version 1.1.
+
+@c ##########################################################################
+@page
+@node About source code
+@chapter About Source Code
+
+@c --------------------------------------------------------------------------
+@section Build from Sources
+
+The CVORA hdl design make use of the @command{hdlmake}@footnote{@uref{http://www.ohwr.org/projects/hdl-make}} tool.
+It automatically fetches the required hdl cores and libraries. It also generates Makefiles for synthesis/par and simulation.
+
+Here is the procedure to build the FPGA binary image from the hdl source.
+
+@enumerate
+@item Install @command{hdlmake}.
+@item Get fmc-adc hdl sources.@*
+      @code{git clone https://<username>@@git.cern.ch/ldap/cvora <dest_dir>}
+@item Goto the synthesis directory.@*
+      @code{cd <dest_dir>/hdl/syn/}
+@item Fetch the dependencies.@*
+      @code{hdlmake -f}
+@item Generate an ISE project file.@*
+      @code{hdlmake --ise-proj}@*
+      This will generate a basic ISE project file with default settings.
+      If non-default setting is needed (e.g. binary bitstream output file .bin), the project file must be opened using ISE project navigator GUI and the setting changed manually.
+@item Generate a synthesis Makefile.@*
+      @code{hdlmake --make-ise}
+@item Check that all dependencies are fetched.@*
+      @code{hdlmake --list}
+@item Synthesis, place and route.@*
+      @code{make}
+@end enumerate
+
+@c TODO specify the hdlmake release (once they have stable version release).
+
+@c --------------------------------------------------------------------------
+@section Source Code Organisation
+
+@table @file
+@item hdl/rtl/
+      hdl sources.
+@item hdl/ip_cores/
+      Location of fetched and generated hdl cores and libraries.
+@item hdl/syn/
+      Synthesis directory. This is where the synthesis top manifest and the ISE project are stored.
+      For each release, the synthesis, place&route and timing reports are also saved here.
+@item hdl/release
+      Directory containing a script to make releases.
+@item doc/
+      Documentation directory. Contains user manual sources and figures.
+@item jtagvmecvora/
+      CPLD source and project. The CPLD is used for remote programming of the FPGA configration flash. It is basically a VME to JTAG bridge.
+@end table
+
+It could happen that a hdl source directory contains extra source files that are not used in the current firmware release.
+In order to identify the source files used in a given release, refer to the @file{Manifest.py} files.
+
+@c --------------------------------------------------------------------------
+@section Dependencies
+
+The CVORA firmware depends on the following hdl cores and libraries:
+@table @b
+@item general-cores
+      @code{repo  : git://ohwr.org/hdl-core-lib/general-cores.git}@*
+      @code{branch: proposed_master}
+@end table
+
+@c --------------------------------------------------------------------------
+@section Gateware release
+
+release script, directory, etc...
+
+
+@c ##########################################################################
+@page
+@node Architecture
+@chapter Architecture
+
+This chapter describes the internal blocks of the FPGA.
+
+
+@sp 1
+
+
+@float Figure,fig:spec_fw_arch
+@c @center @image{../../figures/spec_fw_arch_module, 15cm,,,pdf}
+@caption{FPGA firmware architecture block diagram.}
+@end float
+
+@sp 1
+
+@c ##########################################################################
+@page
+@node Registers description
+@chapter Registers description
+
+@c --------------------------------------------------------------------------
+@section Memory map
+
+The @ref{tab:memory_map} shows the Wishbone slaves mapping.
+
+@float Table,tab:memory_map
+@multitable {0x0020-0x7FFC}{Access}{Control and Status (CSR) register}
+@headitem Byte offset @tab Access @tab Description
+@item @code{0x0000}        @tab r/w @tab Control and Status (CSR) register
+@item @code{0x0004}        @tab ro  @tab Memory pointer register
+@item @code{0x0008}        @tab r/w @tab Mode register
+@item @code{0x000C}        @tab r/w @tab Channel enable register
+@item @code{0x0010}        @tab ro  @tab Sampling clock frequency register
+@item @code{0x0014}        @tab r/w @tab Channel select register
+@item @code{0x0018}        @tab r/w @tab CVORB mode setting register
+@item @code{0x0020-0x7FFC} @tab ro  @tab RAM
+@end multitable
+@caption{CVORA memory map.}
+@end float
+
+
+@c --------------------------------------------------------------------------
+@section Control and Status (CSR) register
+
+
+@c --------------------------------------------------------------------------
+@section Memory pointer register
+
+
+@c --------------------------------------------------------------------------
+@section Mode register
+
+
+@c --------------------------------------------------------------------------
+@section Channel enable register
+
+
+@c --------------------------------------------------------------------------
+@section Sampling clock frequency register
+
+
+@c --------------------------------------------------------------------------
+@section Channel select register
+
+
+@c --------------------------------------------------------------------------
+@section CVORB mode setting register
+
+
+@c ##########################################################################
+@page
+@node Modes
+@chapter Modes
+
+mode list table here...
+
+@c --------------------------------------------------------------------------
+@section front panel optical input 1 only (16-bit serial, SCI protocol)
+
+
+@c --------------------------------------------------------------------------
+@section front panel copper input 1 only (16-bit serial, SCI protocol)
+
+
+@c --------------------------------------------------------------------------
+@section 32-bit up/down counter (btrain)
+
+@c --------------------------------------------------------------------------
+@section parallel rtm input (32-bit)
+
+@c --------------------------------------------------------------------------
+@section front panel optical input 1 and 2 (2x 16-bit serial, SCI protocol)
+
+@c --------------------------------------------------------------------------
+@section front panel copper input 1 and 2 (2x 16-bit serial, SCI protocol)
+
+@c --------------------------------------------------------------------------
+@section rtm copper inputs (32x 16-bit serial, SCI protocol)
+
+@c --------------------------------------------------------------------------
+@section front panel optical input 1 only (16-bit serial, CVORB protocol)
+
+@c --------------------------------------------------------------------------
+@section front panel copper input 1 only (16-bit serial, CVORB protocol)
+
+@c --------------------------------------------------------------------------
+@section 2x 16-bit up counter
+
+@c --------------------------------------------------------------------------
+@section front panel optical input 1 and 2 (2x 16-bit serial, CVORB protocol)
+
+@c --------------------------------------------------------------------------
+@section front panel copper input 1 and 2 (2x 16-bit serial, CVORB protocol)
+
+@c --------------------------------------------------------------------------
+@section rtm copper inputs (32x 16-bit serial, CVORB protocol)
+
+
+@c ##########################################################################
+@page
+@node Physical description
+@chapter Physical description
+
+
+@c --------------------------------------------------------------------------
+@section Front panel
+
+@c --------------------------------------------------------------------------
+@section Jumper settings
+
+@c --------------------------------------------------------------------------
+@section Rear Transition Modules (RTM)
+
+
+@c ##########################################################################
+@page
+@node Installation
+@chapter Installation
+
+
+@c --------------------------------------------------------------------------
+@node Test programs
+@section Test programs
+
+
+@c ##########################################################################
+@page
+@node Missing Features and Improvements
+@chapter Missing Features and Improvements
+
+@itemize @textdegree
+@item tt
+@item tt
+@end itemize
+
+@c ##########################################################################
+@page
+@node Appendix
+@appendix
+
+@c --------------------------------------------------------------------------
+@section 
+
+
+
+@bye
