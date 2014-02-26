@@ -1,6 +1,6 @@
 \input texinfo    @c -*-texinfo-*-
 %
-% fmcadc100m14b4cha_firmware_manual.in - main file for the documentation
+% cvora_user_manual.in - main file for the documentation
 %
 %%%%
 
@@ -40,7 +40,7 @@
 @finalout
 
 @titlepage
-@title CVORA user manual
+@title CVORA user's manual
 @subtitle @value{update-month} - Release 1.0
 @subtitle For gateware version 2.0 or higher
 @sp 10
@@ -85,8 +85,20 @@ The released FPGA binary files follow the same naming convention.
 @i{tar.gz} or @i{pdf} file) it may happen that you are looking at a later commit
 than the release this manual claims to document.
 It is a fact of life that developers forget to re-read and fix documentation
-while updating the code. In that case, please run ``@code{git describe HEAD}''
+while updating the code. In that case, please run ``@command{git describe HEAD}''
 to ensure where you are.
+
+@c --------------------------------------------------------------------------
+@section Gateware release
+
+When a new gateware release is needed, first go to the @file{hdl/prom/} folder and run @file{make}.
+This will automatically generate an .xsvf file from the .bit file in @file{hdl/syn/} by calling the @code{Impact} program from Xilinx.
+
+Then got to @file{hdl/release/} and run @file{./release.sh @var{NN_nn}}, were @var{NN} is the major version and @var{nn} the minor version.
+This will copy and rename the .xsvf and .bit file in the hdl/release/ folder.
+The .xsvf file is also copied to the official release location (using scp).
+Currently, the official release location is @file{/acc/local/share/firmware/cvora/}.
+Note that the official release location might have to be updated before running the script.
 
 @c --------------------------------------------------------------------------
 @section Software Support
@@ -96,8 +108,9 @@ If the interface with the driver changes, the major version should be incremente
 It means that driver versions 1.x should work with any gateware version 1.x.
 But the driver version 2.0 might not work with the gateware version 1.1.
 
+
 @c ##########################################################################
-@c page
+@page
 @node About source code
 @chapter About Source Code
 
@@ -112,31 +125,34 @@ Here is the procedure to build the FPGA binary image from the hdl source.
 @enumerate
 @item Install @command{hdlmake}.
 @item Get fmc-adc hdl sources.@*
-      @code{git clone https://<username>@@git.cern.ch/ldap/cvora <dest_dir>}
+      @command{git clone https://<username>@@git.cern.ch/ldap/cvora <dest_dir>}
 @item Goto the synthesis directory.@*
-      @code{cd <dest_dir>/hdl/syn/}
+      @command{cd <dest_dir>/hdl/syn/}
 @item Fetch the dependencies.@*
-      @code{hdlmake -f}
+      @command{hdlmake -f}
 @item Check that all dependencies are fetched.@*
-      @code{hdlmake --list}
+      @command{hdlmake --list}
 @item Generate an ISE project file.@*
-      @code{hdlmake --ise-proj}@*
+      @command{hdlmake --ise-proj}@*
       This will generate a basic ISE project file with default settings.
       If non-default setting is needed (e.g. binary bitstream output file .bin), the project file must be opened using ISE project navigator GUI and the setting changed manually.
 @item Generate a synthesis Makefile.@*
-      @code{hdlmake --make-ise}
+      @command{hdlmake --make-ise}
 @item Synthesis, place and route.@*
-      @code{make}
+      @command{make}
 @end enumerate
 
-@c TODO specify the hdlmake release (once they have stable version release).
+@c TODO specify the hdlmake release (once there is a stable version release).
 
 @c --------------------------------------------------------------------------
 @section Source Code Organisation
 
 @table @file
-@item hdl/rtl/
-      hdl sources.
+@item hdl/src/
+      HDL sources.
+      It could happen that a hdl source directory contains extra source files that are not used in the current gateware release.
+      In order to identify the source files used in a given release, refer to the @file{Manifest.py} files.
+
 @item hdl/ip_cores/
       Location of fetched and generated hdl cores and libraries.
 @item hdl/syn/
@@ -144,18 +160,18 @@ Here is the procedure to build the FPGA binary image from the hdl source.
       For each release, the synthesis, place&route and timing reports are also saved here.
 @item hdl/prom
       Directory containing FPGA programming files. This directory contains a Makefile to automatically generate the .xsvf file for remote programming of the CVORA board.
-@item hdl/release
+@item hdl/releases
       Directory containing a script to make releases.
 @item doc/
       Documentation directory. Contains user manual sources and figures.
 @item jtag2vme/
       CPLD source and project. The CPLD is used for remote programming of the FPGA configration flash. It is basically a VME to JTAG bridge.
+@item python/
+      Directory containing an access python class and basic test programs for each mode.
+@item software/
+      Directory containing the driver along with an installation script.
 @end table
 
-It could happen that a hdl source directory contains extra source files that are not used in the current gateware release.
-In order to identify the source files used in a given release, refer to the @file{Manifest.py} files.
-
-TODO -> Add python test program stuff...
 
 @c --------------------------------------------------------------------------
 @section Dependencies
@@ -167,22 +183,27 @@ The CVORA gateware depends on the following hdl cores and libraries:
       @code{branch: proposed_master}
 @end table
 
-@c --------------------------------------------------------------------------
-@section Gateware release
+@sp 1
 
-When a new gateware release is needed, first go to the @code{hdl/prom/} folder and run @code{make}.
-This will automatically generate an .xsvf file from the .bit file in @code{hdl/syn/} by calling @code{Impact} from Xilinx.
-
-Then got to @code{hdl/release/} and run @code{./release.sh NN_nn}, were @code{NN} is the major version and @code{nn} the minor version.
-This will copy and rename the .xsvf and .bit file in the hdl/release/ folder.
-The .xsvf file is also copied to the official release location (using scp).
-Note that the official release location might have to be updated before running the script.
-
-TODO -> were is the official release location?
+The CVORA Python test programs depends on the following driver and libraries:
+@table @b
+@item vmeio
+      Simple VME driver alllowing r/w access to a board and waiting on interrupts.
+@item libvv_pts.so
+      Shared object library using the vmeio driver to access the board.
+@item vv_pts.py
+      Python wrapper for libvv_pts.so
+@item ptsexcept.py
+      Exceptions definition for the VME production test suite (PTS).
+@item python
+      The Python version must be 2.7 or higher.
+@item numpy, pylab
+      Python librairies needed by the test programs to plot data read from the board.
+@end table
 
 
 @c ##########################################################################
-@c page
+@page
 @node Acquisition modes
 @chapter Acquisition modes
 
@@ -192,10 +213,10 @@ Then every sample is written to RAM.
 Note that the data bus to the RAM is 32-bit wide.
 Therefore, if only one channel has to be written in RAM the remaining 16 bits are set to zero.
 
+When enabled in the CSR register, a VME interrupt is generated on STOP.
+
 The STROBE input is only used in RTM_PARALLEL mode to sample/synchronise incoming data.
 Nevertheless, as for other modes, the data are then sampled with the CLOCK.
-
-TODO -> add acquisition waveforms example...
 
 @quotation Note
 In this document, START, STOP and RESET can be either pulses from the front panel or software triggers from the CSR register.
@@ -205,35 +226,84 @@ In this document, START, STOP and RESET can be either pulses from the front pane
 The RESET is ignored during acquisition, except for counter modes.
 @end quotation
 
-The CVORA modes of operation are listed below and descibed in detail in the comming sections.
-
-@float Table,tab:modes
-@multitable {Value}{FP_OP16_CVORB}{Front panel optical input 1 only (16-bit serial, CVORB protocol)}
-@headitem Value @tab Name @tab Description
-@item @code{0x0} @tab RESERVED_1             @tab Reserved
-@item @code{0x1} @tab FP_OP16_SCI            @tab Front panel optical input 1 only (16-bit serial, SCI protocol)
-@item @code{0x2} @tab FP_CU16_SCI            @tab Front panel copper input 1 only (16-bit serial, SCI protocol)
-@item @code{0x3} @tab CNT32                  @tab 32-bit up/down counter (btrain)
-@item @code{0x4} @tab RTM_PARALLEL           @tab Parallel rtm input (32-bit)
-@item @code{0x5} @tab FP_OP32_SCI            @tab Front panel optical inputs (2x 16-bit serial, SCI protocol)
-@item @code{0x6} @tab FP_CU32_SCI            @tab Front panel copper inputs (2x 16-bit serial, SCI protocol)
-@item @code{0x7} @tab RTM_SCI                @tab RTM copper inputs (32x 16-bit serial, SCI protocol)
-@item @code{0x8} @tab RESERVED_2             @tab Reserved
-@item @code{0x9} @tab FP_OP16_CVORB          @tab Front panel optical input 1 only (16-bit serial, CVORB protocol)
-@item @code{0xA} @tab FP_CU16_CVORB          @tab Front panel copper input 1 only (16-bit serial, CVORB protocol)
-@item @code{0xB} @tab CNT2X16                @tab 2x 16-bit up counter
-@item @code{0xC} @tab RTM_PARALLEL_STROBE    @tab Parallel rtm input (31-bit) with strobe on 32nd bit
-@item @code{0xD} @tab FP_OP32_CVORB          @tab Front panel optical inputs (2x 16-bit serial, CVORB protocol)
-@item @code{0xE} @tab FP_CU32_CVORB          @tab Front panel copper inputs (2x 16-bit serial, CVORB protocol)
-@item @code{0xF} @tab RTM_CVORB              @tab RTM copper inputs (32x 16-bit serial, CVORB protocol)
-@end multitable
-@caption{Modes list.}
-@end float
-
 @quotation Note
 The module @b{must} be disabled (in CSR register) to change the mode.
 @end quotation
 
+
+The CVORA modes of operation are listed below and descibed in detail in the comming sections.
+
+@ignore
+@table @code
+@item RESERVED_1 (0x0)
+      Reserved mode, do not use.
+@item FP_OP16_SCI (0x1)
+      Front panel optical input 1 only (16-bit serial, SCI protocol)
+@item FP_CU16_SCI (0x2)
+      Front panel copper input 1 only (16-bit serial, SCI protocol)
+@item CNT32 (0x3)
+      32-bit up/down counter (btrain)
+@item  RTM_PARALLEL (0x4)
+       Parallel rtm input (32-bit)
+@item  FP_OP32_SCI (0x5)
+       Front panel optical inputs (2x 16-bit serial, SCI protocol)
+@item  FP_CU32_SCI (0x6)
+       Front panel copper inputs (2x 16-bit serial, SCI protocol)
+@item  RTM_SCI (0x7)
+       RTM copper inputs (32x 16-bit serial, SCI protocol)
+@item  RESERVED_2 (0x8)
+       Reserved mode, do not use.
+@item  FP_OP16_CVORB (0x9)
+       Front panel optical input 1 only (16-bit serial, CVORB protocol)
+@item  FP_CU16_CVORB (0xA)
+       Front panel copper input 1 only (16-bit serial, CVORB protocol)
+@item  CNT2X16 (0xB)
+       2x 16-bit up counter
+@item  RTM_PARALLEL_STROBE (0xC)
+       Parallel rtm input (31-bit) with strobe on 32nd bit
+@item  FP_OP32_CVORB (0xD)
+       Front panel optical inputs (2x 16-bit serial, CVORB protocol)
+@item  FP_CU32_CVORB (0xE)
+       Front panel copper inputs (2x 16-bit serial, CVORB protocol)
+@item  RTM_CVORB (0xF)
+       RTM copper inputs (32x 16-bit serial, CVORB protocol)
+@end table
+@end ignore
+
+@float @c Table,tab:modes
+@multitable @columnfractions .05 .35 .60 @c{Value}{RTM_PARALLEL_STROBE}{Front panel optical input 1 only (16-bit serial, CVORB protocol)}
+@headitem Value @tab Name @tab Description
+@item @code{0x0} @tab RESERVED_1             @tab Reserved mode, do not use.
+@item @code{0x1} @tab FP_OP16_SCI            @tab Front panel optical input 1 only @*
+                                                  (16-bit serial, SCI protocol)
+@item @code{0x2} @tab FP_CU16_SCI            @tab Front panel copper input 1 only @*
+                                                  (16-bit serial, SCI protocol)
+@item @code{0x3} @tab CNT32                  @tab 32-bit up/down counter (btrain)
+@item @code{0x4} @tab RTM_PARALLEL           @tab Parallel rtm input (32-bit)
+@item @code{0x5} @tab FP_OP32_SCI            @tab Front panel optical inputs @*
+                                                  (2x 16-bit serial, SCI protocol)
+@item @code{0x6} @tab FP_CU32_SCI            @tab Front panel copper inputs @*
+                                                  (2x 16-bit serial, SCI protocol)
+@item @code{0x7} @tab RTM_SCI                @tab RTM copper inputs @*
+                                                  (32x 16-bit serial, SCI protocol)
+@item @code{0x8} @tab RESERVED_2             @tab Reserved mode, do not use.
+@item @code{0x9} @tab FP_OP16_CVORB          @tab Front panel optical input 1 only @*
+                                                  (16-bit serial, CVORB protocol)
+@item @code{0xA} @tab FP_CU16_CVORB          @tab Front panel copper input 1 only @*
+                                                  (16-bit serial, CVORB protocol)
+@item @code{0xB} @tab CNT2X16                @tab 2x 16-bit up counter
+@item @code{0xC} @tab RTM_PARALLEL_STROBE    @tab Parallel rtm input (31-bit) with strobe on 32nd bit
+@item @code{0xD} @tab FP_OP32_CVORB          @tab Front panel optical inputs @*
+                                                  (2x 16-bit serial, CVORB protocol)
+@item @code{0xE} @tab FP_CU32_CVORB          @tab Front panel copper inputs @*
+                                                  (2x 16-bit serial, CVORB protocol)
+@item @code{0xF} @tab RTM_CVORB              @tab RTM copper inputs @*
+                                                  (32x 16-bit serial, CVORB protocol)
+@end multitable
+@c @caption{Modes list.}
+@end float
+
+Some waveforms of typical acquisitions are available in @ref{Acquisition waveforms}.
 
 @c --------------------------------------------------------------------------
 @node Serial protocols
@@ -326,11 +396,20 @@ In RTM input modes dedicated rear transition module has to be used (See @ref{Rea
 
 
 @c ##########################################################################
-@c page
+@page
 @node Architecture
 @chapter Architecture
 
-This chapter describes the internal blocks of the FPGA.
+The @ref{fig:gw_arch} represents the internal blocks of the FPGA.
+The SRAM and the registers are accessible from the VME bus using the VME interface, via the bus interface controller.
+The bus interface controller is an address decoder and data multiplexor.
+The registers allow to control the acquisition and get status of the board, for more details see @ref{Registers description}.
+
+On the data-path side, the first stage is formating the data.
+It is either decoding serial data stream, sampling parallel inputs or counting pulses.
+The input data source is selected depending on the mode and then sampled using the CLOCK signal.
+In parallel input data are also sent to two on-board DACs.
+Allowing the user to quickly debug an installation.
 
 @sp 1
 
@@ -339,17 +418,18 @@ This chapter describes the internal blocks of the FPGA.
 @caption{Simplified FPGA gateware architecture block diagram.}
 @end float
 
-@sp 1
-
-TODO -> describe blocks?
-
 
 @c ##########################################################################
 @c page
 @node Registers description
 @chapter Registers description
 
-TODO -> VME address modifiers, address ranges (along with jumper settings??)
+The CVORA board uses the VME address modifier @code{0x39} (A24 non privileged data access) to access the registers and the RAM.
+
+The FPGA configuration flash memory can be written by an on-board CPLD.
+The CPLD is accessed using the VME address modifier @code{0x29} (A16 non privileged access).
+
+For a more detailed description of the two address ranges setting via the on-board jumpers, see @ref{Jumper settings}
 
 @c --------------------------------------------------------------------------
 @section Memory map
@@ -399,6 +479,7 @@ The memory pointer allows the user to know where to read the data in RAM.
 The memory pointer is reset to 0x20 (first address of the RAM) on a START or RESET pulse.
 Then during an acquisition, the pointer is automatically incremented by 4 on a rising edge of CLOCK (every time a sample is written to RAM).
 If the pointer equals 0x7FFFF the "RAM overflow" bit in the CSR register is set.
+The overflow bit can be cleared by a RESET when the module is not in acquisition.
 
 @float
 @multitable {Byte offset}{Access}{RAM memory write address pointer (byte address)}
@@ -411,6 +492,7 @@ If the pointer equals 0x7FFFF the "RAM overflow" bit in the CSR register is set.
 
 
 @c --------------------------------------------------------------------------
+@page
 @section Mode register
 
 All modes are described in detail in the @ref{Acquisition modes}.
@@ -444,7 +526,6 @@ The module @b{must not} be acquiring to change the channel enable mask.
 @c caption{Channel enable register.}
 @end float
 
-
 @c --------------------------------------------------------------------------
 @section Sampling clock frequency register
 
@@ -457,10 +538,6 @@ The sampling clock is taken from the "CLOCK" front panel input.
 @end multitable
 @c caption{Sampling clock frequency register.}
 @end float
-
-@quotation Note
-@c Note that if no pulse are detected on the input, the frequency will not be updated!
-@end quotation
 
 @c --------------------------------------------------------------------------
 @section Channel select register
@@ -480,6 +557,7 @@ This register is also used in RTM_CVORB mode to select the channels to be measur
 @end float
 
 @c --------------------------------------------------------------------------
+@page
 @section CVORB mode setting register
 
 This register allows to set the pulse width threshold for the CVORB protocol decoder.
@@ -502,24 +580,11 @@ The convertion formula between pulse time and value to be written to the registe
 For front panel modes (FP_*), the measured values 1 and 2 reflect the corresponding input.
 In RTM_CVORB mode, the measured value 1 and 2 depend on the channel select register.
 
-
-@c ##########################################################################
-@c page
-@node Installation
-@chapter Installation
-
-TODO -> is this section useful?
-
-@c --------------------------------------------------------------------------
-@node Test programs
-@section Test programs
-
-TODO -> python test prog, dependencies (vmeio driver, lib, scipy, ...)
-
+@ignore
 @c ##########################################################################
 @c page
 @node Missing Features and Improvements
-@chapter Missing Features and Improvements
+@c@chapter Missing Features and Improvements
 
 TODO -> any?
 
@@ -527,9 +592,10 @@ TODO -> any?
 @item tt
 @item tt
 @end itemize
+@end ignore
 
 @c ##########################################################################
-@c page
+@page
 @node Appendix
 @appendix
 
@@ -596,10 +662,12 @@ The CVORA module is sending the following five strings.
 
 
 @c --------------------------------------------------------------------------
+@page
+@node Jumper settings
 @section Jumper settings
 
 @float Table,tab:jumper_settings
-@multitable {Module #}{0x300000}{A16 (SW1)}
+@multitable {Module #}{A24 (SW2)}{A16 (SW1)}
 @headitem Module # @tab A24 (SW2) @tab A16 (SW1)
 @item 1st @tab @code{0x300000} @tab @code{0x6000}
 @item 2nd @tab @code{0x400000} @tab @code{0x6100}
@@ -633,6 +701,27 @@ A graphical illustration of the CVORA jumper settings can be found at the follow
 @item CVARI @tab 2  @tab RTM 6U with 2x 34-pin connector for Ribbon cable
 @end multitable
 @caption{CVORA compatible RTM modules.}
+@end float
+
+
+@c --------------------------------------------------------------------------
+@page
+@node Acquisition waveforms
+@section Acquisition waveforms
+
+@float Figure,fig:serial_acq_ex
+@center @image{figures/serial_acq_ex, 15cm,,,pdf}
+@caption{Serial acquisition example.}
+@end float
+
+@float Figure,fig:para_acq_ex
+@center @image{figures/parallel_acq_ex, 15cm,,,pdf}
+@caption{Parallel data acquisition example.}
+@end float
+
+@float Figure,fig:cnt32_acq_ex
+@center @image{figures/cnt32_acq_ex, 15cm,,,pdf}
+@caption{32-bit counter acquisition example.}
 @end float
 
 
