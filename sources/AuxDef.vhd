@@ -29,13 +29,13 @@
 -- last changes: see git log.
 ----------------------------------------------------------------------------------
 
-library IEEE;
-use IEEE.STD_LOGIC_1164.all;
-use IEEE.NUMERIC_STD.all;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
-use work.IntContPackage.all;
+use work.bus_int_pkg.all;
 use work.vme_pkg.all;
-use work.message_package.all;
+use work.message_pkg.all;
 
 
 package cvora_pkg is
