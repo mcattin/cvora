@@ -142,6 +142,11 @@ package message_pkg is
                                      LETTER_xmin, LETTER_1, LETTER_6, space, LETTER_B,
                                      LETTER_imin, LETTER_tmin, LETTER_smin, space, space, space,
                                      Carriage_Return, Line_Feed);
+  -- "RTM PARALLEL STB"
+  constant c_RTM_PARALLEL_STROBE_LINE : line := (LETTER_R, LETTER_T, LETTER_M, space, LETTER_P,
+                                          LETTER_A, LETTER_R, LETTER_A, LETTER_L, LETTER_L,
+                                          LETTER_E, LETTER_L, space, LETTER_S, LETTER_T, LETTER_B,
+                                          Carriage_Return, Line_Feed);
   -- "FP OP32 CVORB   "
   constant c_FP_OP32_CVORB_LINE : line := (LETTER_F, LETTER_P, space, LETTER_O, LETTER_P,
                                            LETTER_3, LETTER_2, space, LETTER_C, LETTER_V,
