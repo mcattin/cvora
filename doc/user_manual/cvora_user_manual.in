@@ -58,12 +58,12 @@
 @top Introduction
 
 The CVORA board is a sampler of digital data sources in VME form factor.
-Depending on the mode, it accepts different type of data sources; parallel, serial (SCI, CVORB).
-It also implements two counter modes, used to count train of pulses.
+Depending on the mode, it accepts different types of data sources; parallel, serial (SCI, CVORB).
+It also implements two counter modes, used to count trains of pulses.
 A detailed description of the modes is available in @ref{Acquisition modes}.
 
 The board also contains two analogue outputs, reflecting two of the inputs.
-The analogue outputs are not meant to be used in operation, but only for testing/debugging purpose.
+The analogue outputs are not meant to be used in operation, but only for testing/debugging purposes.
 
 @float Figure,fig:gw_arch
 @center @image{figures/arch_diag, 15cm,,,pdf}
@@ -77,7 +77,7 @@ The SRAM and the registers are accessible from the VME bus using the VME interfa
 The bus interface controller is an address decoder and data multiplexor.
 The registers allow to control the acquisition and get status of the board, for more details see @ref{Registers description}.
 
-On the data-path side, the first stage is formating the data.
+On the data-path side, the first stage is formatting the data.
 It is either decoding serial data streams, sampling parallel inputs or counting pulses.
 The input data source is selected depending on the mode and then sampled using the CLOCK signal.
 The input data are also sent to two on-board DACs, allowing the user to quickly debug an installation.
@@ -117,7 +117,7 @@ The module @b{must} be disabled (in CSR register) to change the mode.
 @end quotation
 
 
-The CVORA modes of operation are listed below and descibed in detail in the coming sections.
+The CVORA modes of operation are listed below and described in detail in the coming sections.
 
 @ignore
 @table @code
@@ -254,9 +254,9 @@ In "dual inputs" modes (FP_*32_*), the lower 16 bits of the 32-bit data word wri
 @c --------------------------------------------------------------------------
 @section RTM input modes
 
-In RTM input modes (RTM_*), data are coming from a Rear Transition Modules (RTM) via the VME P2 connector.
+In RTM input modes (RTM_*), data are coming from Rear Transition Modules (RTM) via the VME P2 connector.
 The CVORA P2 connector contains 32 differential input channels, that can be used in three RTM modes: one parallel (RTM_PARALLEL) and two serial (RTM_SCI and RTM_CVORB).
-In RTM input modes dedicated rear transition module has to be used (See @ref{Rear Transition Modules}).
+In RTM input modes dedicated rear transition modules have to be used (See @ref{Rear Transition Modules}).
 
 @table @b
 @item Parallel mode (RTM_PARALLEL)
@@ -269,8 +269,8 @@ In RTM input modes dedicated rear transition module has to be used (See @ref{Rea
       Each channel can be enabled independently via the "Channel enable register".
       The channels are stored in RAM by pairs.
       If for a given pair none of the channels is enabled, the pair is skipped.
-      If only one of the channel in a pair is enabled, the data are stored in RAM and the disabled channel data are replaced by zeros.
-      If both channel are enabled, the data are stored in RAM.
+      If only one of the channels in a pair is enabled, the data are stored in RAM and the disabled channel data are replaced by zeros.
+      If both channels are enabled, the data are stored in RAM.
       The data storage for RTM serial modes is illustrated in @ref{fig:rtm_serial_manager}.
 @end table
 
@@ -403,7 +403,7 @@ The sampling clock is taken from the "CLOCK" front panel input.
 @c --------------------------------------------------------------------------
 @section Channel select register
 
-This register select which RTM serial channel is reproduced on the analogue outputs.
+This register selects which RTM serial channel is reproduced on the analogue outputs.
 There are two analogue outputs. Therefore the selected channel and the next one are reproduced on the analogue outputs.
 Note that only even channels can be selected (bit 0 is ignored in the gateware).
 This register is also used in RTM_CVORB mode to select the channels to be measured and published in "CVORB mode setting" register.
@@ -427,10 +427,12 @@ The conversion formula between pulse time and value to be written to the registe
 
 @center @math{regval = 2 * (time / 25ns)}
 
+Example: @math{regval = 2 * (100ns / 25ns) = 8}
+
 @float
 @multitable {Byte offset}{Access}{Unused (write as 0's, ignore on read)}
 @headitem Byte offset @tab Access @tab Description
-@item @code{[7:0]}   @tab rw @tab Pulse width threshold
+@item @code{[7:0]}   @tab rw @tab Pulse width threshold (default=8)
 @item @code{[15:8]}  @tab ro @tab Unused (write as 0's, ignore on read)
 @item @code{[23:16]} @tab ro @tab Measured pulse width 1
 @item @code{[31:24]} @tab ro @tab Measured pulse width 2
@@ -447,7 +449,7 @@ In RTM_CVORB mode, the measured value 1 and 2 depend on the channel select regis
 @node Repositories and Releases
 @chapter Repositories and Releases
 
-The following wiki page gathers link to all the information about the CVORA board (schematics, PCB layout, test/installation procedures, software support, etc...):
+The following wiki page gathers links to all the information about the CVORA board (schematics, PCB layout, test/installation procedures, software support, etc...):
 @uref{https://wikis/display/HT/CVORA+-+Dual+port+RAM+for+digital+acquisition}
 
 The hdl and documentation sources are hosted on the CERN git repository at the following address:
@@ -481,9 +483,8 @@ Note that the official release location might have to be updated before running 
 @section Software Support
 
 As a general rule, a new minor version of the gateware, for a given major version, should be backward compatible.
-If the interface with the driver changes, the major version should be incremented.
-It means that driver versions 1.x should work with any gateware version 1.x.
-But the driver version 2.0 might not work with the gateware version 1.1.
+If the backward compatibility is broken, the major version must be incremented.
+In case of big changes in the gateware, the major version might be incremented even if the changes are backward compatible.
 
 
 @c ##########################################################################
@@ -494,7 +495,7 @@ But the driver version 2.0 might not work with the gateware version 1.1.
 @c --------------------------------------------------------------------------
 @section Build from Sources
 
-The CVORA hdl design make use of the @command{hdlmake}@footnote{@uref{http://www.ohwr.org/projects/hdl-make}} tool.
+The CVORA hdl design makes use of the @command{hdlmake}@footnote{@uref{http://www.ohwr.org/projects/hdl-make}} tool.
 It automatically fetches the required hdl cores and libraries. It also generates Makefiles for synthesis/par and simulation.
 
 Here is the procedure to build the FPGA binary image from the hdl source.
@@ -527,7 +528,7 @@ Here is the procedure to build the FPGA binary image from the hdl source.
 @table @file
 @item hdl/src/
       HDL sources.
-      It could happen that a hdl source directory contains extra source files that are not used in the current gateware release.
+      It could happen that an hdl source directory contains extra source files that are not used in the current gateware release.
       In order to identify the source files used in a given release, refer to the @file{Manifest.py} files.
 
 @item hdl/ip_cores/

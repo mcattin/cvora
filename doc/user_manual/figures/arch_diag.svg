@@ -1158,7 +1158,7 @@
      inkscape:cx="386.64422"
      inkscape:cy="249.40176"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g4766"
      showgrid="true"
      inkscape:window-width="1920"
      inkscape:window-height="1173"
@@ -1181,7 +1181,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1541,7 +1541,7 @@
            style="font-size:12px;font-weight:normal;-inkscape-font-specification:Bitstream Charter"
            y="639.33582"
            x="340.30859"
-           sodipodi:role="line">32-bit up/bown</tspan><tspan
+           sodipodi:role="line">32-bit up/down</tspan><tspan
            id="tspan3772"
            style="font-size:12px;font-weight:normal;-inkscape-font-specification:Bitstream Charter"
            y="654.33582"
