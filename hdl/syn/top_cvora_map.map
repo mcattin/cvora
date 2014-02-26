@@ -9,7 +9,7 @@ Target Device  : xc3s1500
 Target Package : fg456
 Target Speed   : -4
 Mapper Version : spartan3 -- $Revision: 1.55 $
-Mapped Date    : Tue Nov 12 17:12:20 2013
+Mapped Date    : Tue Nov 26 15:58:54 2013
 
 Mapping design into LUTs...
 WARNING:MapLib:701 - Signal ram_data_par_o<3> connected to top level port
@@ -40,15 +40,15 @@ Design Summary:
 Number of errors:      0
 Number of warnings:    6
 Logic Utilization:
-  Number of Slice Flip Flops:         6,323 out of  26,624   23%
-  Number of 4 input LUTs:             7,468 out of  26,624   28%
+  Number of Slice Flip Flops:         6,465 out of  26,624   24%
+  Number of 4 input LUTs:             7,459 out of  26,624   28%
 Logic Distribution:
-  Number of occupied Slices:          5,876 out of  13,312   44%
-    Number of Slices containing only related logic:   5,876 out of   5,876 100%
-    Number of Slices containing unrelated logic:          0 out of   5,876   0%
+  Number of occupied Slices:          5,893 out of  13,312   44%
+    Number of Slices containing only related logic:   5,893 out of   5,893 100%
+    Number of Slices containing unrelated logic:          0 out of   5,893   0%
       *See NOTES below for an explanation of the effects of unrelated logic.
-  Total Number of 4 input LUTs:       8,299 out of  26,624   31%
-    Number used as logic:             7,432
+  Total Number of 4 input LUTs:       8,290 out of  26,624   31%
+    Number used as logic:             7,423
     Number used as a route-thru:        831
     Number used as Shift registers:      36
 
@@ -60,7 +60,7 @@ Logic Distribution:
 
 Average Fanout of Non-Clock Nets:                3.63
 
-Peak Memory Usage:  215 MB
+Peak Memory Usage:  216 MB
 Total REAL time to MAP completion:  22 secs 
 Total CPU time to MAP completion:   12 secs 
 
