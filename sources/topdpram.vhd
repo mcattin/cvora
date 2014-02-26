@@ -233,17 +233,17 @@ architecture Behavioral of topdpram is
   signal ud_cnt_value    : std_logic_vector(31 downto 0);
   signal ud_cnt_en       : std_logic;
   signal ud_cnt_overflow : std_logic;
-  signal ud_cnt_to_dac   : std_logic;
+  signal ud_cnt_valid    : std_logic;
 
   ------------------------------------------------------------------------------
   -- 16-bit up counters
   signal up_cnt_en        : std_logic;
   signal up_cnt1_value    : std_logic_vector(15 downto 0);
   signal up_cnt1_overflow : std_logic;
-  signal up_cnt1_to_dac   : std_logic;
+  signal up_cnt1_valid    : std_logic;
   signal up_cnt2_value    : std_logic_vector(15 downto 0);
   signal up_cnt2_overflow : std_logic;
-  signal up_cnt2_to_dac   : std_logic;
+  signal up_cnt2_valid    : std_logic;
 
   ------------------------------------------------------------------------------
   -- Front panel serial decoders
@@ -264,6 +264,15 @@ architecture Behavioral of topdpram is
   signal fp_data2_cvorb_valid  : std_logic;
 
   ------------------------------------------------------------------------------
+  -- RTM serial decoders
+  signal rtm_data_clk_p     : std_logic;
+  signal rtm_reset_ram_addr : std_logic;
+  signal rtm_ram_data       : std_logic_vector(31 downto 0);
+  signal rtm_ram_data_valid : std_logic;
+  signal rtm_ram_addr       : std_logic_vector(RAM_ADDR_LENGTH-1 downto 0);
+  signal rtm_ram_overflow   : std_logic;
+
+  ------------------------------------------------------------------------------
   -- CVORB protocol pulse width measurement
   type   cvorb_pulse_width_array_t is array (0 to NB_RTM_CHANNELS-1) of std_logic_vector(7 downto 0);
   signal rtm_cvorb_meas_pulse_width : cvorb_pulse_width_array_t;
@@ -278,8 +287,8 @@ architecture Behavioral of topdpram is
   ------------------------------------------------------------------------------
   -- 
   signal fp_led                  : std_logic_vector(7 downto 0);
-  signal AcqCounter              : unsigned(15 downto 0)                             := (others => '0');
-  signal AcquisitionTime         : std_logic_vector(15 downto 0)                     := (others => '0');
+  signal AcqCounter              : unsigned(15 downto 0)                          := (others => '0');
+  signal AcquisitionTime         : std_logic_vector(15 downto 0)                  := (others => '0');
   signal BCD_acq_vec             : BCD_vector_TYPE (4 downto 0);
   ------------------------------------------------------------------------------
   -- Signal for the External Ram
@@ -288,46 +297,55 @@ architecture Behavioral of topdpram is
   signal ExtAddRd                : std_logic_vector(18 downto 0);
   signal DataFromHistoryWritten  : std_logic;
   signal DataToContValidRM       : std_logic;
-  signal ReadExtRam, WriteExtRam : std_logic                                         := '0';
+  signal ReadExtRam, WriteExtRam : std_logic                                      := '0';
   signal ExtRdAdd                : std_logic_vector(RAM_ADDR_LENGTH - 1 downto 0);
   signal DataToContRM            : std_logic_vector(31 downto 0);
-  signal CurrentRecordForRam     : std_logic_vector(31 downto 0)                     := (others => '0');
+  signal CurrentRecordForRam     : std_logic_vector(31 downto 0)                  := (others => '0');
   signal ExtRamAddOverflow       : std_logic;
-  signal ExtrdDel                : std_logic_vector(1 downto 0)                      := (others => '0');  -- Delay to read the External Ram
+  signal ExtrdDel                : std_logic_vector(1 downto 0)                   := (others => '0');  -- Delay to read the External Ram
   signal PdataInValid            : std_logic;
-  signal StrobeB, StrobeC        : std_logic                                         := '0';
+  signal StrobeB, StrobeC        : std_logic                                      := '0';
   signal StrobeRE                : std_logic;
-  signal StrobeReg               : std_logic_vector(5 downto 0)                      := (others => '0');
+  signal StrobeReg               : std_logic_vector(5 downto 0)                   := (others => '0');
   ------------------------------------------------------------------------------
 
 
 
   -- Front panel input sync and edge detect
-  signal fp_clock    : std_logic;
-  signal fp_start    : std_logic;
-  signal fp_stop     : std_logic;
-  signal fp_bup      : std_logic;
-  signal fp_bdown    : std_logic;
-  signal fp_strobe   : std_logic;
-  signal fp_reset    : std_logic;
-  signal fp_clock_p  : std_logic;
-  signal fp_start_p  : std_logic;
-  signal fp_stop_p   : std_logic;
-  signal fp_bup_p    : std_logic;
-  signal fp_bdown_p  : std_logic;
-  signal fp_strobe_p : std_logic;
-  signal fp_reset_p  : std_logic;
-  signal start_p     : std_logic;
-  signal stop_p      : std_logic;
-  signal reset_p     : std_logic;
-  signal start_p_d   : std_logic_vector(3 downto 0);
+  signal fp_clock         : std_logic;
+  signal fp_start         : std_logic;
+  signal fp_stop          : std_logic;
+  signal fp_bup           : std_logic;
+  signal fp_bdown         : std_logic;
+  signal fp_strobe        : std_logic;
+  signal fp_reset         : std_logic;
+  signal fp_clock_p       : std_logic;
+  signal fp_start_p       : std_logic;
+  signal fp_stop_p        : std_logic;
+  signal fp_bup_p         : std_logic;
+  signal fp_bdown_p       : std_logic;
+  signal fp_strobe_p      : std_logic;
+  signal fp_reset_p       : std_logic;
+  signal start_p          : std_logic;
+  signal stop_p           : std_logic;
+  signal reset_p          : std_logic;
+  signal start_p_d        : std_logic_vector(3 downto 0);
+  signal clock_strobe_p   : std_logic;
+  signal clock_strobe_p_d : std_logic_vector(5 downto 0);
   ------------------------------------------------------------------------------
   -- DAC
-  signal dac1_load   : std_logic;
-  signal dac2_load   : std_logic;
-  signal dac1_data   : std_logic_vector(15 downto 0) := (others => '0');
-  signal dac2_data   : std_logic_vector(15 downto 0) := (others => '0');
+  signal dac1_load        : std_logic;
+  signal dac2_load        : std_logic;
+  signal dac1_data        : std_logic_vector(15 downto 0) := (others => '0');
+  signal dac2_data        : std_logic_vector(15 downto 0) := (others => '0');
+
   ------------------------------------------------------------------------------
+  -- RAM manager
+  signal ram_rd            : std_logic;
+  signal ram_rd_addr       : std_logic_vector(RAM_ADDR_LENGTH-1 downto 0);
+  signal ram_rd_done_d     : std_logic_vector(1 downto 0);
+  signal ram_rd_data       : std_logic_vector(31 downto 0);
+  signal ram_rd_data_valid : std_logic;
 
 
 
@@ -478,6 +496,9 @@ begin
   stop_p  <= fp_stop_p or sw_stop_p;
   reset_p <= fp_reset_p or sw_reset_p;
 
+  -- Combining strobe and clock inputs
+  clock_strobe_p <= fp_clock_p or fp_strobe_p;
+
   -- Pulses delay
   p_start_delay : process (sys_clk, sys_rst_n)
   begin
@@ -487,6 +508,15 @@ begin
       start_p_d <= start_p_d(start_p_d'left-1 downto 0) & start_p;
     end if;
   end process p_start_delay;
+
+  p_clock_stobe_delay : process (sys_clk, sys_rst_n)
+  begin
+    if sys_rst_n = RESET_ACTIVE then
+      clock_strobe_p_d <= (others => '0');
+    elsif rising_edge(sys_clk) then
+      clock_stobe_p_d <= clock_strobe_p_d(clock_strobe_p_d'left-1 downto 0) & clock_strobe_p;
+    end if;
+  end process p_clock_strobe_delay;
 
 
   ------------------------------------------------------------------------------
@@ -728,7 +758,7 @@ begin
   process(sys_clk, sys_rst_n)
   begin
     if sys_rst_n = RESET_ACTIVE then
-      cvorb_pulse_width_thres <= (others => '0');
+      cvorb_pulse_width_thres <= (others => '0');  -- ### should not reset to 0, find a good value
     elsif rising_edge(sys_clk) then
       if cvorb_reg_wren = '1' then
         cvorb_pulse_width_thres <= contToRegs.Data(7 downto 0);
@@ -774,18 +804,20 @@ begin
       g_width => 32)
     port map(
       rst_n_i    => sys_rst_n,
-      clk_i      => sys_clk_i,
+      clk_i      => sys_clk,
       clear_i    => reset_p,
       up_i       => fp_bup_p,
       down_i     => fp_bdown_p,
       enable_i   => ud_cnt_en,
       overflow_o => ud_cnt_overflow,
       value_o    => ud_cnt_value,
-      valid_o    => ud_cnt_to_dac);
+      valid_o    => ud_cnt_valid);
 
 
   ------------------------------------------------------------------------------
   -- 2x 16-bit up counter mode
+  --   BUP   input increments counter 1
+  --   BDOWN input increments counter 2
   ------------------------------------------------------------------------------
   up_cnt_en <= data_acq_en when mode = CNT2X16_M else '0';
 
@@ -794,43 +826,51 @@ begin
       g_width => 16)
     port map(
       rst_n_i    => sys_rst_n,
-      clk_i      => sys_clk_i,
+      clk_i      => sys_clk,
       clear_i    => reset_p,
       up_i       => fp_bup_p,
       down_i     => '0',
       enable_i   => up_cnt_en,
       overflow_o => up_cnt1_overflow,
       value_o    => up_cnt1_value,
-      valid_o    => up_cnt1_to_dac);
+      valid_o    => up_cnt1_valid);
 
   cmp_up_cnt2 : up_down_counter
     generic map(
       g_width => 16)
     port map(
       rst_n_i    => sys_rst_n,
-      clk_i      => sys_clk_i,
+      clk_i      => sys_clk,
       clear_i    => reset_p,
       up_i       => fp_bdown_p,
       down_i     => '0',
       enable_i   => up_cnt_en,
       overflow_o => up_cnt2_overflow,
       value_o    => up_cnt2_value,
-      valid_o    => up_cnt2_to_dac);
+      valid_o    => up_cnt2_valid);
 
 
   ------------------------------------------------------------------------------
   -- RTM serial decoders
   ------------------------------------------------------------------------------
 
-  
+  rtm_data_clk_p     <= fp_clock_p and data_acq_en;
+  rtm_reset_ram_addr <= reset_p when data_acq_en = '0' else '0';
 
-  cmp_rtm_data_manager : rtm_data_manager
-    port map (
-      rst_n_i      => sys_rst_n,
-      clk_i        => sys_clk_i,
-      data_i       => rtm_data,
-      data_valid_i => rtm_data_valid
-      );
+  cmp_rtm_serial _manager : rtm_serial_manager
+    port map(
+      rst_n_i            => sys_rst_n,
+      clk_i              => sys_clk,
+      rtm_data_i         => rtm_data_i,
+      mode_i             => mode,
+      channel_en_i       => channel_en,
+      data_clk_i         => rtm_data_clk_p,
+      ram_data_o         => rtm_ram_data,
+      ram_data_valid_o   => rtm_ram_data_valid,
+      ram_addr_o         => rtm_ram_addr,
+      ram_overflow_o     => rtm_ram_overflow,
+      ram_data_written_i => ram_wr_done,
+      reset_ram_addr_i   => rtm_reset_ram_addr);
 
 
   ------------------------------------------------------------------------------
@@ -844,18 +884,18 @@ begin
 
   -- Selects between optical or copper input
   fp_data1_sci_serial <= fp_data_optic1_i when (mode = FP_OP16_SCI_M) or (mode = FP_OP32_SCI_M) else
-                         fp_data_cu1_i when (mode = FP_CU16_SCI_M) or (mode = FP_CU32_SCI_M) else
+                         not(fp_data_cu1_i) when (mode = FP_CU16_SCI_M) or (mode = FP_CU32_SCI_M) else
                          (others => '0');
 
   fp_data2_sci_serial <= fp_data_optic2_i when (mode = FP_OP16_SCI_M) or (mode = FP_OP32_SCI_M) else
-                         fp_data_cu2_i when (mode = FP_CU16_SCI_M) or (mode = FP_CU32_SCI_M) else
+                         not(fp_data_cu2_i) when (mode = FP_CU16_SCI_M) or (mode = FP_CU32_SCI_M) else
                          (others => '0');
 
   -- Decoders
   cmp_fp_sci_decoder1 : sci_decoder
     port map(
       rst_n_i      => sys_rst_n,
-      clk_i        => sys_clk_i,
+      clk_i        => sys_clk,
       enable_i     => fp_sci_en,
       data_i       => fp_data1_sci_serial,
       data_o       => fp_data1_sci,
@@ -864,7 +904,7 @@ begin
   cmp_fp_sci_decoder2 : sci_decoder
     port map(
       rst_n_i      => sys_rst_n,
-      clk_i        => sys_clk_i,
+      clk_i        => sys_clk,
       enable_i     => fp_sci_en,
       data_i       => fp_data2_sci_serial,
       data_o       => fp_data2_sci,
@@ -892,7 +932,7 @@ begin
   cmp_fp_cvorb_decoder1 : cvorb_decoder
     port map(
       rst_n_i             => sys_rst_n,
-      clk_i               => sys_clk_i,
+      clk_i               => sys_clk,
       enable_i            => fp_cvorb_en,
       data_i              => fp_data1_cvorb_serial,
       zero_test_o         => open,
@@ -905,7 +945,7 @@ begin
   cmp_fp_cvorb_decoder2 : cvorb_decoder
     port map(
       rst_n_i             => sys_rst_n,
-      clk_i               => sys_clk_i,
+      clk_i               => sys_clk,
       enable_i            => fp_cvorb_en,
       data_i              => fp_data2_cvorb_serial,
       zero_test_o         => open,
@@ -917,8 +957,139 @@ begin
 
 
   ------------------------------------------------------------------------------
-  -- RAM manager
+  -- Dual port RAM manager
+  --   port 1: read from VME
+  --   port 2: write from data sources
   ------------------------------------------------------------------------------
+
+  -- RAM read from VME
+  ram_rd <= ContToMem.Rd and ContToMem.SelectedPos(EXT_RAM_P);
+
+  p_ram_read : process (sys_rst_n, sys_clk)
+  begin
+    if sys_rst_n = RESET_ACTIVE then
+      ram_rd_addr   <= (others => '0');
+      ram_rd_done_d <= (others => '0');
+    elsif rising_edge(sys_clk) then
+      if ram_rd = '1' then
+        -- VME provides byte address, RAM manager takes 32-bit word address
+        ram_rd_addr <= ContToMem.Add(18 downto 2);
+      end if;
+      ram_rd_done_d <= ram_rd_done_d(0) & ram_rd_data_valid;
+    end if;
+  end process p_ram_read;
+
+  MemToCont(EXT_RAM_P).RdDone <= ram_rd_done_d(1);
+
+  -- RAM write from data sources
+  p_ram_write_data : process (sys_rst_n, sys_clk)
+  begin
+    if sys_rst_n = RESET_ACTIVE then
+      ram_wr_data <= (others => '0');
+    elsif rising_edge(sys_clk) then
+      if (mode = RTM_SCI_M) or (mode = RTM_CVORB_M) then
+        ram_wr_data <= rtm_ram_data;
+      elsif data_acq_en = '1' then
+        if (fp_clock_p = '1') and (mode = CNT32_M) then
+          ram_wr_data <= ud_cnt_value;
+        elsif (fp_clock_p = '1') and (mode = CNT2X16_M) then
+          ram_wr_data <= up_cnt2_value & up_cnt1_value;
+        elsif (clock_strobe_p_d(2) = '1') and (mode = RTM_PARALLEL_M) then
+          ram_wr_data <= data_rtm_i;
+        elsif (clock_strobe_p_d(2) = '1') and (mode = FP_OP16_SCI_M or mode = FP_CU16_SCI_M) then
+          ram_wr_data <= x"0000" & fp_data1_sci;
+        elsif (clock_strobe_p_d(2) = '1') and (mode = FP_OP16_CVORB_M or mode = FP_CU16_CVORB_M) then
+          ram_wr_data <= x"0000" & fp_data1_cvorb;
+        elsif (clock_strobe_p_d(2) = '1') and (mode = FP_OP32_SCI_M or mode = FP_CU32_SCI_M) then
+          ram_wr_data <= fp_data2_sci & fp_data1_sci;
+        elsif (clock_strobe_p_d(2) = '1') and (mode = FP_OP32_CVORB_M or mode = FP_CU32_CVORB_M) then
+          ram_wr_data <= fp_data2_cvorb & fp_data1_cvorb;
+        end if;
+      end if;
+    end if;
+  end process p_ram_write_data;
+
+  p_ram_write_addr : process (sys_rst_n, sys_clk)
+  begin
+    if sys_rst_n = RESET_ACTIVE then
+      ram_wr_addr_cnt <= (others => '0');
+      ram_wr_overflow <= '0';
+    elsif rising_edge(sys_clk) then
+      if (mode = RTM_SCI_M) or (mode = RTM_CVORB_M) then
+        ram_wr_addr_cnt <= unsigned(rtm_ram_addr);
+        ram_wr_overflow <= rtm_ram_overflow;
+      elsif data_acq_en = '1' then
+        if ram_wr_addr_cnt = EXTRAMFULL then
+          ram_wr_overflow <= '1';
+        elsif clock_strobe_p_d(5) = '1' then
+          ram_wr_addr_cnt <= ram_wr_addr_cnt + EXTRAM_BUF_ONE;
+        end if;
+      elsif (start_p = '1') or (reset_p = '1') then
+        ram_wr_addr_cnt <= MEMEMPTY;
+        ram_wr_overflow <= '0';
+      end if;
+    end if;
+  end process p_ram_write_addr;
+
+  ram_wr_addr <= std_logic_vector(ram_wr_addr_cnt);
+
+  p_ram_write : process (sys_rst_n, sys_clk)
+  begin
+    if sys_rst_n = RESET_ACTIVE then
+      ram_wr <= '0';
+    elsif rising_edge(sys_clk) then
+      if (data_acq_en = '1') and (ram_wr_overflow = '0') then
+        if (mode = RTM_SCI_M) or (mode = RTM_CVORB_M) then
+          ram_wr <= rtm_ram_data_valid;
+        else
+          ram_wr <= clock_strobe_p_d(4);
+        end if;
+      else
+        ram_wr <= '0';
+      end if;
+    end if;
+  end process p_ram_write;
+
+
+  signal ram_wr_data     : std_logic_vector(31 downto 0);
+  signal ram_wr          : std_logic;
+  signal ram_wr_done     : std_logic;
+  signal ram_wr_addr_cnt : unsigned(RAM_ADDR_LENGTH-1 downto 0);
+  signal ram_wr_addr     : std_logic_vector(RAM_ADDR_LENGTH-1 downto 0);
+  signal ram_wr_overflow : std_logic;
+
+  -- RAM manager
+  cmp_ram_manager : RAMManager
+    port map(
+      RstN => sys_rst_n,
+      Clk  => sys_clk,
+
+      DataFromHistory        => ram_wr_data,
+      AddrFromHistory        => ram_wr_addr,
+      WriteFromHistory       => ram_wr,
+      DataFromHistoryWritten => ram_wr_done,
+
+      AddrFromCont    => ram_rd_addr,
+      ReadFromCont    => ram_rd,
+      DataToCont      => ram_rd_data,
+      DataToContValid => ram_rd_data_valid,
+
+      RAMAddr  => RAMAdd,
+      RAMData  => RAMData,
+      RAMOEN   => RAMOEN,
+      RAMGWN   => RAMGWN,
+      RAMADSCN => RAMADSCN,
+      RAMCEN   => RAMCEN,
+      RAMCS0   => open,
+      RAMCS1N  => open,
+      RAMBWEN  => RAMWRN,
+      RAMBWN   => RAMBWN,
+      RAMADVN  => RAMADVN,
+      RAMLBON  => RAMLBON,
+      RAMZZ    => open,
+      RAMADSPN => RAMADSPN);
+
+  XORamClk40   <= not sys_clk;
 
 
   ------------------------------------------------------------------------------
@@ -930,21 +1101,10 @@ begin
 
 
 
--- *******************************
--- * Serial Data Inputs
--- *******************************
--- bit 2-0 are the mode of the Mode Register :
---      mode 000 0 --> reserved but parallele inputs for the moment
---      mode 100 4 --> parallele inputs
---      mode 001 1 --> Opticals inputs 16 bits - SDataIn2 is ignored
---      mode 101 5 --> Opticals inputs 32 bits
---      mode 010 2 --> Copper Inputs 16 bits
---      mode 110 6 --> Copper Inputs 32 bits
---      mode 011 3 --> Btrain counter
---      mode 111 7 --> P2 Serial Inputs
 
 
 -- ### mc -> selects the channel to output on the DAC, from dac register
+
 -- found the two first bits at one in the Dac Register DacReg
 -- shift register to find the first bit at one in the register
   process(sys_clk)
@@ -1073,10 +1233,9 @@ begin
     end if;
   end process;
 
-  ExtClkRE             <= ExternalClkB and not(ExternalClkC);
-  StrobeRE             <= StrobeB and not StrobeC;             -- Rising edge of stobe input
-  PdataInValid         <= ExternalClkB and not(ExternalClkC);  -- 1rst front of the input pulse clock
-  DataReadyFromSerialB <= ExternalClkC and not(ExternalClkD);  -- 1rst front of the input pulse clock
+  ExtClkRE     <= ExternalClkB and not(ExternalClkC);
+  StrobeRE     <= StrobeB and not StrobeC;             -- Rising edge of stobe input
+  PdataInValid <= ExternalClkB and not(ExternalClkC);  -- 1rst front of the input pulse clock
 
   process(sys_clk)
   begin
@@ -1098,7 +1257,7 @@ begin
         if UsedMode = P2SERIALMODE then
           WriteExtRam <= P2WriteRam;
         else
-          WriteExtRam <= StrobeReg(4);  -- or DataReadyFromSerialB;
+          WriteExtRam <= StrobeReg(4);
         end if;
       else
         WriteExtRam <= '0';

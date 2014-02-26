@@ -24,7 +24,7 @@ package AuxDef is
   constant FP_OP16_SCI_M   : std_logic_vector(3 downto 0) := "0001";
   constant FP_CU16_SCI_M   : std_logic_vector(3 downto 0) := "0010";
   constant CNT32_M         : std_logic_vector(3 downto 0) := "0011";
-  constant RTM_PARRALEL_M  : std_logic_vector(3 downto 0) := "0100";
+  constant RTM_PARALLEL_M  : std_logic_vector(3 downto 0) := "0100";
   constant FP_OP32_SCI_M   : std_logic_vector(3 downto 0) := "0101";
   constant FP_CU32_SCI_M   : std_logic_vector(3 downto 0) := "0110";
   constant RTM_SCI_M       : std_logic_vector(3 downto 0) := "0111";
